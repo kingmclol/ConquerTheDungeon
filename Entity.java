@@ -41,7 +41,7 @@ public abstract class Entity extends SuperActor
         // }
     }
     public void act() {
-        animate();
+        //animate();
     }
     // /**
      // * Given a StatusModifier m, apply it onto this Entity.
@@ -76,7 +76,7 @@ public abstract class Entity extends SuperActor
         // dmgBox.fadeOut();
         // hp+=heal;
     }
-    protected abstract void animate();
+    //protected abstract void animate();
     public boolean isAlive() {
         //return hp >= 0;
         return false;
