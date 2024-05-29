@@ -1,25 +1,23 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SuperWorld here.
+ * Write a description of class RoomEditor here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class SuperWorld extends World
+public class RoomEditor extends SuperWorld
 {
 
     /**
-     * Constructor for objects of class SuperWorld.
+     * Constructor for objects of class RoomEditor.
      * 
      */
-    public SuperWorld()
+    private Board b;
+    public RoomEditor()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1024, 768, 1); 
-        Mouse.setWorld(this);
-    }
-    public void act() {
-        Timer.tick();
+        b = new Board(16, 12);
+        addObject(b, 0,0);
     }
 }
