@@ -14,8 +14,10 @@ import java.util.Collections;
 public class Board extends Actor
 {
     Cell[][] worldMap;
+    ArrayList<Edge> edgePool;
     private int width, height;
     private static boolean SHOW_LOGS = true;
+    private static String buildString;
     /**
      * Constructor for objects of class Board
      */
@@ -23,6 +25,7 @@ public class Board extends Actor
     {
         height = lengthY;
         width = lengthX;
+        edgePool = new ArrayList<Edge>();
         worldMap = new Cell[height][width];
         populate(worldMap);
     }
@@ -67,7 +70,6 @@ public class Board extends Actor
     public Node getNode(Cell c) {
         return getNode(c.getBoardX(), c.getBoardY());
     }
-    
     public void applyEffect(CellEffect e, Cell c) {
         c.applyEffect(e);
     }
@@ -199,5 +201,8 @@ public class Board extends Actor
         }
         Collections.reverse(path); // Reverse the path, so it goes from start -> end instead of end -> start.
         return path;
+    }
+    private void convertTileMapToEdges() {
+        
     }
 }
