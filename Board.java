@@ -14,8 +14,13 @@ import java.util.Collections;
 public class Board extends Actor
 {
     Cell[][] worldMap;
+    ArrayList<Edge> edgePool;
     private int width, height;
     private static boolean SHOW_LOGS = true;
+    private static final String DELIM_DATA = "~";
+    private static final String DELIM_CELL = "/";
+    private static Picture tempCanvas;
+    private static Picture cast;
     /**
      * Constructor for objects of class Board
      */
@@ -23,22 +28,64 @@ public class Board extends Actor
     {
         height = lengthY;
         width = lengthX;
+        edgePool = new ArrayList<Edge>();
         worldMap = new Cell[height][width];
         populate(worldMap);
+    }
+    public Board(String buildString) {
+        // Structure of 
+        // "width~height~datad/d/d/d/d/d"
+        edgePool = new ArrayList<Edge>();
+        String[] elements = buildString.split(DELIM_DATA);
+        width = Integer.valueOf(elements[0]);
+        height = Integer.valueOf(elements[1]);
+        worldMap = new Cell[height][width];
+        populate(worldMap, elements[2]);
     }
     public void addedToWorld(World w) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                w.addObject(worldMap[i][j], getX() + (j)*Tile.tileSize+Tile.tileSize/2, getY() + i*Tile.tileSize+Tile.tileSize/2);
+                w.addObject(worldMap[i][j], getX() + (j)*Cell.SIZE+Cell.SIZE/2, getY() + i*Cell.SIZE+Cell.SIZE/2);
+            }
+        }
+        // All temp.
+        tempCanvas = new Picture(new GreenfootImage(w.getWidth(), w.getHeight()));
+        cast = new Picture(new GreenfootImage(w.getWidth(), w.getHeight()));
+        w.addObject(tempCanvas, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
+        w.addObject(cast, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
+        convertTileMapToEdges();
+        drawEdges();
+    }
+    private void populate(Cell[][] map, String cellData) {
+        // Structure of
+        // "d/w/df/e/g/d"
+        String[] cells = cellData.split(DELIM_CELL);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Parse through the data.
+                Tile tile = Tile.getInstanceFromID(cells[y*width+x]);
+                worldMap[y][x] = new Cell (this, x, y, tile);
             }
         }
     }
     private void populate(Cell[][] map) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                worldMap[y][x] = new Cell(this, x, y, new Tile(Color.GRAY));
+                worldMap[y][x] = new Cell(this, x, y, new EmptyFloor());
             }
         }
+    }
+    public String getBuildString() {
+        String buildString = width + DELIM_DATA + height + DELIM_DATA;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                buildString+=worldMap[y][x].getTile().getID() + DELIM_CELL;
+            }
+        }
+        return buildString;
+    }
+    public void outputBuildString() {
+        System.out.println(getBuildString());
     }
     public List<Cell> getCellsInRadius(Cell c, double r) {
         List<Cell> cells = new ArrayList<Cell>();
@@ -56,6 +103,7 @@ public class Board extends Actor
         return cells;
     }
     public Cell getCell(int boardX, int boardY) {
+        if (boardX < 0 || boardX >= width || boardY < 0 || boardY >= height) return null;
         return worldMap[boardY][boardX];
     }
     public Cell getCell(Node n) {
@@ -67,15 +115,14 @@ public class Board extends Actor
     public Node getNode(Cell c) {
         return getNode(c.getBoardX(), c.getBoardY());
     }
-    
     public void applyEffect(CellEffect e, Cell c) {
         c.applyEffect(e);
     }
-    public void applyEffect(CellEffect e, List<Cell> cells) {
-        for (Cell c : cells){
-            c.applyEffect(e.clone());
-        }
-    }
+    // public void applyEffect(CellEffect e, List<Cell> cells) {
+        // for (Cell c : cells){
+            // c.applyEffect(e.clone());
+        // }
+    // }
     public void addEntity(Entity e, int boardX, int boardY) {
         // worldMap[boardY][boardX].addEntity(e);
         // Calculate proper world coordinates to add?
@@ -199,5 +246,158 @@ public class Board extends Actor
         }
         Collections.reverse(path); // Reverse the path, so it goes from start -> end instead of end -> start.
         return path;
+    }
+    
+    // ========poor attempt at shadowcasting, so please ignore,
+    /**
+     * Stolen code
+     */
+    public void convertTileMapToEdges() {
+        edgePool.clear();
+        // Clear existing edge data.
+
+        // Easier use of finding proper edges.
+        int N = 0;
+        int S = 1;
+        int E = 2;
+        int W = 3;
+        for (int tileY = 0; tileY < height; tileY++) {
+            for (int tileX = 0; tileX < width; tileX++) {
+                worldMap[tileY][tileX].clearEdgeData();
+            }
+        }
+        // Iterate throughout all cells, collecting edges
+        for (int tileY = 0; tileY < height; tileY++) {
+            for (int tileX = 0; tileX < width; tileX++) {
+                // Get neighbouring cells.
+                // Edges defined as
+                // N S E W
+                // 0 1 2 3
+                Cell current = getCell(tileX, tileY);
+                Cell north = getCell(tileX, tileY-1);
+                Cell south = getCell(tileX, tileY+1);
+                Cell east = getCell(tileX+1, tileY);
+                Cell west = getCell(tileX-1, tileY);
+
+                // Check if the current cell is an obstruction. If not, it has no edges (skip)
+                if (!current.isWalkable()) {
+                    // Check for western unobstructed tile. If dne, then this cell needs a western edge.
+                    if (west!=null && west.isWalkable()) {
+                        // Check if the north cell is obstructed and has a western edge. If so, extend that edge to this cell.
+                        if (north != null && north.edgeExist(W)) {
+                            edgePool.get(north.getEdgeID(W)).extendSouth(Cell.SIZE);
+                            current.setEdgeID(W, north.getEdgeID(W));
+                            current.setEdgeExist(W, true);
+                        }
+                        else { // Create a new edge.
+                            // Take an edge of the top left corner of he cell in question.
+                            // And extend it south.
+                            Edge edge = new Edge(getX() + tileX * Cell.SIZE, getY() + tileY * Cell.SIZE);
+                            edge.extendSouth(Cell.SIZE);
+
+                            // Add the new edge to the edge pool.
+                            int edgeID = edgePool.size();
+                            edgePool.add(edge);
+
+                            // Update cell information
+                            current.setEdgeExist(W, true);
+                            current.setEdgeID(W, edgeID);
+                        }
+                    }
+                    // Check for eastern unobstructed tile. If dne, then this cell needs a eastern edge.
+                    if (east!=null && east.isWalkable()) {
+                        // Check if the north cell is obstructed and has a western edge. If so, extend that edge to this cell.
+                        if (north != null && north.edgeExist(E)) {
+                            edgePool.get(north.getEdgeID(E)).extendSouth(Cell.SIZE);
+                            current.setEdgeID(E, north.getEdgeID(E));
+                            current.setEdgeExist(E, true);
+                        }
+                        else { // Create a new edge.
+                            // Take an edge of the top RIGHT corner of the cell in question.
+                            // And extend it south.
+                            Edge edge = new Edge(getX() + (tileX+1) * Cell.SIZE, getY() + tileY * Cell.SIZE);
+                            edge.extendSouth(Cell.SIZE);
+
+                            // Add the new edge to the edge pool.
+                            int edgeID = edgePool.size();
+                            edgePool.add(edge);
+
+                            // Update cell information
+                            current.setEdgeExist(E, true);
+                            current.setEdgeID(E, edgeID);
+                        }
+                    }
+                    // Check for northern unobstructed tile. If dne, then this cell needs a northern edge.
+                    if (north!=null && north.isWalkable()) {
+                        // Check if the wets cell is obstructed and has a northern edge. If so, extend that edge to this cell.
+                        if (west != null && west.edgeExist(N)) {
+                            edgePool.get(west.getEdgeID(N)).extendEast(Cell.SIZE);
+                            current.setEdgeID(N, west.getEdgeID(N));
+                            current.setEdgeExist(N, true);
+                        }
+                        else { // Create a new edge.
+                            // Take an edge of the top left corner of he cell in question.
+                            // And extend it east.
+                            Edge edge = new Edge(getX() + tileX * Cell.SIZE, getY() + tileY * Cell.SIZE);
+                            edge.extendEast(Cell.SIZE);
+
+                            // Add the new edge to the edge pool.
+                            int edgeID = edgePool.size();
+                            edgePool.add(edge);
+
+                            // Update cell information
+                            current.setEdgeExist(N, true);
+                            current.setEdgeID(N, edgeID);
+                        }
+                    }
+                    // Check for South unobstructed tile. If dne, then this cell needs a south edge.
+                    if (south!=null && south.isWalkable()) {
+                        // Check if the west cell is obstructed and has a south edge. If so, extend that edge to this cell.
+                        if (west != null && west.edgeExist(S)) {
+                            edgePool.get(west.getEdgeID(S)).extendEast(Cell.SIZE);
+                            current.setEdgeID(S, west.getEdgeID(S));
+                            current.setEdgeExist(S, true);
+                        }
+                        else { // Create a new edge.
+                            // Take an edge of the bottom left corner of he cell in question.
+                            // And extend it east.
+                            Edge edge = new Edge(getX() + tileX * Cell.SIZE, getY() + (tileY+1) * Cell.SIZE);
+                            edge.extendEast(Cell.SIZE);
+
+                            // Add the new edge to the edge pool.
+                            int edgeID = edgePool.size();
+                            edgePool.add(edge);
+
+                            // Update cell information
+                            current.setEdgeExist(S, true);
+                            current.setEdgeID(S, edgeID);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Only used for debuggin (scuffed)
+     */
+    public void drawEdges() {
+        GreenfootImage img = tempCanvas.getImage();
+        img.clear();
+        img.setColor(Color.WHITE);
+        for (Edge e : edgePool) {
+            System.out.println(e);
+            img.drawLine(e.getStartX(), e.getStartY(), e.getEndX(), e.getEndY());
+            img.fillOval(e.getStartX()-3, e.getStartY()-3, 6, 6);
+            img.fillOval(e.getEndX()-3, e.getEndY()-3, 6,6);
+        }
+    }
+    public void rayCastToEdges(int originX, int originY){
+        GreenfootImage img = cast.getImage();
+        img.clear();
+        img.setColor(Color.RED);
+        for (Edge e: edgePool) {
+            img.drawLine(originX, originY, e.getStartX(), e.getStartY());
+            img.drawLine(originX, originY, e.getEndX(), e.getEndY());
+        }
     }
 }

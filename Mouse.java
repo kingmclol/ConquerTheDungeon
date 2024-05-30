@@ -32,8 +32,7 @@ public class Mouse
      * 
      */
     public static boolean clickedOn(Actor a) {
-        if (!Greenfoot.mouseClicked(null) || !getMouse()) return false;
-        return w.getObjectsAt(x, y, Actor.class).contains(a);
+        return Greenfoot.mouseClicked(a);
     }
     /**
      * Returns an Actor of the same type as the class given. Will return null if the mouse did not
@@ -62,9 +61,22 @@ public class Mouse
         if (mouse != null) {
             x = mouse.getX();
             y = mouse.getY();
+            // System.out.printf("(%d, %d):", x, y);
+            // for (Actor a : w.getObjectsAt(x, y, Actor.class)) {
+                // System.out.print(a + " | ");
+            // }
+            // System.out.println();
             return true;
         }
         return false;
+    }
+    /**
+     * Gets the position of the mouse as a Vector. returns null if mouse not found.
+     * @return a Vector representing the position of the mouse. null if no mouse.
+     */
+    public static Vector getPosition() {
+        if (!getMouse()) return null;
+        return new Vector(x, y);
     }
     /**
      * Sets the World that Mouse should be analyzing positions & Actors in.
@@ -72,5 +84,16 @@ public class Mouse
      */
     public static void setWorld(World w) {
         Mouse.w = w;
+    }
+    /**
+     * Returns an instance of the given class that is being hovered by the mouse, null if nothing found.
+     * @param c The class to look for
+     * @return an instance of that class hovered, or null if none found.
+     */
+    public static <A extends Actor> A getHoveredActor(Class<A> c) {
+        if (!getMouse()) return null; // If not clicked or mouse does not exist, then nothing to do.
+        List<A> objects = w.getObjectsAt(x, y, c);
+        if (objects.isEmpty()) return null;
+        return objects.get(0);
     }
 }
