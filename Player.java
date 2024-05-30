@@ -23,7 +23,7 @@ public class Player extends Entity
     private Animation right,left,down,up;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private String facing = "right",weapon = "sword";
-    private boolean inAttack = false;
+    private boolean inAttack = false, isShooting, isSlashing;
 
     public Player() {
         super(Team.ALLY, 100);
@@ -103,7 +103,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         
-        
+        }
     }
     
     private void handleShooting(){
