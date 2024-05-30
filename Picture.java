@@ -14,6 +14,14 @@ public class Picture extends SuperActor
     private int step;
     private Vector displacement;
     /**
+     * Given a GreenfootImage, create a picture.
+     * @param img the GreenfootImage to use.
+     */
+    public Picture(GreenfootImage img) {
+        this.img = img;
+        setImage(img);
+    }
+    /**
      * Create a Picture using the given file path, using the original image size.
      * @param filePath the file path to the image to use.
      */

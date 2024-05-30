@@ -20,6 +20,10 @@ public class Cell extends SuperActor
     private int boardX, boardY;
     public static final int SIZE = 64;
     private Board board; // easy reference to the board.
+    // Stores the edge data for north, south, east and west respectivively.
+    // Names were not mine (but copied for convenience form the tutorial) which is why they're kind of out of standard.
+    private boolean[] edgeExist;
+    private int[] edgeID;
     /**
      * Creates a Cell with a Tile.
      * @param board The Board that the Cell belongs to.
@@ -37,6 +41,7 @@ public class Cell extends SuperActor
         cellEffects = new ArrayList<CellEffect>();
         setImage(new GreenfootImage(SIZE, SIZE));
         node = new Node(true, boardX, boardY);
+        setWalkable(t.isWalkable());
     }
     /**
      * When the Cell is added to the World, it will automagically add all of its corresponding Effects and Entities and its Tile.
@@ -135,5 +140,22 @@ public class Cell extends SuperActor
     }
     public boolean containsCellEffect() {
         return (!cellEffects.isEmpty());
+    }
+    // ============================SHADOWCASTING METHODS but i gave up===========================================
+    public void setEdgeID(int direction, int id) {
+        edgeID[direction] = id;
+    }
+    public int getEdgeID(int direction) {
+        return edgeID[direction];
+    }
+    public void setEdgeExist(int direction, boolean exists) {
+        edgeExist[direction] = exists;
+    }
+    public boolean edgeExist(int direction) {
+        return edgeExist[direction];
+    }
+    public void clearEdgeData() {
+        edgeID = new int[4];
+        edgeExist = new boolean[4];
     }
 }

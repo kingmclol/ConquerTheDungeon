@@ -10,22 +10,38 @@ public class Edge
     /**
      * Constructor for objects of class Edge
      */
-    public Edge(int sx, int sy, int ex, int ey)
+    public Edge(int sx, int sy)
     {
         startX = sx;
         startY = sy;
-        endX = ex;
-        endY = ey;
+        endX = sx;
+        endY = sy;
     }
 
-    public void extendEdgeTo(int ex, int ey) {
-        endX = ex; 
-        endY = ey;
+    /**
+     * Extends this edge either south (dir 0) or east (dir 1) by a given delta.
+     * @param direction The direction to extend by. 0 for south, 1 for east.
+     * @param delta How much to extend by.
+     */
+    public void extendSouth(int delta) {
+        endY+= delta;
     }
-    public Vector getStart() {
-        return new Vector(startX, startY);
+    public void extendEast(int delta) {
+        endX+= delta;
     }
-    public Vector getEnd() {
-        return new Vector(endX, endY);
+    public int getStartX() {
+        return startX;
+    }
+    public int getStartY() {
+        return startY;
+    }
+    public int getEndX() {
+        return endX;
+    }
+    public int getEndY() {
+        return endY;
+    }
+    public String toString() {
+        return String.format("(%d, %d) -> (%d, %d)", startX, startY, endX, endY);
     }
 }

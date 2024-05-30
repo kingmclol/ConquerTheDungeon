@@ -25,6 +25,10 @@ public class RoomEditor extends SuperWorld
         addObject(board, 0,0);
     }
     public void act(){
+        Vector mousePosition = Mouse.getPosition();
+        if (mousePosition != null) {
+            board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
+        }
         String key = Greenfoot.getKey();
        
         if (Greenfoot.mouseClicked(null)) {
@@ -32,7 +36,11 @@ public class RoomEditor extends SuperWorld
             if (c != null) {
                 if (c.getTile() instanceof Wall) {
                     c.setTile(new EmptyFloor());
-                } else c.setTile(new Wall());
+                } else {
+                    c.setTile(new Wall());
+                }
+                board.convertTileMapToEdges();
+                board.drawEdges();
             }
         }
         

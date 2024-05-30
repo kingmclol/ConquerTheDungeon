@@ -16,7 +16,7 @@ public class SuperWorld extends World
     public SuperWorld()
     { 
         super(1024, 768, 1); 
-        setPaintOrder(Cell.class, Entity.class, CellEffect.class, Tile.class);
+        setPaintOrder(Picture.class, Cell.class, Entity.class, CellEffect.class, Tile.class);
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         //Room.initializeRoomDatabase();
