@@ -21,13 +21,13 @@ public abstract class Entity extends SuperActor
     }
     // public static final int MAX_SKILL_POINTS = 5;
     // protected HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>> statusModifiers; // Stores modifiers of each trigger type.
-    // // protected HealthBar healthBar;
+    //protected HealthBar healthBar;
     // protected Team team;
-    // protected int hp;
-    // protected ArrayList<Cell> path;
+    protected int hp;
+    protected ArrayList<Cell> path;
     public Entity(Team team, int maxHp) {
         // this.team = team;
-        // hp = maxHp;
+        hp = maxHp;
         // // healthBar = new HealthBar(maxHp);
         // skillPoints = MAX_SKILL_POINTS/2;
         // //Deck = new Deck(Deck.Preset.A);
@@ -59,22 +59,22 @@ public abstract class Entity extends SuperActor
         // statusModifiers.get(m.trigger).remove(m);
     // }
     public int damage(int dmg) {
-        // TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
-        // getWorld().addObject(dmgBox, getX()-Cell.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
-        // dmgBox.fadeOut();
-        // int dmgTaken;
-        // if (hp <= dmg) dmgTaken = hp;
-        // hp -= dmg;
-        // dmgTaken = dmg;
-        // if (hp <= 0) die();
-        // return dmgTaken;
-        return -1;
+        TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
+        //getWorld().addObject(dmgBox, getX()-Cell.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
+        dmgBox.fadeOut();
+        int dmgTaken;
+        if (hp <= dmg) dmgTaken = hp;
+        hp -= dmg;
+        dmgTaken = dmg;
+        //if (hp <= 0) die();
+        return dmgTaken;
+        
     }
     public void heal(int heal) {
-        // TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
-        // getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
-        // dmgBox.fadeOut();
-        // hp+=heal;
+        TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
+        //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
+        dmgBox.fadeOut();
+        hp+=heal;
     }
     //protected abstract void animate();
     public boolean isAlive() {
