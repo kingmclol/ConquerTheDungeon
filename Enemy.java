@@ -1,9 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Enemy extends Actor {
+public class Enemy extends Entity {
     private int hp;
 
     public Enemy() {
+        super(Team.ENEMY, 100);
         this.hp = 50;  
     }
 
