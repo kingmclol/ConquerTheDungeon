@@ -35,7 +35,7 @@ public class Projectile extends SuperSmoothMover
     public void doDamage(){
         Actor a = getOneIntersectingObject(Actor.class);
 
-        if(actor == null){
+        if(a == null){
             return;
         }
         if(a instanceof Player) {
