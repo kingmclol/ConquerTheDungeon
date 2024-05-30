@@ -11,17 +11,13 @@ public class Projectile extends SuperSmoothMover
 {
     private int spawnOffset = 10;
 
-    private int positionX;
-    private int positionY;
     private int rotation;
 
     private int speed;
     private int damage;
     private Actor owner;
 
-    public Projectile(int x, int y, int spd, int dmg, Actor own){
-        positionX = x;
-        positionY = y;
+    public Projectile(int spd, int dmg, Actor own){
         speed = spd;
         damage = dmg;
         owner = own;
@@ -30,12 +26,13 @@ public class Projectile extends SuperSmoothMover
     public void act(){
         doDamage();
         move(speed);
+        checkEdge();
     }
     
     public void doDamage(){
         Actor a = getOneIntersectingObject(Actor.class);
 
-        if(a == null){
+        if(a == null || a == owner){
             return;
         }
         if(a instanceof Player) {
@@ -46,7 +43,12 @@ public class Projectile extends SuperSmoothMover
             getWorld().removeObject(this);
         }
     }
-
+    
+    public void checkEdge(){
+        if (isAtEdge()) {
+            getWorld().removeObject(this);
+        }
+    }
     public void spawn(World world){
 
     }
