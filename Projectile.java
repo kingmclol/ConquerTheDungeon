@@ -10,15 +10,15 @@ import java.util.List;
 public class Projectile extends SuperSmoothMover
 {
     private int spawnOffset = 10;
-    
+
     private int positionX;
     private int positionY;
     private int rotation;
-    
+
     private int speed;
     private int damage;
     private Actor owner;
-    
+
     public Projectile(int x, int y, int spd, int dmg, Actor own){
         positionX = x;
         positionY = y;
@@ -26,23 +26,28 @@ public class Projectile extends SuperSmoothMover
         damage = dmg;
         owner = own;
     }
-    
-    public void act()
-    {
-        List<Actor> actors = getIntersectingObjects(Actor.class);
-        
-        for(Actor a : actors){
-            if(a instanceof Player) {
-                ((Player)a).takeDamage(10);
-                getWorld().removeObject(this);
-            }else if(a instanceof Enemy){
-                ((Enemy)a).takeDamage(10);
-                getWorld().removeObject(this);
-            }
-        }
+
+    public void act(){
+        doDamage();
+        move(speed);
     }
     
+    public void doDamage(){
+        Actor a = getOneIntersectingObject(Actor.class);
+
+        if(actor == null){
+            return;
+        }
+        if(a instanceof Player) {
+            ((Player)a).takeDamage(10);
+            getWorld().removeObject(this);
+        }else if(a instanceof Enemy){
+            ((Enemy)a).takeDamage(10);
+            getWorld().removeObject(this);
+        }
+    }
+
     public void spawn(World world){
-        
+
     }
 }
