@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Destroyable extends Tile
+public abstract class Destroyable extends Tile implements Damageable
 {
     /**
      * Act - do whatever the Destroyable wants to do. This method is called whenever
@@ -24,9 +24,10 @@ public abstract class Destroyable extends Tile
         super (false, c);
         this.hp = -1;
     }
-    public void damage(int damage) {
+    public int damage(int damage) {
         hp-=damage;
         if (hp <= 0) onDestroy();
+        return 0;
     }
     protected abstract void onDestroy();
 }

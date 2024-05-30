@@ -56,6 +56,16 @@ public class Board extends Actor
         convertTileMapToEdges();
         drawEdges();
     }
+    public void removeFromWorld() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                worldMap[i][j].removeFromWorld();
+            }
+        }
+        getWorld().removeObject(cast);
+        getWorld().removeObject(tempCanvas);
+        getWorld().removeObject(this); // Finally, remove the board itself.
+    }
     private void populate(Cell[][] map, String cellData) {
         // Structure of
         // "d/w/df/e/g/d"
@@ -385,7 +395,6 @@ public class Board extends Actor
         img.clear();
         img.setColor(Color.WHITE);
         for (Edge e : edgePool) {
-            System.out.println(e);
             img.drawLine(e.getStartX(), e.getStartY(), e.getEndX(), e.getEndY());
             img.fillOval(e.getStartX()-3, e.getStartY()-3, 6, 6);
             img.fillOval(e.getEndX()-3, e.getEndY()-3, 6,6);

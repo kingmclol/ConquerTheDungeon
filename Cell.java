@@ -52,6 +52,17 @@ public class Cell extends SuperActor
             w.addObject(effect, getX(), getY());
         }
     }
+    /**
+     * Removes thie Cell and any celleffects along with it.
+     */
+    public void removeFromWorld() {
+        World w = getWorld();
+        w.removeObject(tile);
+        for (CellEffect effect : cellEffects) {
+            w.removeObject(effect);
+        }
+        w.removeObject(this);
+    }
     public void act() {
         // if (Greenfoot.mouseClicked(this)) {
             // System.out.printf("(%d, %d)%n", boardX, boardY);
