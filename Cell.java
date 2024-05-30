@@ -18,6 +18,7 @@ public class Cell extends SuperActor
     private ArrayList<CellEffect> cellEffects;
     private Tile tile;
     private int boardX, boardY;
+    public static final int SIZE = 64;
     private Board board; // easy reference to the board.
     /**
      * Creates a Cell with a Tile.
@@ -34,6 +35,7 @@ public class Cell extends SuperActor
         this.boardY = boardY;
         tile = t;
         cellEffects = new ArrayList<CellEffect>();
+        setImage(new GreenfootImage(SIZE, SIZE));
         node = new Node(true, boardX, boardY);
     }
     /**
@@ -68,7 +70,7 @@ public class Cell extends SuperActor
     public void applyEffect(CellEffect e) {
         cellEffects.add(e);
         e.setCell(this);
-        e.applyEffect();
+        //e.applyEffect();
         if (getWorld() != null) getWorld().addObject(e, getX(), getY()); // check if this cell is in the world first
     }
     /**
@@ -77,7 +79,7 @@ public class Cell extends SuperActor
      */
     public void removeEffect(CellEffect e) {
         cellEffects.remove(e);
-        e.removeEffect();
+        //e.removeEffect();
         if (e.getWorld() != null) getWorld().removeObject(e); // Check if the effect is in the world first
     }
     // public void addEntity(Entity e) {
@@ -98,6 +100,12 @@ public class Cell extends SuperActor
         return boardX;
     }
     /**
+     * Returns the board of this cell
+     */
+    public Board getBoard() {
+        return board;
+    }
+    /**
      * Returns the Node associated with this Cell.
      */
     public Node getNode() {
@@ -105,7 +113,7 @@ public class Cell extends SuperActor
         return node;
     }
     /**
-     * Set this Cell's node to be walkable or not.
+     * Set this Cell's node to be walkable or not. Unused.
      */
     public void setWalkable(boolean walkable) {
         node.setWalkable(walkable);
@@ -116,16 +124,15 @@ public class Cell extends SuperActor
     public boolean isWalkable() {
         return node.isWalkable();
     }
-    // /**
-     // * Check through everything to see if this Cell contains a given object.
-     // */
-    // public boolean contains(Object o) {
-        // if (cellEffects.contains(o) || entities.contains(o) || tile == o) return true;
-        // return false;
-    // }
-    // public boolean containsEntity() {
-        // return (!entities.isEmpty());
-    // }
+    public Tile getTile(){
+        return tile;
+    }
+    public void setTile(Tile t) {
+        setWalkable(t.isWalkable());
+        getWorld().removeObject(tile);
+        tile = t;
+        getWorld().addObject(t, getX(), getY());
+    }
     public boolean containsCellEffect() {
         return (!cellEffects.isEmpty());
     }

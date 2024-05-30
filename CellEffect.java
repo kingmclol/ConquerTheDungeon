@@ -24,9 +24,9 @@ public abstract class CellEffect extends Actor
     {
         
     }
-    public abstract void applyEffect();
-    public abstract void removeEffect();
-    public abstract CellEffect clone();
+    // public abstract void applyEffect();
+    // public abstract void removeEffect();
+    // public abstract CellEffect clone();
     public void setCell(Cell c) {
         this.cell = c;
     }

@@ -14,10 +14,12 @@ public class SuperWorld extends World
      * 
      */
     public SuperWorld()
-    {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+    { 
         super(1024, 768, 1); 
+        setPaintOrder(Cell.class, Entity.class, CellEffect.class, Tile.class);
         Mouse.setWorld(this);
+        Tile.initializeTileDatabase();
+        //Room.initializeRoomDatabase();
     }
     public void act() {
         Timer.tick();

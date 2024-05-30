@@ -14,10 +14,11 @@ import java.util.Collections;
 public class Board extends Actor
 {
     Cell[][] worldMap;
-    ArrayList<Edge> edgePool;
+    // ArrayList<Edge> edgePool;
     private int width, height;
     private static boolean SHOW_LOGS = true;
-    private static String buildString;
+    private static final String DELIM_DATA = "~";
+    private static final String DELIM_CELL = "/";
     /**
      * Constructor for objects of class Board
      */
@@ -25,23 +26,53 @@ public class Board extends Actor
     {
         height = lengthY;
         width = lengthX;
-        edgePool = new ArrayList<Edge>();
+        // edgePool = new ArrayList<Edge>();
         worldMap = new Cell[height][width];
         populate(worldMap);
+    }
+    public Board(String buildString) {
+        // Structure of 
+        // "width~height~datad/d/d/d/d/d"
+        String[] elements = buildString.split(DELIM_DATA);
+        width = Integer.valueOf(elements[0]);
+        height = Integer.valueOf(elements[1]);
+        worldMap = new Cell[height][width];
+        populate(worldMap, elements[2]);
     }
     public void addedToWorld(World w) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                w.addObject(worldMap[i][j], getX() + (j)*Tile.tileSize+Tile.tileSize/2, getY() + i*Tile.tileSize+Tile.tileSize/2);
+                w.addObject(worldMap[i][j], getX() + (j)*Cell.SIZE+Cell.SIZE/2, getY() + i*Cell.SIZE+Cell.SIZE/2);
+            }
+        }
+    }
+    private void populate(Cell[][] map, String cellData) {
+        // Structure of
+        // "d/w/df/e/g/d"
+        String[] cells = cellData.split(DELIM_CELL);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Parse through the data.
+                Tile tile = Tile.getInstanceFromID(cells[y*width+x]);
+                worldMap[y][x] = new Cell (this, x, y, tile);
             }
         }
     }
     private void populate(Cell[][] map) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                worldMap[y][x] = new Cell(this, x, y, new Tile(Color.GRAY));
+                worldMap[y][x] = new Cell(this, x, y, new EmptyFloor());
             }
         }
+    }
+    public void outputBuildString() {
+        String buildString = width + DELIM_DATA + height + DELIM_DATA;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                buildString+=worldMap[y][x].getTile().getID() + DELIM_CELL;
+            }
+        }
+        System.out.println(buildString);
     }
     public List<Cell> getCellsInRadius(Cell c, double r) {
         List<Cell> cells = new ArrayList<Cell>();
@@ -73,11 +104,11 @@ public class Board extends Actor
     public void applyEffect(CellEffect e, Cell c) {
         c.applyEffect(e);
     }
-    public void applyEffect(CellEffect e, List<Cell> cells) {
-        for (Cell c : cells){
-            c.applyEffect(e.clone());
-        }
-    }
+    // public void applyEffect(CellEffect e, List<Cell> cells) {
+        // for (Cell c : cells){
+            // c.applyEffect(e.clone());
+        // }
+    // }
     public void addEntity(Entity e, int boardX, int boardY) {
         // worldMap[boardY][boardX].addEntity(e);
         // Calculate proper world coordinates to add?
@@ -201,8 +232,5 @@ public class Board extends Actor
         }
         Collections.reverse(path); // Reverse the path, so it goes from start -> end instead of end -> start.
         return path;
-    }
-    private void convertTileMapToEdges() {
-        
     }
 }
