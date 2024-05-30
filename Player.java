@@ -9,14 +9,28 @@ import java.util.List;
  */
 public class Player extends Entity
 {
+    private boolean isPoweredUp = false;
+    private long powerUpStartTime = 0;
+    private int normalSpeed;
+    private int powerUpSpeed;
+    private int normalShootingInterval;
+    private int powerUpShootingInterval;
+    private int shootingTimer;
     
-    private int speed, frame = 0, acts = 0;
+    private int frame = 0, acts = 0;
     private static int x, y; // location of the Player.
     private Animation right,left,down,up;
-
+    private boolean isShooting;
+    private boolean isSlashing;
     public Player() {
         super(Team.ALLY, 100);
-        speed = 5;
+        isShooting = false;
+        isSlashing = false;
+        normalSpeed = 5;
+        powerUpSpeed = 8;
+        normalShootingInterval = 50;
+        powerUpShootingInterval = 30;
+        shootingTimer = 0;
         hp = 100;
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
@@ -27,11 +41,13 @@ public class Player extends Entity
 
     public void act() {
         movePlayer();
-        // Add other behaviours here (like checking for collisions, etc.)
+        checkPowerUpStatus();
+        handleShooting();
         attack(10);
     }
 
     private void movePlayer() {
+        int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         if(acts%2 == 0)
         {
            frame = (frame+1)%(up.getAnimationLength()); 
@@ -55,6 +71,22 @@ public class Player extends Entity
         }
         x = getX();
         y = getY();
+        
+        
+    }
+    
+    private void handleShooting(){
+        shootingTimer++;
+        int shootingInterval = isPoweredUp ? powerUpShootingInterval : normalShootingInterval;
+        if (Greenfoot.mouseClicked(null) && shootingTimer >= shootingInterval) {
+            MouseInfo mouse = Greenfoot.getMouseInfo();
+            if (mouse != null) {
+                int mouseX = mouse.getX();
+                int mouseY = mouse.getY();
+                shoot(mouseX, mouseY);
+                shootingTimer = 0;
+            }
+        }
     }
 
     private void attack(int damage){
@@ -62,6 +94,11 @@ public class Player extends Entity
         for (Enemy enemy : enemies) {
             enemy.takeDamage(damage);
         }
+    }
+    
+    private void shoot(int targetX, int targetY) {
+        Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
+        getWorld().addObject(bullet, getX(), getY());
     }
 
     public void takeDamage(int damage) {
@@ -75,6 +112,17 @@ public class Player extends Entity
         hp += healAmount;
         if (hp > 100) {
             hp = 100; // Assuming max HP is 100
+        }
+    }
+    
+    public void activatePowerUp() {
+        isPoweredUp = true;
+        powerUpStartTime = System.currentTimeMillis();
+    }
+
+    private void checkPowerUpStatus() {
+        if (isPoweredUp && (System.currentTimeMillis() - powerUpStartTime >= 8000)) {
+            isPoweredUp = false;
         }
     }
 
