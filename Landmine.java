@@ -13,7 +13,7 @@ public class Landmine extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Landmine() {
-        super(new GreenfootImage(-1, -1));
+        super(new Color(230, 10, 10));
     }
     public void act()
     {

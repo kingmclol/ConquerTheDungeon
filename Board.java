@@ -75,14 +75,17 @@ public class Board extends Actor
             }
         }
     }
-    public void outputBuildString() {
+    public String getBuildString() {
         String buildString = width + DELIM_DATA + height + DELIM_DATA;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 buildString+=worldMap[y][x].getTile().getID() + DELIM_CELL;
             }
         }
-        System.out.println(buildString);
+        return buildString;
+    }
+    public void outputBuildString() {
+        System.out.println(getBuildString());
     }
     public List<Cell> getCellsInRadius(Cell c, double r) {
         List<Cell> cells = new ArrayList<Cell>();

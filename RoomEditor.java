@@ -1,6 +1,8 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
-
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 /**
  * Write a description of class RoomEditor here.
  * 
@@ -26,9 +28,9 @@ public class RoomEditor extends SuperWorld
     }
     public void act(){
         Vector mousePosition = Mouse.getPosition();
-        if (mousePosition != null) {
-            board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
-        }
+        // if (mousePosition != null) {
+            // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
+        // }
         String key = Greenfoot.getKey();
        
         if (Greenfoot.mouseClicked(null)) {
@@ -65,6 +67,8 @@ public class RoomEditor extends SuperWorld
             }
         } else if ("p".equals(key)) {
             board.outputBuildString();
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(board.getBuildString()), null);
         }
     }
 }

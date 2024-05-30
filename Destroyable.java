@@ -17,6 +17,13 @@ public abstract class Destroyable extends Tile
         super(false, img);
         this.hp = hp;
     }
+    /**
+     * Temp.
+     */
+    public Destroyable(Color c) {
+        super (false, c);
+        this.hp = -1;
+    }
     public void damage(int damage) {
         hp-=damage;
         if (hp <= 0) onDestroy();
