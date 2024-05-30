@@ -1,19 +1,15 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.ArrayList;
+
 /**
- * Write a description of class Player here.
+ * Write a description of class Arrow here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Player extends Entity
+public class Arrow extends Projectile
 {
-    
-    public Player(){
-        super(Team.ALLY, 100);
-    }
     /**
-     * Act - do whatever the Player wants to do. This method is called whenever
+     * Act - do whatever the Arrow wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act()
