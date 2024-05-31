@@ -8,6 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Goblin extends Enemy
 {
+    //Link to Art: https://opengameart.org/content/lpc-goblin
     /**
      * Act - do whatever the Goblin wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
