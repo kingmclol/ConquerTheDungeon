@@ -23,11 +23,12 @@ public class RoomEditor extends SuperWorld
     public RoomEditor()
     {    
         super();
-        board = new Board(buildString);
+        board = new Board(16, 12);
         addObject(board, 0,0);
     }
     public void act(){
-        Vector mousePosition = Mouse.getPosition();
+        super.act();
+        // Vector mousePosition = Mouse.getPosition();
         // if (mousePosition != null) {
             // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
         // }
@@ -69,6 +70,10 @@ public class RoomEditor extends SuperWorld
             board.outputBuildString();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getBuildString()), null);
+        } else if ("/".equals(key)) {
+            board.removeFromWorld();
+            board = Room.getRandomBoard();
+            addObject(board, 0,0);
         }
     }
 }

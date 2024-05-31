@@ -80,5 +80,6 @@ public abstract class Tile extends Actor
         tileDatabase.put("lm", Landmine.class);
         tileDatabase.put("lv", Lava.class);
         tileDatabase.put("slw", SlowTrap.class);
+        System.out.println("info: loaded in tile database");
     }
 }

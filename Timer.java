@@ -9,21 +9,45 @@ public class Timer
     // instance variables - replace the example below with your own
     private static long count = 0;
     private long mark;
+    private long save;
+    private boolean running;
     /**
      * Constructor for objects of class Timer
      */
     public Timer()
     {
-        mark = count;
+        mark();
+    }
+    public Timer(boolean startRunning) {
+        if (running) {
+            mark();
+        } else {
+            fullStop();
+        }
     }
     public void reset() {
         mark = count;
+        running = true;
+    }
+    public void mark() {
+        mark = count;
+        running = true;
+    }
+    public void stop() {
+        save = actsPassed();
+        running = false;
+    }
+    public void fullStop() {
+        save = 0;
+        running = false;
     }
     public long actsPassed() {
-        return count - mark;
+        if (running) return count - mark;
+        else return save;
     }
     public long acts() {
-        return count - mark;
+        if (running) return count - mark;
+        else return save;
     }
     public static void tick() {
         count++;

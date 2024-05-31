@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Entity extends SuperActor
+public abstract class Entity extends SuperActor implements Damageable
 {
     // The enum Team stores whether the Entity is on your same team or not (Ally vs hostile)
     public enum Team {
@@ -25,9 +25,11 @@ public abstract class Entity extends SuperActor
     // protected Team team;
     // protected int hp;
     // protected ArrayList<Cell> path;
+    public int hp;
     public Entity(Team team, int maxHp) {
         // this.team = team;
         // hp = maxHp;
+        hp = maxHp;
         // // healthBar = new HealthBar(maxHp);
         // skillPoints = MAX_SKILL_POINTS/2;
         // //Deck = new Deck(Deck.Preset.A);
@@ -59,16 +61,15 @@ public abstract class Entity extends SuperActor
         // statusModifiers.get(m.trigger).remove(m);
     // }
     public int damage(int dmg) {
-        // TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
-        // getWorld().addObject(dmgBox, getX()-Cell.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
-        // dmgBox.fadeOut();
-        // int dmgTaken;
-        // if (hp <= dmg) dmgTaken = hp;
-        // hp -= dmg;
-        // dmgTaken = dmg;
-        // if (hp <= 0) die();
-        // return dmgTaken;
-        return -1;
+        TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
+        getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
+        dmgBox.fadeOut();
+        int dmgTaken;
+        if (hp <= dmg) dmgTaken = hp;
+        hp -= dmg;
+        dmgTaken = dmg;
+        if (hp <= 0) die();
+        return dmgTaken;
     }
     public void heal(int heal) {
         // TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
@@ -77,6 +78,9 @@ public abstract class Entity extends SuperActor
         // hp+=heal;
     }
     //protected abstract void animate();
+    public void die() {
+        return;
+    }
     public boolean isAlive() {
         //return hp >= 0;
         return false;
