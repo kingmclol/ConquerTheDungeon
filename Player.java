@@ -26,7 +26,8 @@ public class Player extends Entity
     private String facing = "right",weapon = "sword";
     private boolean inAttack = false, isShooting, isSlashing;
     private String[] weaponList = new String[2];
-
+    
+    private SuperStatBar hpBar;
     public Player() {
         super(Team.ALLY, 100);
         isShooting = false;
@@ -37,7 +38,7 @@ public class Player extends Entity
         powerUpShootingInterval = 30;
         shootingTimer = 0;
         hp = 100;
-
+        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -35, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
@@ -81,6 +82,11 @@ public class Player extends Entity
         //handleShooting();
         attack(10);
         acts++;
+    }
+    
+    public void addedToWorld(World world) {
+        super.addedToWorld(world);
+        world.addObject(hpBar, getX(), getY()); // Position the HP bar slightly above the player
     }
 
     private void movePlayer() {
