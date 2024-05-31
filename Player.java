@@ -43,7 +43,7 @@ public class Player extends Entity
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
-        right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 3);
+        right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 10);
 
         //Initialize weapons
         weaponList[0] = "sword";
@@ -92,7 +92,7 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        if(acts%2 == 0)
+        if(acts%atkSpd == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
@@ -221,7 +221,7 @@ public class Player extends Entity
                 up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
                 left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
                 down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
-                right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 3);
+                right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 10);
                 switch(facing)
                 {
                     case "up":
@@ -243,7 +243,7 @@ public class Player extends Entity
                 up = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 8, 1, 9, 64, 64);
                 left = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 9, 1, 9, 64, 64);
                 down = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 10, 1, 9, 64, 64);
-                right = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 11, 1, 9, 64, 64);
+                right = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 11, 1, 9, 64, 64, 10);
                 switch(facing)
                 {
                     case "up":
@@ -262,7 +262,7 @@ public class Player extends Entity
                 staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
                 staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
                 staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
-                staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64);
+                staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64,7);
             }
         }
     }
