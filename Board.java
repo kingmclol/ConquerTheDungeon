@@ -16,7 +16,6 @@ public class Board extends Actor
     Cell[][] worldMap;
     ArrayList<Edge> edgePool;
     private int width, height;
-    private static boolean SHOW_LOGS = true;
     private static final String DELIM_DATA = "~";
     private static final String DELIM_CELL = "/";
     private static Picture tempCanvas;
@@ -49,8 +48,8 @@ public class Board extends Actor
             }
         }
         // All temp.
-        tempCanvas = new Picture(new GreenfootImage(w.getWidth(), w.getHeight()));
-        cast = new Picture(new GreenfootImage(w.getWidth(), w.getHeight()));
+        tempCanvas = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
+        cast = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
         w.addObject(tempCanvas, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
         w.addObject(cast, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
         convertTileMapToEdges();
@@ -229,7 +228,7 @@ public class Board extends Actor
                 }
             }
         }
-        if (SHOW_LOGS) System.out.println("warn: no path was found in a pathfinding attempt");
+        if (SuperWorld.SHOW_LOGS) System.out.println("warn: no path was found in a pathfinding attempt");
         return null;
     } 
     private List<Cell> convertNodePathToCells(List<Node> nodes) {

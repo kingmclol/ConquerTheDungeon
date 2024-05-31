@@ -37,15 +37,15 @@ public class Room extends SuperWorld
                 roomTemplates.add(scan.nextLine());
             }
         } catch (Exception e){
-            System.out.println("err: missing buildStrings.txt");
+            if (SuperWorld.SHOW_LOGS) System.out.println("err: missing buildStrings.txt");
             // add a sad world...
             roomTemplates.add("16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/w/w/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/");
         }
-        System.out.println("info: successfuly loaded in room database");
+        if (SuperWorld.SHOW_LOGS) System.out.println("info: successfuly loaded in room database");
     }
     public static Board getRandomBoard() {
         String buildString = roomTemplates.get(Greenfoot.getRandomNumber(roomTemplates.size()));
-        System.out.println(buildString);
+        if (SuperWorld.SHOW_LOGS) System.out.println(buildString);
         Board b = new Board(buildString);
         return b;
     }

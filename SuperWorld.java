@@ -13,10 +13,11 @@ public class SuperWorld extends World
      * Constructor for objects of class SuperWorld.
      * 
      */
+    public static final boolean SHOW_LOGS = true;
     public SuperWorld()
     { 
-        super(1024, 768, 1); 
-        setPaintOrder(Picture.class, Cell.class, Entity.class, CellEffect.class, Tile.class);
+        super(1200, 768, 1); 
+        setPaintOrder(TextBox.class, Picture.class, Cell.class, Entity.class, CellEffect.class, Tile.class);
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();

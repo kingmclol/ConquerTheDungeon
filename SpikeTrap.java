@@ -13,7 +13,7 @@ public class SpikeTrap extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public SpikeTrap() {
-        super(new GreenfootImage(-1, -1));
+        super(new Color(252, 13, 121));
     }
     public void act()
     {

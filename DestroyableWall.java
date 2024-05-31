@@ -13,7 +13,7 @@ public class DestroyableWall extends Destroyable
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public DestroyableWall() {
-        super(new GreenfootImage(1,1), 30);
+        super(new Color(89, 79, 62), 30);
     }
     public void act()
     {

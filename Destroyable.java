@@ -17,6 +17,10 @@ public abstract class Destroyable extends Tile implements Damageable
         super(false, img);
         this.hp = hp;
     }
+    public Destroyable(Color c, int hp){
+        super(false, c);
+        this.hp =hp;
+    }
     /**
      * Temp.
      */

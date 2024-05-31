@@ -20,11 +20,15 @@ public class RoomEditor extends SuperWorld
     //private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
     private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
     Cell a, b;
+    private String drawID;
     public RoomEditor()
     {    
         super();
         board = new Board(16, 12);
         addObject(board, 0,0);
+        drawID = "f";
+        SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
+        addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
     }
     public void act(){
         super.act();
@@ -37,11 +41,7 @@ public class RoomEditor extends SuperWorld
         if (Greenfoot.mouseClicked(null)) {
             Cell c = Mouse.getClickedActor(Cell.class);
             if (c != null) {
-                if (c.getTile() instanceof Wall) {
-                    c.setTile(new EmptyFloor());
-                } else {
-                    c.setTile(new Wall());
-                }
+                c.setTile(Tile.getInstanceFromID(drawID));
                 board.convertTileMapToEdges();
                 board.drawEdges();
             }
@@ -74,6 +74,16 @@ public class RoomEditor extends SuperWorld
             board.removeFromWorld();
             board = Room.getRandomBoard();
             addObject(board, 0,0);
+        } else if ("e".equals(key)) {
+            drawID = Greenfoot.ask("Give an ID of a tile to use.");
+            TextBox info;
+            if (Tile.verifyID(drawID)) {
+                info = new TextBox("Now drawing with " + Tile.getClassName(drawID) + "s", 36, Color.WHITE, null, 2, 255);                
+            } else {
+                info = new TextBox("Given invalid ID " + drawID + ".", 36, Color.RED, null, 2, 255);
+            }
+            addObject(info, getWidth()/2, 100);
+            info.fadeOut();
         }
     }
 }
