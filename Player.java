@@ -267,6 +267,21 @@ public class Player extends Entity
                 {
                     inAttack = false;
                     frame = 0;
+                    switch(facing)
+                    {
+                        case "up":
+                            setImage(up.getFrame(frame));
+                            break;
+                        case "down":
+                            setImage(down.getFrame(frame));
+                            break;
+                        case "right":
+                            setImage(right.getFrame(frame));
+                            break;
+                        case "left":
+                            setImage(left.getFrame(frame));
+                            break;
+                    }
                     break;
                 }
                 switch(facing)
@@ -284,7 +299,10 @@ public class Player extends Entity
                         setImage(swingingRight[frame]);
                         break;
                 }
-
+                if(acts % 5 == 0)
+                {
+                    frame = (frame+1)%(swingingRight.length);
+                }
                 break;
             case "staff":
                 if(frame == (staffUp.getAnimationLength()-1)) // if animation reaches the end.
@@ -323,17 +341,13 @@ public class Player extends Entity
                         setImage(staffRight.getFrame(frame));
                         break;
                 }
-                if(acts % 2 == 0)
+                if(acts % 5 == 0)
                 {
                     frame = (frame+1)%(staffUp.getAnimationLength());
                 }
                 break;
             case "bow":
                 break;
-        }
-        if(acts % 2 == 0)
-        {
-            frame = (frame+1)%(swingingUp.length);
         }
     }
 }
