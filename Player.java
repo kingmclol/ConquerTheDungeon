@@ -18,14 +18,14 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
 
-    private int speed, frame = 0, acts = 0, index = 0;
+    private int speed, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private static int x, y; // location of the Player.
     //Moving
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
-    private String facing = "right",weapon = "sword";
-    private boolean inAttack = false, isShooting, isSlashing;
-    private String[] weaponList = new String[2];
+    private static String facing = "right",weapon = "sword";
+    private boolean inAttack = false, isShooting, isSlashing, mouseClick;
+    private static String[] weaponList = new String[2];
 
     public Player() {
         super(Team.ALLY, 100);
@@ -63,9 +63,10 @@ public class Player extends Entity
 
     public void act() {
         switchWeapon();
-        if(Greenfoot.mousePressed(null))
+        if(Greenfoot.mousePressed(null) && mouseClick == false)
         {
             inAttack = true;
+            mouseClick = true;
             frame = 0;
         }
         if(!inAttack)
@@ -195,6 +196,11 @@ public class Player extends Entity
     {
 
     }
+    
+    public String getCurrentWeapon()
+    {
+        return weapon;
+    }
 
     public void switchWeapon()
     {
@@ -282,6 +288,7 @@ public class Player extends Entity
                             setImage(left.getFrame(frame));
                             break;
                     }
+                    mouseClick = false;
                     break;
                 }
                 switch(facing)
@@ -299,7 +306,7 @@ public class Player extends Entity
                         setImage(swingingRight[frame]);
                         break;
                 }
-                if(acts % 5 == 0)
+                if(acts % atkSpd == 0)
                 {
                     frame = (frame+1)%(swingingRight.length);
                 }
@@ -324,6 +331,7 @@ public class Player extends Entity
                             setImage(left.getFrame(frame));
                             break;
                     }
+                    mouseClick = false;
                     break;
                 }
                 switch(facing)
@@ -341,7 +349,7 @@ public class Player extends Entity
                         setImage(staffRight.getFrame(frame));
                         break;
                 }
-                if(acts % 5 == 0)
+                if(acts % atkSpd == 0)
                 {
                     frame = (frame+1)%(staffUp.getAnimationLength());
                 }
