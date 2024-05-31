@@ -17,11 +17,11 @@ public class Player extends Entity
     private int normalShootingInterval;
     private int powerUpShootingInterval;
     private int shootingTimer;
-    
+
     private int speed, frame = 0, acts = 0, index = 0;
     private static int x, y; // location of the Player.
     //Moving
-    private Animation right,left,down,up;
+    private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private String facing = "right",weapon = "sword";
     private boolean inAttack = false, isShooting, isSlashing;
@@ -37,18 +37,18 @@ public class Player extends Entity
         powerUpShootingInterval = 30;
         shootingTimer = 0;
         hp = 100;
-        
+
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
         right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 3);
-        
+
         //Initialize weapons
         weaponList[0] = "sword";
         weaponList[1] = "staff";
-        
-        //sword:
+
+        //weapon:
         for(int i = 0; i<swingingUp.length; i++)
         {
             swingingUp[i] = new GreenfootImage("sword/up" + (i+1) + ".png");
@@ -56,13 +56,13 @@ public class Player extends Entity
             swingingDown[i] = new GreenfootImage("sword/down" + (i+1) + ".png");
             swingingRight[i] = new GreenfootImage("sword/right" + (i+1) + ".png");
         }
-        
+
         //Start at frame 0
         setImage(up.getFrame(0));
     }
 
     public void act() {
-        
+        switchWeapon();
         if(Greenfoot.mousePressed(null))
         {
             inAttack = true;
@@ -72,9 +72,13 @@ public class Player extends Entity
         {
             movePlayer();
         }
+        else
+        {
+            attackAnimation();
+        }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
-        handleShooting();
+        //handleShooting();
         attack(10);
         acts++;
     }
@@ -83,7 +87,7 @@ public class Player extends Entity
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         if(acts%2 == 0)
         {
-           frame = (frame+1)%(up.getAnimationLength()); 
+            frame = (frame+1)%(up.getAnimationLength()); 
         }
         acts++;
         if (Greenfoot.isKeyDown("w")) {
@@ -111,10 +115,9 @@ public class Player extends Entity
         if(acts % 2 == 0)
         {
             frame = (frame+1)%(right.getAnimationLength());
-        
         }
     }
-    
+
     private void handleShooting(){
         shootingTimer++;
         int shootingInterval = isPoweredUp ? powerUpShootingInterval : normalShootingInterval;
@@ -132,14 +135,15 @@ public class Player extends Entity
     private void attack(int damage) {
         if(inAttack)
         {
+            //Implement CollisionBox
             List<Enemy> enemies = getObjectsInRange(30, Enemy.class);
             for (Enemy enemy : enemies) {
                 enemy.takeDamage(damage);
             }
-            attackAnimation();  
+
         }
     }
-    
+
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
@@ -158,7 +162,7 @@ public class Player extends Entity
             hp = 100; // Assuming max HP is 100
         }
     }
-    
+
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
@@ -187,19 +191,72 @@ public class Player extends Entity
     {
         return y;
     }
+
     public void idle()
     {
         
     }
+
     public void switchWeapon()
     {
-        if(Greenfoot.isKeyDown("e"))
+        String key = Greenfoot.getKey();
+        if("e".equals(key))
         {
             index++;
+            frame = 0;
             weapon = weaponList[(index%weaponList.length)];
+            if(weapon.equals("sword"))
+            {
+                up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
+                left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
+                down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
+                right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 3);
+                switch(facing)
+                {
+                    case "up":
+                        setImage(up.getFrame(frame));
+                        break;
+                    case "down":
+                        setImage(down.getFrame(frame));
+                        break;
+                    case "right":
+                        setImage(right.getFrame(frame));
+                        break;
+                    case "left":
+                        setImage(left.getFrame(frame));
+                        break;
+                }
+            }
+            else if(weapon.equals("staff"))
+            {
+                up = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 8, 1, 9, 64, 64);
+                left = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 9, 1, 9, 64, 64);
+                down = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 10, 1, 9, 64, 64);
+                right = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 11, 1, 9, 64, 64);
+                switch(facing)
+                {
+                    case "up":
+                        setImage(up.getFrame(frame));
+                        break;
+                    case "down":
+                        setImage(down.getFrame(frame));
+                        break;
+                    case "right":
+                        setImage(right.getFrame(frame));
+                        break;
+                    case "left":
+                        setImage(left.getFrame(frame));
+                        break;
+                }
+                staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
+                staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
+                staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
+                staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64);
+            }
         }
+
     }
-    
+
     /**
      * 
      */
@@ -212,6 +269,21 @@ public class Player extends Entity
                 {
                     inAttack = false;
                     frame = 0;
+                    switch(facing)
+                    {
+                        case "up":
+                            setImage(up.getFrame(frame));
+                            break;
+                        case "down":
+                            setImage(down.getFrame(frame));
+                            break;
+                        case "right":
+                            setImage(right.getFrame(frame));
+                            break;
+                        case "left":
+                            setImage(left.getFrame(frame));
+                            break;
+                    }
                     break;
                 }
                 switch(facing)
@@ -229,17 +301,57 @@ public class Player extends Entity
                         setImage(swingingRight[frame]);
                         break;
                 }
-                
+                if(acts % 2 == 0)
+                {
+                    frame = (frame+1)%(swingingUp.length);
+                }
                 break;
             case "staff":
+                if(frame == (staffUp.getAnimationLength()-1)) // if animation reaches the end.
+                {
+                    inAttack = false;
+                    frame = 0;
+                    switch(facing)
+                    {
+                        case "up":
+                            setImage(up.getFrame(frame));
+                            break;
+                        case "down":
+                            setImage(down.getFrame(frame));
+                            break;
+                        case "right":
+                            setImage(right.getFrame(frame));
+                            break;
+                        case "left":
+                            setImage(left.getFrame(frame));
+                            break;
+                    }
+                    break;
+                }
+                switch(facing)
+                {
+                    case "up":
+                        setImage(staffUp.getFrame(frame));
+                        break;
+                    case "down":
+                        setImage(staffDown.getFrame(frame));
+                        break;
+                    case "left":
+                        setImage(staffLeft.getFrame(frame));
+                        break;
+                    case "right":
+                        setImage(staffRight.getFrame(frame));
+                        break;
+                }
+                if(acts % 2 == 0)
+                {
+                    frame = (frame+1)%(staffUp.getAnimationLength());
+                }
                 break;
             case "bow":
                 break;
         }
-        if(acts % 2 == 0)
-        {
-            frame = (frame+1)%(swingingUp.length);
-        }
+
     }
 }
 
