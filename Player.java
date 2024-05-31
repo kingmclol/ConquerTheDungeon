@@ -18,12 +18,14 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
     
-    private int speed, frame = 0, acts = 0;
+    private int speed, frame = 0, acts = 0, index = 0;
     private static int x, y; // location of the Player.
+    //Moving
     private Animation right,left,down,up;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private String facing = "right",weapon = "sword";
     private boolean inAttack = false, isShooting, isSlashing;
+    private String[] weaponList = new String[2];
 
     public Player() {
         super(Team.ALLY, 100);
@@ -35,12 +37,17 @@ public class Player extends Entity
         powerUpShootingInterval = 30;
         shootingTimer = 0;
         hp = 100;
+        
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
         right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 3);
-
+        
+        //Initialize weapons
+        weaponList[0] = "sword";
+        weaponList[1] = "staff";
+        
         //sword:
         for(int i = 0; i<swingingUp.length; i++)
         {
@@ -49,12 +56,14 @@ public class Player extends Entity
             swingingDown[i] = new GreenfootImage("sword/down" + (i+1) + ".png");
             swingingRight[i] = new GreenfootImage("sword/right" + (i+1) + ".png");
         }
+        
         //Start at frame 0
         setImage(up.getFrame(0));
     }
 
     public void act() {
-        if(Greenfoot.mousePressed(this))
+        
+        if(Greenfoot.mousePressed(null))
         {
             inAttack = true;
             frame = 0;
@@ -182,6 +191,18 @@ public class Player extends Entity
     {
         
     }
+    public void switchWeapon()
+    {
+        if(Greenfoot.isKeyDown("e"))
+        {
+            index++;
+            weapon = weaponList[(index%weaponList.length)];
+        }
+    }
+    
+    /**
+     * 
+     */
     public void attackAnimation()
     {
         switch(weapon)
