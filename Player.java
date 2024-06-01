@@ -25,14 +25,12 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, isShooting, isSlashing, mouseClick;
+    private boolean inAttack = false, mouseClick;
     private static String[] weaponList = new String[2];
 
     private SuperStatBar hpBar;
     public Player() {
         super(Team.ALLY, 100);
-        isShooting = false;
-        isSlashing = false;
         normalSpeed = 5;
         powerUpSpeed = 8;
         normalShootingInterval = 50;
@@ -86,11 +84,13 @@ public class Player extends Entity
             timeForStaff = timeForStaff+(600/remainingCds); 
             // for every second spent in sword, regenerate 1/6th of the timer second for staff.
         }
+        //Mouse click == false prevents spam clicking, which keeps resetting the animation.
         if(Greenfoot.mousePressed(null) && mouseClick == false)
         {
             inAttack = true;
             mouseClick = true;
             frame = 0;
+            //set frame 0 when attacking.
         }
         if(!inAttack)
         {
