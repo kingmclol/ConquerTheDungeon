@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Tile extends Actor
+public abstract class Tile extends SuperActor
 {
     public static boolean DRAW_BORDERS = true;
     /**
@@ -16,6 +16,7 @@ public abstract class Tile extends Actor
      */
     private boolean walkable;
     private static HashMap<String, Class> tileDatabase;
+    private Cell cell;
     public Tile(boolean walkable, Color c)
     {
         GreenfootImage img = new GreenfootImage(Cell.SIZE, Cell.SIZE);
@@ -118,5 +119,17 @@ public abstract class Tile extends Actor
         // Shorten the string by converting v to a string, removing the "class" and any spaces then return.
         String value = String.valueOf(c).replaceAll("class", "").trim();
         return value;
+    }
+    /**
+     * Sets the cell that this Tile is in as the given cell.
+     */
+    public void setCell(Cell c) {
+        this.cell = c;
+    }
+    /**
+     * Replaces this Tile with the given tile.
+     */
+    protected void replaceMe(Tile t) {
+        cell.setTile(t);
     }
 }

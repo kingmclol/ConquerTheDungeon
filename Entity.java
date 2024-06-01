@@ -25,6 +25,7 @@ public abstract class Entity extends SuperActor implements Damageable
     // protected Team team;
     protected int hp;
     protected ArrayList<Cell> path;
+    protected CollisionBox collisionBox;
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -82,5 +83,17 @@ public abstract class Entity extends SuperActor implements Damageable
     public boolean isAlive() {
         //return hp >= 0;
         return false;
+    }
+    protected void manageCollision() {
+        ArrayList<CollisionBox> collisionBoxes = (ArrayList<CollisionBox>)collisionBox.getIntersectingBoxes(CollisionBox.class);
+        collisionBoxes.remove(collisionBox); // Don't want to intersect with myself man.
+        for (Box b : collisionBoxes) {
+            Hit hit = b.intersectAABB(collisionBox);
+            if (hit != null) { // collision oh no
+                Vector delta = hit.getDelta();
+                System.out.println("adf " + delta);
+                this.displace(delta);
+            }
+        }
     }
 }

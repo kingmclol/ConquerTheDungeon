@@ -127,7 +127,7 @@ public abstract class SuperActor extends SuperSmoothMover
                     // moveTowards(nextPos, distance); // Move towards the next positino.
                 // }
                 
-                // if (distanceFrom(nextPos) < 1) { // If close to the target position
+                // if (displacementFrom(nextPos) < 1) { // If close to the target position
                     // if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
                     // path.remove(0); // remove from list of positions to move to.
                 // }
@@ -151,7 +151,7 @@ public abstract class SuperActor extends SuperSmoothMover
      * @param distance The distance the SuperActor should travel. Also can be seen as the "speed."
      */
     protected void moveTowards(Vector targetPos, double distance) {
-        //displace(getPosition().distanceFrom(v).scaleTo(distance));
+        //displace(getPosition().displacementFrom(v).scaleTo(distance));
         displace(getDisplacement(targetPos, distance));
     }
     /**
@@ -190,7 +190,7 @@ public abstract class SuperActor extends SuperSmoothMover
         Then, limit (cap) the magnitude of the displacement to the ACTUAL distance from the target, so it would
         not go past the target position, in case that scenario will occur.
         */
-        return getPosition().distanceFrom(target).scaleTo(distance).limitMagnitude(distanceFrom(target));
+        return getPosition().displacementFrom(target).scaleTo(distance).limitMagnitude(displacementFrom(target));
     }
     /**
      * Turns the SuperActor towards the given position.
@@ -204,17 +204,17 @@ public abstract class SuperActor extends SuperSmoothMover
      * @param other The target SuperActor.
      * @return The distance between this SuperActor and the target SuperActor.
      */
-    protected double distanceFrom(SuperActor other) {
-        //return getPosition().distanceFrom(other.getPosition()).getMagnitude();
-        return distanceFrom(other.getPosition());
+    protected double displacementFrom(SuperActor other) {
+        //return getPosition().displacementFrom(other.getPosition()).getMagnitude();
+        return displacementFrom(other.getPosition());
     }
     /**
      * Returns the magnitude of the distance from this SuperActor to the target position.
      * @param targetPos The target position.
      * @return the distance between this SuperActor and the target position.
      */
-    protected double distanceFrom(Vector targetPos) {
-        return getPosition().distanceFrom(targetPos).getMagnitude();
+    protected double displacementFrom(Vector targetPos) {
+        return getPosition().displacementFrom(targetPos).getMagnitude();
     }
     /**
      * Returns true if the this SuperActor exists in a World.
@@ -253,9 +253,9 @@ public abstract class SuperActor extends SuperSmoothMover
         SuperActor target = null;
         if (targets.size() > 0) { //if there are potential targets
             target = targets.get(0); // get first target
-            closestTargetDistance = distanceFrom(target);
+            closestTargetDistance = displacementFrom(target);
             for (SuperActor a : targets) { // for each potential target
-                distanceToActor = distanceFrom(a); //get distance from this SuperActor
+                distanceToActor = displacementFrom(a); //get distance from this SuperActor
                 if (distanceToActor < closestTargetDistance) // if they're closer,
                 {
                     target = a; // set them as the closest target.

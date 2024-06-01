@@ -44,4 +44,15 @@ public class CollisionBox extends Box
         super(width, height, visible, owner, xOffset, yOffset);
         color = Color.RED;
     }
+    public void act() {
+        super.act();
+        if (getWorld() == null) return;
+        if (getVisibility()) {
+            CollisionBox b = (CollisionBox) getOneIntersectingObject(CollisionBox.class);
+            if (b != null && intersectAABB(b) != null) { // collide
+                setColor(Color.RED);
+            } else setColor(Color.YELLOW); // no collide
+        }
+        
+    }
 }
