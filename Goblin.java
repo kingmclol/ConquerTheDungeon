@@ -15,6 +15,6 @@ public class Goblin extends Enemy
      */
     public Goblin()
     {
-        collisionBox = new CollisionBox(30, 30, GameWorld.SHOW_LOGS, this);
+        collisionBox = new CollisionBox(30, 30, Box.SHOW_BOXES, this);
     }
 }
