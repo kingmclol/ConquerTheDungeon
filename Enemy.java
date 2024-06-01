@@ -25,7 +25,7 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    private void die() {
+    public void die() {
         getWorld().removeObject(this);
     }
     public void chasePlayer()

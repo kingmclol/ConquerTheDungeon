@@ -208,7 +208,7 @@ public class Player extends Entity
         }
     }
 
-    private void die() {
+    public void die() {
         getWorld().removeObject(this);
     }
 
