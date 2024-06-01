@@ -15,5 +15,6 @@ public class Zombie extends Enemy
     public void act()
     {
         // Add your action code here.
+        chasePlayer();
     }
 }

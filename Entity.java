@@ -21,14 +21,12 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     // public static final int MAX_SKILL_POINTS = 5;
     // protected HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>> statusModifiers; // Stores modifiers of each trigger type.
-    // // protected HealthBar healthBar;
+    //protected HealthBar healthBar;
     // protected Team team;
-    // protected int hp;
-    // protected ArrayList<Cell> path;
-    public int hp;
+    protected int hp;
+    protected ArrayList<Cell> path;
     public Entity(Team team, int maxHp) {
         // this.team = team;
-        // hp = maxHp;
         hp = maxHp;
         // // healthBar = new HealthBar(maxHp);
         // skillPoints = MAX_SKILL_POINTS/2;
@@ -72,10 +70,10 @@ public abstract class Entity extends SuperActor implements Damageable
         return dmgTaken;
     }
     public void heal(int heal) {
-        // TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
-        // getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
-        // dmgBox.fadeOut();
-        // hp+=heal;
+        TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
+        //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
+        dmgBox.fadeOut();
+        hp+=heal;
     }
     //protected abstract void animate();
     public void die() {
