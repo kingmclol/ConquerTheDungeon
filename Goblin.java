@@ -2,15 +2,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 
 /**
- * Write a description of class Goblin here.
+ * The Green looking Goblin in the game.
  * 
- * @author (your name) 
+ * @Tony Lin
  * @version (a version number or a date)
+ * Art Credits: https://opengameart.org/content/lpc-goblin
  */
 public class Goblin extends Enemy
 {
-    //Link to Art: https://opengameart.org/content/lpc-goblin
-
     //Animations for Moving as well as other object behaviour: 
     private Animation up,down,left,right, dying, attacking;
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens

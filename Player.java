@@ -141,7 +141,7 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        int x;
+        int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
         {
             x = powerUpSpeed;
