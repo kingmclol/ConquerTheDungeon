@@ -43,7 +43,7 @@ public abstract class SuperActor extends SuperSmoothMover
         // getWorld().addObject(e, 0 ,0 );
     // 
     private ArrayList<Vector> path = new ArrayList<Vector>();
-    private static final boolean SHOW_PATHFINDING_DEBUG = false;
+    private static final boolean SHOW_PATHFINDING_DEBUG = GameWorld.SHOW_LOGS;
     /**
      * Returns the current position as a Vector.
      */
@@ -58,93 +58,64 @@ public abstract class SuperActor extends SuperSmoothMover
     protected void moveTowards(SuperActor target, double distance) {
         displace(getDisplacement(target, distance));
     }
+    protected void pathTowards(Vector target, double distance) {
+        Board board = ((GameWorld)getWorld()).getBoard();
+        if (target == null) {
+            return; // Can't do anything about this.
+        }
+        
+        // Get nodes from the nodeGrid for comparison
+        Node targetNode = board.getCellWithRealPosition((int)target.getX(), (int)target.getY()).getNode();
+        Node currentNode = board.getCellWithRealPosition(getX(), getY()).getNode();
+        
+        if (targetNode == currentNode) { // Same node as target!!!
+            moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
+            return; // nothing else to do.
+        }
+        else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
+            if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
+            targetNodePrev = targetNode; // store the target's node for comparison later on.
+            path = null; // need new path to the target.
+        }
+        
+        if (path == null) { // no path, or target node changed (target moving), or target changed
+            // Pathfind to target.
+            ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
+            if (nodes != null) {
+                path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
+                path.remove(0); // This is the node I am currently in.
+                // if (SHOW_PATHFINDING_DEBUG) Board.displayPath(nodes, Color.YELLOW);
+            }
+        }
+        
+        if (path != null) {
+            if (path.size() > 0) { // If there is still a positino to go to,
+                Vector nextPos = path.get(0); // get that position
+                if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
+                moveTowards(nextPos, distance); // Move towards the next positino.
+                
+                if (displacementFrom(nextPos) < 1) { // If close to the target position
+                    if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
+                    path.remove(0); // remove from list of positions to move to.
+                }
+            }
+            else { // There are no more positinos to move to (At destination)
+                path = null; // set path as null. No more to move.
+                if (SHOW_PATHFINDING_DEBUG) {
+                    System.out.println(this + " has completed pathfinding.");
+                }
+                return;
+            }
+        }
+    }
     /** 
      * Move towards a SuperActor. This time, with pathfinding involved.
      * @param target The SuperActor to move towards.
      * @param The distance the SuperActor should travel. Also can be seen as the "speed."
-     * @param maxTileHeight the maximum tile height that the superactor can walk on.
      */
-    // protected void moveTowards(SuperActor target, double distance, int maxTileHeight) {
-        // if (target == null) {
-            // return; // Can't do anything about this.
-        // }
-        
-        // // Get nodes from the nodeGrid for comparison
-        // Node targetNode = Board.getNodeWithRealPosition(target.getPosition());
-        // Node currentNode = Board.getNodeWithRealPosition(getPosition());
-        
-        // if (targetNode == currentNode) { // Same node as target!!!
-            // moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
-            // return; // nothing else to do.
-        // }
-        // else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
-            // if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
-            // targetNodePrev = targetNode; // store the target's node for comparison later on.
-            // path = null; // need new path to the target.
-        // }
-        
-        // if (path == null) { // no path, or target node changed (target moving), or target changed
-            // if (SHOW_PATHFINDING_DEBUG) {
-                // ArrayList<Node> oldDisplay  = (ArrayList<Node>) getWorld().getObjects(Node.class);
-                // for (Node n : oldDisplay) {
-                    // getWorld().removeObject(n);
-                // }
-            // }
-            
-            
-            // Tile currentTile = Board.getTile(getPosition()); // to validate my current position.
-            // if (currentTile.getHeightLevel() > maxTileHeight) { // Somehow, am at a tile i shouldn't be in... possibly, at a corner between two walkable tiles.
-                // for (int i = 0; i < 5; i++) { // Attempt three times to find a proper position to be in.
-                    // Vector extraDisplacement = new Vector(Greenfoot.getRandomNumber(5), Greenfoot.getRandomNumber(5));
-                    // currentNode = Board.getNodeWithRealPosition(getPosition().add(extraDisplacement)); // nudge my position around slightly, to attempt to find a valid position.
-                    // currentTile = Board.getTile(Board.getRealPositionWithNode(currentNode));
-                    // if (currentTile.getHeightLevel() <= maxTileHeight) { // now starting from a valid tile! yay!
-                        // break;
-                    // }
-                // }
-            // }
-            
-            
-            // // Pathfind to target.
-            // ArrayList<Node> nodes = Board.findPath(currentNode, targetNode, maxTileHeight);
-            // if (nodes != null) {
-                // path = new ArrayList<Vector>(); // Convert nodes into a list of positions
-                // for (Node n : nodes) {
-                    // path.add(Board.getRealPositionWithNode(n));
-                // }
-                // if (SHOW_PATHFINDING_DEBUG) Board.displayPath(nodes, Color.YELLOW);
-            // }
-        // }
-        
-        // if (path != null) {
-            // if (path.size() > 0) { // If there is still a positino to go to,
-                // Vector nextPos = path.get(0); // get that position
-                // if (Board.getTile(nextPos).getHeightLevel() > maxTileHeight) { // obstruction.
-                    // path = null; // the current path is blocked. set path to null; find a new path later.
-                // }
-                // else {
-                    // if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
-                    // moveTowards(nextPos, distance); // Move towards the next positino.
-                // }
-                
-                // if (displacementFrom(nextPos) < 1) { // If close to the target position
-                    // if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
-                    // path.remove(0); // remove from list of positions to move to.
-                // }
-            // }
-            // else { // There are no more positinos to move to (At destination)
-                // path = null; // set path as null. No more to move.
-                // if (SHOW_PATHFINDING_DEBUG) {
-                    // System.out.println(this + " has completed pathfinding.");
-                    // ArrayList<Node> oldDisplay  = (ArrayList<Node>) getWorld().getObjects(Node.class);
-                    // for (Node n : oldDisplay) {
-                        // getWorld().removeObject(n);
-                    // }
-                // }
-                // return;
-            // }
-        // }
-    // }
+    protected void pathTowards(SuperActor target, double distance) {
+        pathTowards(target.getPosition(), distance);
+    }
     /**
      * Moves towards towards a position.
      * @param targetPos The target position to head towards. 

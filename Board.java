@@ -118,6 +118,12 @@ public class Board extends Actor
     public Cell getCell(Node n) {
         return getCell(n.getX(), n.getY());
     }
+    public Cell getCellWithRealPosition(int x, int y) {
+        int boardX = (int) (x - getX()) / Cell.SIZE;
+        int boardY = (int) (y - getY()) / Cell.SIZE;
+        System.out.println(boardX + ", " + boardY);
+        return getCell(boardX, boardY);
+    }
     public Node getNode(int boardX, int boardY) {
         return getCell(boardX, boardY).getNode();
     }
@@ -228,7 +234,7 @@ public class Board extends Actor
                 }
             }
         }
-        if (SuperWorld.SHOW_LOGS) System.out.println("warn: no path was found in a pathfinding attempt");
+        if (GameWorld.SHOW_LOGS) System.out.println("warn: no path was found in a pathfinding attempt");
         return null;
     } 
     private List<Cell> convertNodePathToCells(List<Node> nodes) {
@@ -238,6 +244,14 @@ public class Board extends Actor
             cells.add(getCell(n));
         }
         return cells;
+    }
+    public List<Vector> convertPathToPositions(List<Node> nodes) {
+        if (nodes == null) return null;
+        List<Vector> vectors = new ArrayList<Vector>();
+        for (Node n : nodes) {
+            vectors.add(new Vector(getX() + (n.getX() + 0.5)*Cell.SIZE, getY() + (n.getY() + 0.5)*Cell.SIZE));
+        }
+        return vectors;
     }
     /**
      * Retraces the path taken, given a starting node and ending node.

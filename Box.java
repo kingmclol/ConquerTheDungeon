@@ -153,6 +153,13 @@ public abstract class Box extends Actor
             img.fill();
         }
     }
+    public void forcePositionUpdate() {
+        if (owner == null) {
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: box " + this + " attempted to update position when owner is null");
+            return;
+        }
+        setLocation(owner.getX()+xOffset, owner.getY()+yOffset); // Match with the owner, factoring in the yOffset.
+    }
     /**
      * Retuns all intersecting boxes of the given box subclass.
      * @param c the class of objects to look for. Should extend box

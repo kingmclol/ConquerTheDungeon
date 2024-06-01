@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Entities are "mobs" that can do Actions throughout the game. They can be on your team (an ALLY) or against (an ENEMY).
+ * <p>Entities are "mobs" that can do Actions throughout the game. They can be on your team (an ALLY) or against (an ENEMY).</p>
  * 
- * An Entity has to undergo combat through turns (as this is a turn-based game) They also have their individual statusEffects
- * and Decks.
+ * <p>The constructor for any Entity subclass MUST create their own collisionBox based on their image size.
+ * Also, you MUST run super.addedToWorld(World w) in its addedToWorld().</p>
  * 
  * 
  * @author (your name) 
@@ -40,6 +40,9 @@ public abstract class Entity extends SuperActor implements Damageable
         // for (StatusModifier.Trigger t : StatusModifier.Trigger.values()) { // For types of status trigger times,
             // statusModifiers.put(t, new ArrayList<StatusModifier>()); // Greate an arraylist to keep track of them.
         // }
+    }
+    public void addedToWorld(World w) {
+        w.addObject(collisionBox, getX(), getY());
     }
     public void act() {
         //animate();
@@ -85,6 +88,7 @@ public abstract class Entity extends SuperActor implements Damageable
         return false;
     }
     protected void manageCollision() {
+        collisionBox.forcePositionUpdate(); // match collision box position with the entity position
         ArrayList<CollisionBox> collisionBoxes = (ArrayList<CollisionBox>)collisionBox.getIntersectingBoxes(CollisionBox.class);
         collisionBoxes.remove(collisionBox); // Don't want to intersect with myself man.
         for (Box b : collisionBoxes) {

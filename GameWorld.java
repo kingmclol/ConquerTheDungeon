@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class SuperWorld extends World
+public class GameWorld extends World
 {
 
     /**
@@ -14,7 +14,8 @@ public class SuperWorld extends World
      * 
      */
     public static final boolean SHOW_LOGS = true;
-    public SuperWorld()
+    protected Board board;
+    public GameWorld()
     { 
         super(1200, 768, 1); 
         setPaintOrder(Cursor.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, Entity.class, CellEffect.class, Tile.class);
@@ -27,5 +28,8 @@ public class SuperWorld extends World
     public void act() {
         Timer.tick();
         Mouse.getMouse();
+    }
+    public Board getBoard() {
+        return board;
     }
 }

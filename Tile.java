@@ -48,7 +48,7 @@ public abstract class Tile extends SuperActor
     public static Tile getInstanceFromID(String id) {
         Class c = tileDatabase.get(id);
         if (c == null) {
-            if (SuperWorld.SHOW_LOGS) System.out.println("err: the tile ID \"" + id + "\" was invalid");
+            if (GameWorld.SHOW_LOGS) System.out.println("err: the tile ID \"" + id + "\" was invalid");
             return new EmptyFloor();
         }
         
@@ -82,11 +82,11 @@ public abstract class Tile extends SuperActor
         tileDatabase.put("lm", Landmine.class);
         tileDatabase.put("lv", Lava.class);
         tileDatabase.put("slw", SlowTrap.class);
-        if (SuperWorld.SHOW_LOGS) System.out.println("info: loaded in tile database");
+        if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in tile database");
     }
     public static String[] getLegend() {
         if (tileDatabase == null) {
-            if (SuperWorld.SHOW_LOGS) System.out.println("warn: something tried to generate legend before database made");
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: something tried to generate legend before database made");
             return new String[]{"Something wrong :("};
         }
         ArrayList<String> data = new ArrayList<String>();
@@ -101,18 +101,18 @@ public abstract class Tile extends SuperActor
     }
     public static boolean verifyID(String key) {
         if (tileDatabase == null) {
-            if (SuperWorld.SHOW_LOGS) System.out.println("warn: something tried to validiate ID before database made");
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: something tried to validiate ID before database made");
             return false;
         }
         return tileDatabase.containsKey(key);
     }
     public static String getClassName(String key) {
         if (tileDatabase == null) {
-            if (SuperWorld.SHOW_LOGS) System.out.println("warn: something tried to get class name before database made");
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: something tried to get class name before database made");
             return "None";
         }
         else if (!tileDatabase.containsKey(key)) {
-            if (SuperWorld.SHOW_LOGS) System.out.println("warn: given id " + key + " not found in database");
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: given id " + key + " not found in database");
         }
         Class c = tileDatabase.get(key);
         // Appears as "class Class". E.g. "class SpeedBoost"

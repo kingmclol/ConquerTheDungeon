@@ -7,8 +7,15 @@ public abstract class Enemy extends Entity {
         super(Team.ENEMY, 100);
         this.hp = 50;  
     }
-    public void pathToPosition(int x, int y) {
-        
+    /**
+     * THIS IS TEMPORARY IMPLEMENTATION. I NEED A PLAYER REFERENCE SOMEWHERE
+     */
+    public void pathToEntity(Entity e) {
+        // weird way to get player position, but ok i guess i just want to test 
+        pathTowards(new Vector(Player.returnX(), Player.returnY()), mvtSpd);
+    }
+    public void addedToWorld(World w) {
+        super.addedToWorld(w);
     }
     /**
      * Act - do whatever the Enemy wants to do. This method is called whenever
@@ -16,6 +23,8 @@ public abstract class Enemy extends Entity {
      */
 
     public void act() {
+        pathToEntity(null); // Come on i need a player reference somewhere...
+        manageCollision();
     }
 
     public void takeDamage(int damage) {
