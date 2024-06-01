@@ -13,7 +13,7 @@ public class SpeedBoost extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public SpeedBoost() {
-        super(new GreenfootImage(1,1));
+        super(new Color(13, 252, 252));
     }
     public void act()
     {

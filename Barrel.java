@@ -13,7 +13,7 @@ public class Barrel extends Destroyable
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Barrel() {
-        super(new GreenfootImage(1,1), 10);
+        super(new Color(240, 140, 48), 10);
     }
     public void onDestroy() {
         getWorld().removeObject(this);

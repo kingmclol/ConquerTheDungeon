@@ -13,7 +13,7 @@ public class SlowTrap extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public SlowTrap() {
-        super(new GreenfootImage(1, 1));
+        super(new Color(98, 255, 0));
     }
     public void act()
     {

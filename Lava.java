@@ -13,7 +13,7 @@ public class Lava extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Lava() {
-        super(new GreenfootImage(-1, -1));
+        super(new Color(255, 102, 0));
     }
     public void act()
     {
