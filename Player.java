@@ -29,6 +29,7 @@ public class Player extends Entity
     private static String[] weaponList = new String[2];
 
     private SuperStatBar hpBar;
+    private Aura aura;
     public Player() {
         super(Team.ALLY, 100);
         normalSpeed = 5;
@@ -120,6 +121,9 @@ public class Player extends Entity
     public void addedToWorld(World world) {
         super.addedToWorld(world);
         world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
+
+        aura = new Aura(this);
+        world.addObject(aura, getX(), getY());
     }
 
     private void movePlayer() {
@@ -208,11 +212,15 @@ public class Player extends Entity
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
+        aura.makeVisible();
     }
 
     private void checkPowerUpStatus() {
         if (isPoweredUp && (System.currentTimeMillis() - powerUpStartTime >= 8000)) {
             isPoweredUp = false;
+            aura.makeInvisible();
+        } else if (isPoweredUp) {
+            aura.makeVisible();
         }
     }
 
