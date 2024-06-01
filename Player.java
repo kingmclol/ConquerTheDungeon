@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class Player extends Entity
 {
-
     private boolean isPoweredUp = false;
     private long powerUpStartTime = 0;
     private int normalSpeed;
@@ -20,6 +19,7 @@ public class Player extends Entity
 
     private int speed, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private static int x, y; // location of the Player.
+    //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
     //Moving
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
@@ -69,14 +69,14 @@ public class Player extends Entity
         else
         {
             String key = Greenfoot.getKey();
-            if("f".equals(key))
+            if("r".equals(key))
             {
                 switchWeapon();
             }
         }
         if(this.getCurrentWeapon().equals("staff"))
         {
-            timeForStaff--; 
+            timeForStaff--;
             // continue timer, up to 10 seconds per time whether you end early or not.
         }
         else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
@@ -99,11 +99,15 @@ public class Player extends Entity
         else
         {
             attackAnimation();
+            if(this.getCurrentWeapon().equals("staff"))
+            {
+                handleShooting();
+            }
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
-        //handleShooting();
         attack(10);
+        // if still in staff and not middle of attack animation,
         if(timeForStaff < 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
@@ -120,7 +124,7 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        if(acts%atkSpd == 0)
+        if(acts%(atkSpd-powerUpSpeed/2) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
