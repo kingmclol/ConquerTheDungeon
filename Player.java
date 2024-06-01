@@ -71,7 +71,7 @@ public class Player extends Entity
         else
         {
             String key = Greenfoot.getKey();
-            if("e".equals(key))
+            if("f".equals(key))
             {
                 switchWeapon();
             }
