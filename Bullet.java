@@ -24,6 +24,16 @@ public class Bullet extends Projectile
         
     }
     
+    public Bullet(int spd, int dmg, Actor own){
+        super(spd, dmg, own);
+        bulletImage = new GreenfootImage("bullet.png");
+        int newWidth = bulletImage.getWidth() * 3; 
+        int newHeight = bulletImage.getHeight() * 3; 
+        bulletImage.scale(newWidth, newHeight);
+        setImage(bulletImage);
+        
+    }
+    
     public void act()
     {
         super.act();

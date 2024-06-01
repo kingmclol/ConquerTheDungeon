@@ -30,6 +30,10 @@ public class Player extends Entity
 
     private SuperStatBar hpBar;
     private Aura aura;
+
+    private int ultimateCooldown = 300;
+    private int cooldownTimer = 0;
+
     public Player() {
         super(Team.ALLY, 100);
         normalSpeed = 5;
@@ -63,6 +67,13 @@ public class Player extends Entity
     }
 
     public void act() {
+        if (cooldownTimer > 0) {
+            cooldownTimer--; // Decrement cooldown timer for ult
+        }
+        if (weapon.equals("staff") && cooldownTimer <= 0) {
+            useStaffUltimate();
+        }
+
         if(remainingCds != 0) // 1 minute
         {
             remainingCds--;
@@ -245,6 +256,18 @@ public class Player extends Entity
     public void idle()
     {
 
+    }
+
+    public void useStaffUltimate() {
+        String key = Greenfoot.getKey();
+        if("q".equals(key)){
+            for (int i = 0; i < 15; i++) {
+                Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
+                getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
+                bullet.setRotation(Greenfoot.getRandomNumber(360)); // Set the direction
+            }
+            cooldownTimer = ultimateCooldown;
+        }
     }
 
     public String getCurrentWeapon()
