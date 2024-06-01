@@ -1,55 +1,50 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.List;
-/**
- * Write a description of class Projectile here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Projectile extends SuperSmoothMover
-{
+
+public class Projectile extends SuperSmoothMover {
     private int spawnOffset = 10;
-
     private int rotation;
-
     private int speed;
     private int damage;
     private Actor owner;
+    private boolean hasHit = false; // Flag to track if the projectile has already hit something
 
-    public Projectile(int spd, int dmg, Actor own){
+    public Projectile(int spd, int dmg, Actor own) {
         speed = spd;
         damage = dmg;
         owner = own;
     }
 
-    public void act(){
-        doDamage();
+    public void act() {
+        if (!hasHit) { // Only do damage if the projectile has not yet hit something
+            doDamage();
+        }
         move(speed);
         checkEdge();
     }
-    
-    public void doDamage(){
+
+    public void doDamage() {
         Actor a = getOneIntersectingObject(Actor.class);
 
-        if(a == null || a == owner){
+        if (a == null || a == owner) {
             return;
         }
-        if(a instanceof Player) {
-            ((Player)a).takeDamage(10);
-            getWorld().removeObject(this);
-        }else if(a instanceof Enemy){
-            ((Enemy)a).takeDamage(10);
-            getWorld().removeObject(this);
+        if (a instanceof Player) {
+            ((Player) a).takeDamage(damage);
+            hasHit = true; // Set the flag to true once damage is dealt
+            getWorld().removeObject(this); // Remove the projectile from the world
+        } else if (a instanceof Enemy) {
+            ((Enemy) a).takeDamage(damage);
+            hasHit = true; // Set the flag to true once damage is dealt
+            getWorld().removeObject(this); // Remove the projectile from the world
         }
     }
-    
-    public void checkEdge(){
+
+    private void checkEdge() {
         if (isAtEdge()) {
             getWorld().removeObject(this);
         }
     }
-    public void spawn(World world){
-
-    }
 }
+

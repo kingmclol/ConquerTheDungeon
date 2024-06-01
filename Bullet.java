@@ -9,18 +9,28 @@ import java.util.List;
  */
 public class Bullet extends Projectile
 {
-    private GreenfootImage bulletImage = new GreenfootImage("bullet.png");
+    private GreenfootImage bulletImage;
     int targetX;
     int targetY;
     public Bullet(int spd, int dmg, Actor own, int aimX, int aimY){
         super(spd, dmg, own);
         targetX = aimX;
         targetY = aimY;
-        GreenfootImage image = new GreenfootImage("bullet.png");
-        int newWidth = image.getWidth() * 3; 
-        int newHeight = image.getHeight() * 3; 
-        image.scale(newWidth, newHeight);
-        setImage(image);
+        bulletImage = new GreenfootImage("bullet.png");
+        int newWidth = bulletImage.getWidth() * 3; 
+        int newHeight = bulletImage.getHeight() * 3; 
+        bulletImage.scale(newWidth, newHeight);
+        setImage(bulletImage);
+        
+    }
+    
+    public Bullet(int spd, int dmg, Actor own){
+        super(spd, dmg, own);
+        bulletImage = new GreenfootImage("bullet.png");
+        int newWidth = bulletImage.getWidth() * 3; 
+        int newHeight = bulletImage.getHeight() * 3; 
+        bulletImage.scale(newWidth, newHeight);
+        setImage(bulletImage);
         
     }
     

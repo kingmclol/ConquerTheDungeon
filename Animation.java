@@ -104,5 +104,14 @@ public class Animation
         }
         return new Animation (result);
     }
+    protected static Animation createAnimation(GreenfootImage spriteSheet, int startRow, int numRows, int numFrames, int width, int height, int offset, int transparency){
+        GreenfootImage[] result = new GreenfootImage[numFrames];
+        for (int frame = 0; frame < numFrames; frame++){
+            //System.out.println(spriteSheet + " Row: " + row + " dir: " + dir + " frame: " + frame);
+            result[frame] = new GreenfootImage (getSlice(spriteSheet, frame * width, startRow * height, width, height, offset));
+            result[frame].setTransparency(transparency);
+        }
+        return new Animation (result);
+    }
 
 }

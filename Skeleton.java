@@ -16,4 +16,8 @@ public class Skeleton extends Enemy
     {
         // Add your action code here.
     }
+    public void attack()
+    {
+        
+    }
 }

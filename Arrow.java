@@ -8,12 +8,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Arrow extends Projectile
 {
+    private GreenfootImage arrowImage = new GreenfootImage("arrow.png");
     public Arrow(int spd, int dmg, Actor own){
         super(spd, dmg, own);
     }
     
     public void act()
     {
-        // Add your action code here.
+        super.act();
     }
 }

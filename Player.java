@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class Player extends Entity
 {
-
     private boolean isPoweredUp = false;
     private long powerUpStartTime = 0;
     private int normalSpeed;
@@ -20,19 +19,23 @@ public class Player extends Entity
 
     private int speed, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private static int x, y; // location of the Player.
+    //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
     //Moving
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, isShooting, isSlashing, mouseClick;
+    private boolean inAttack = false, mouseClick, dealtDamage = false;
     private static String[] weaponList = new String[2];
 
     private SuperStatBar hpBar;
+    private Aura aura;
+
+    private int ultimateCooldown = 300;
+    private int cooldownTimer = 0;
+
     public Player() {
         super(Team.ALLY, 100);
-        isShooting = false;
-        isSlashing = false;
         normalSpeed = 5;
         powerUpSpeed = 8;
         normalShootingInterval = 50;
@@ -65,6 +68,13 @@ public class Player extends Entity
     }
 
     public void act() {
+        if (cooldownTimer > 0) {
+            cooldownTimer--; // Decrement cooldown timer for ult
+        }
+        if (weapon.equals("staff") && cooldownTimer <= 0) {
+            useStaffUltimate();
+        }
+
         if(remainingCds != 0) // 1 minute
         {
             remainingCds--;
@@ -72,14 +82,14 @@ public class Player extends Entity
         else
         {
             String key = Greenfoot.getKey();
-            if("f".equals(key))
+            if("r".equals(key))
             {
                 switchWeapon();
             }
         }
         if(this.getCurrentWeapon().equals("staff"))
         {
-            timeForStaff--; 
+            timeForStaff--;
             // continue timer, up to 10 seconds per time whether you end early or not.
         }
         else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
@@ -87,11 +97,13 @@ public class Player extends Entity
             timeForStaff = timeForStaff+(600/remainingCds); 
             // for every second spent in sword, regenerate 1/6th of the timer second for staff.
         }
+        //Mouse click == false prevents spam clicking, which keeps resetting the animation.
         if(Greenfoot.mousePressed(null) && mouseClick == false)
         {
             inAttack = true;
             mouseClick = true;
             frame = 0;
+            //set frame 0 when attacking.
         }
         if(!inAttack)
         {
@@ -100,11 +112,15 @@ public class Player extends Entity
         else
         {
             attackAnimation();
+            if(this.getCurrentWeapon().equals("staff"))
+            {
+                handleShooting();
+            }
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
-        //handleShooting();
         attack(10);
+        // if still in staff and not middle of attack animation,
         if(timeForStaff < 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
@@ -118,11 +134,14 @@ public class Player extends Entity
         super.addedToWorld(world);
         world.addObject(collisionBox, getX(), getY()); // THIS SHOULD BE MOVED TO ENTITY ADDEDTOWORLD
         world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
+
+        aura = new Aura(this);
+        world.addObject(aura, getX(), getY());
     }
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        if(acts%atkSpd == 0)
+        if(acts%(atkSpd-powerUpSpeed/2) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
@@ -171,12 +190,16 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        if(inAttack)
+        if(inAttack && !dealtDamage)
         {
             //Implement CollisionBox
             List<Enemy> enemies = getObjectsInRange(30, Enemy.class);
             for (Enemy enemy : enemies) {
-                enemy.takeDamage(damage);
+                if(frame == 5) // So it doesn't appear like it died before sword hits.
+                {
+                    enemy.takeDamage(damage);
+                    dealtDamage = true; 
+                }
             } 
         }
     }
@@ -203,11 +226,15 @@ public class Player extends Entity
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
+        aura.makeVisible();
     }
 
     private void checkPowerUpStatus() {
         if (isPoweredUp && (System.currentTimeMillis() - powerUpStartTime >= 8000)) {
             isPoweredUp = false;
+            aura.makeInvisible();
+        } else if (isPoweredUp) {
+            aura.makeVisible();
         }
     }
 
@@ -232,6 +259,18 @@ public class Player extends Entity
     public void idle()
     {
 
+    }
+
+    public void useStaffUltimate() {
+        String key = Greenfoot.getKey();
+        if("q".equals(key)){
+            for (int i = 0; i < 15; i++) {
+                Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
+                getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
+                bullet.setRotation(Greenfoot.getRandomNumber(360)); // Set the direction
+            }
+            cooldownTimer = ultimateCooldown;
+        }
     }
 
     public String getCurrentWeapon()
@@ -323,6 +362,7 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
+                    dealtDamage = false;
                     break;
                 }
                 switch(facing)
