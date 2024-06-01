@@ -25,7 +25,7 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, mouseClick;
+    private boolean inAttack = false, mouseClick, dealtDamage = false;
     private static String[] weaponList = new String[2];
 
     private SuperStatBar hpBar;
@@ -172,12 +172,13 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        if(inAttack)
+        if(inAttack && !dealtDamage)
         {
             //Implement CollisionBox
             List<Enemy> enemies = getObjectsInRange(30, Enemy.class);
             for (Enemy enemy : enemies) {
                 enemy.takeDamage(damage);
+                dealtDamage = true;
             } 
         }
     }
@@ -324,6 +325,7 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
+                    dealtDamage = false;
                     break;
                 }
                 switch(facing)
