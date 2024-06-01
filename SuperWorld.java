@@ -20,6 +20,8 @@ public class SuperWorld extends World
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
+        Cursor cursor = new Cursor();
+        addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
     public void act() {
         Timer.tick();
