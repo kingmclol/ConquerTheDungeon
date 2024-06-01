@@ -61,6 +61,7 @@ public class Player extends Entity
 
         //Start at frame 0
         setImage(up.getFrame(0));
+        collisionBox = new CollisionBox(30, 48, Box.SHOW_BOXES, this); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
     }
 
     public void act() {
@@ -115,6 +116,7 @@ public class Player extends Entity
 
     public void addedToWorld(World world) {
         super.addedToWorld(world);
+        world.addObject(collisionBox, getX(), getY()); // THIS SHOULD BE MOVED TO ENTITY ADDEDTOWORLD
         world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
     }
 
@@ -151,6 +153,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
+        manageCollision(); // THIS NEEDS A BETTER PLACE (I HAVE NO IDEA HOW TO NAVIGATE THIS CLASS BUT HERE SEEMED LIKE IT WORKED)
     }
 
     private void handleShooting(){

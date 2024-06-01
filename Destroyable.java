@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Destroyable extends Tile implements Damageable
+public abstract class Destroyable extends Obstruction implements Damageable
 {
     /**
      * Act - do whatever the Destroyable wants to do. This method is called whenever
@@ -14,18 +14,18 @@ public abstract class Destroyable extends Tile implements Damageable
      */
     int hp;
     public Destroyable(GreenfootImage img, int hp) {
-        super(false, img);
+        super(img);
         this.hp = hp;
     }
     public Destroyable(Color c, int hp){
-        super(false, c);
+        super(c);
         this.hp =hp;
     }
     /**
      * Temp.
      */
     public Destroyable(Color c) {
-        super (false, c);
+        super (c);
         this.hp = -1;
     }
     public int damage(int damage) {

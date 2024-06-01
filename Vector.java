@@ -30,7 +30,7 @@ public class Vector
      * @param target The target position.
      * @return A Vector that points towards the target position.
      */
-    public Vector distanceFrom(Vector target) {
+    public Vector displacementFrom(Vector target) {
         return new Vector(target.getX()-x, target.getY()-y);
     }
     /**
@@ -54,7 +54,7 @@ public class Vector
      */
     public String toString() {
         //return String.format("{%f, %f}", x, y); 
-        return "{" + x + ", " + y + "}";
+        return "[" + x + ", " + y + "]";
     }
     /**
      * Returns the x component of the Vector.
@@ -137,5 +137,12 @@ public class Vector
     public boolean equals(Vector other) {
         if (x == other.getX() && y == other.getY()) return true;
         return false;
+    }
+    /**
+     * Returns the dot product between this Vector and the given vector.
+     */
+    public double dotProduct(Vector other) {
+        // a * b = a1b1 + a2b2
+        return getX()*other.getX() + getY() + other.getY();
     }
 }

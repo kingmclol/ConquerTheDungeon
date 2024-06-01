@@ -38,6 +38,7 @@ public class Cell extends SuperActor
         this.boardX = boardX;
         this.boardY = boardY;
         tile = t;
+        t.setCell(this);
         cellEffects = new ArrayList<CellEffect>();
         setImage(new GreenfootImage(SIZE, SIZE));
         node = new Node(true, boardX, boardY);

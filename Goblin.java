@@ -15,10 +15,6 @@ public class Goblin extends Enemy
      */
     public Goblin()
     {
-        
-    }
-    public void act()
-    {
-        // Add your action code here.
+        collisionBox = new CollisionBox(30, 30, Box.SHOW_BOXES, this);
     }
 }
