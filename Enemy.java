@@ -17,7 +17,7 @@ public abstract class Enemy extends Entity {
     }
     public void addedToWorld(World w) {
         super.addedToWorld(w);
-        
+    }
     protected abstract void attack();
 
     public void pathToPosition(int x, int y) {

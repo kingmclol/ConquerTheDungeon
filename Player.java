@@ -141,7 +141,16 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        if(acts%(atkSpd-powerUpSpeed/2) == 0)
+        int x;
+        if(isPoweredUp)
+        {
+            x = powerUpSpeed;
+        }
+        else
+        {
+            x = normalSpeed;
+        }
+        if(acts%(atkSpd-(x)/2) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
