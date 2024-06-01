@@ -41,6 +41,11 @@ public class Goblin extends Enemy
     {
         // Add your action code here.
         acts++;
+        if(this.getHp() <= 0)
+        {
+            death = true;
+            inAttack = false;
+        }
         if(this.getHp() > 0 && !inAttack)
         {
             drawWeapon();
@@ -51,7 +56,7 @@ public class Goblin extends Enemy
         {
             attackAnimation();
         }
-        if(getHp()< 0) // trigger death animation.
+        if(death) // trigger death animation.
         {
             deathAnimation();
         }

@@ -177,8 +177,11 @@ public class Player extends Entity
             //Implement CollisionBox
             List<Enemy> enemies = getObjectsInRange(30, Enemy.class);
             for (Enemy enemy : enemies) {
-                enemy.takeDamage(damage);
-                dealtDamage = true;
+                if(frame == 5) // So it doesn't appear like it died before sword hits.
+                {
+                    enemy.takeDamage(damage);
+                    dealtDamage = true; 
+                }
             } 
         }
     }
