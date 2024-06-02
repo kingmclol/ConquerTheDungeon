@@ -63,7 +63,6 @@ public abstract class Box extends Actor
     }
     public void addedToWorld(World w){
         if (!initialAct) return;
-        System.out.println("added");
         // Make the Box visible, if needed.
         if (visible) {
             getImage().setColor(color);

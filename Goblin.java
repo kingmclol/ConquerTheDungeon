@@ -2,28 +2,24 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 
 /**
- * Write a description of class Goblin here.
+ * The Green looking Goblin in the game.
  * 
- * @author (your name) 
+ * @Tony Lin
  * @version (a version number or a date)
+ * Art Credits: https://opengameart.org/content/lpc-goblin
  */
 public class Goblin extends Enemy
 {
-    //Link to Art: https://opengameart.org/content/lpc-goblin
-
-    //Animations for Moving as well as other object behaviour: 
-    private Animation up,down,left,right, dying, attacking;
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
-
-    //Speed/Movement:
-    private double spd;
+    
     /**
      * Act - do whatever the Goblin wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Goblin()
     {
-        collisionBox = new CollisionBox(30, 30, Box.SHOW_BOXES, this);
+        collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
+        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
         death = false;
         dealtDamage = false;
@@ -40,33 +36,40 @@ public class Goblin extends Enemy
 
     public void act()
     {
+        super.act();
         // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
         {
-            death = true;
             inAttack = false;
         }
         if(this.getHp() > 0 && !inAttack)
         {
             drawWeapon();
-            movement();
+            findTarget();
+            manageAnimation();
             attack();
         }
         if(inAttack) // If attacking:
         {
             attackAnimation();
         }
-        if(death) // trigger death animation.
+        if(this.getHp() <= 0) // trigger death animation.
         {
             deathAnimation();
         }
+    }
 
+    public void findTarget(){
+        Player player = (Player)getClosestInRange(Player.class, 500);
+        if(player != null){
+            pathToEntity(player);
+        }
     }
 
     public void attack()
     {
-        List<Player> target = getObjectsInRange(10, Player.class);
+        List<Player> target = getObjectsInRange(30, Player.class);
         if(!target.isEmpty())
         {
             inAttack = true;
@@ -75,15 +78,16 @@ public class Goblin extends Enemy
             up = Animation.createAnimation(new GreenfootImage("attack.png"), 2, 1, 4, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("attack.png"), 3, 1, 4, 64, 64);
             frame = 0;
+            target.get(0).damage(5);
         }
+        
     }
 
     /**
-     * Deals with Movement and manages Animation.
+     * manages Animation.
      */
-    public void movement()
+    public void manageAnimation()
     {
-        chasePlayer(spd);
         if(acts%(5) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
@@ -107,12 +111,11 @@ public class Goblin extends Enemy
 
     public void deathAnimation()
     {
-        if(!death && frame > 0)
+        if(!death)
         {
             frame = 0;
-            death = true;
-            inAttack = false;
             spd = 0;
+            death = true;
         }
         if(acts % 10 == 0)
         {

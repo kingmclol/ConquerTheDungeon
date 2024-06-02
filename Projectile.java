@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.List;
 
-public class Projectile extends SuperSmoothMover {
+public abstract class Projectile extends SuperSmoothMover {
     private int spawnOffset = 10;
     private int rotation;
     private int speed;
@@ -31,11 +31,11 @@ public class Projectile extends SuperSmoothMover {
             return;
         }
         if (a instanceof Player) {
-            ((Player) a).takeDamage(damage);
+            ((Player) a).damage(damage);
             hasHit = true; // Set the flag to true once damage is dealt
             getWorld().removeObject(this); // Remove the projectile from the world
         } else if (a instanceof Enemy) {
-            ((Enemy) a).takeDamage(damage);
+            ((Enemy) a).damage(damage);
             hasHit = true; // Set the flag to true once damage is dealt
             getWorld().removeObject(this); // Remove the projectile from the world
         }

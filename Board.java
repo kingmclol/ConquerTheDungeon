@@ -121,7 +121,6 @@ public class Board extends Actor
     public Cell getCellWithRealPosition(int x, int y) {
         int boardX = (int) (x - getX()) / Cell.SIZE;
         int boardY = (int) (y - getY()) / Cell.SIZE;
-        System.out.println(boardX + ", " + boardY);
         return getCell(boardX, boardY);
     }
     public Node getNode(int boardX, int boardY) {

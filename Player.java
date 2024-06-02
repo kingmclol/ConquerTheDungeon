@@ -18,6 +18,7 @@ public class Player extends Entity
     private int shootingTimer;
 
     private int speed, atkSpd = 10, frame = 0, acts = 0, index = 0;
+    private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX 
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
@@ -25,10 +26,9 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, mouseClick, dealtDamage = false;
+    private boolean inAttack = false, mouseClick;
     private static String[] weaponList = new String[2];
 
-    private SuperStatBar hpBar;
     private Aura aura;
 
     private int ultimateCooldown = 300;
@@ -68,6 +68,8 @@ public class Player extends Entity
     }
 
     public void act() {
+        super.act();
+        slashableEnemies = getObjectsInRange(60, Enemy.class);
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -116,10 +118,14 @@ public class Player extends Entity
             {
                 handleShooting();
             }
+            else
+            {
+                attack(10);
+            }
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
-        attack(10);
+        
         // if still in staff and not middle of attack animation,
         if(timeForStaff < 0 && !inAttack)
         {
@@ -132,8 +138,6 @@ public class Player extends Entity
 
     public void addedToWorld(World world) {
         super.addedToWorld(world);
-        world.addObject(collisionBox, getX(), getY()); // THIS SHOULD BE MOVED TO ENTITY ADDEDTOWORLD
-        world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
 
         aura = new Aura(this);
         world.addObject(aura, getX(), getY());
@@ -141,7 +145,7 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        int x;
+        int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
         {
             x = powerUpSpeed;
@@ -181,7 +185,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
-        manageCollision(); // THIS NEEDS A BETTER PLACE (I HAVE NO IDEA HOW TO NAVIGATE THIS CLASS BUT HERE SEEMED LIKE IT WORKED)
+        manageCollision();
     }
 
     private void handleShooting(){
@@ -199,30 +203,18 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        if(inAttack && !dealtDamage)
-        {
-            //Implement CollisionBox
-            List<Enemy> enemies = getObjectsInRange(30, Enemy.class);
-            for (Enemy enemy : enemies) {
-                if(frame == 5) // So it doesn't appear like it died before sword hits.
-                {
-                    enemy.takeDamage(damage);
-                    dealtDamage = true; 
-                }
-            } 
+        for (Enemy enemy : slashableEnemies) {
+            if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
+            {
+                enemy.takeDamage(damage);
+                enemy.setDamagedState(true);
+            }
         }
     }
 
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
-    }
-
-    public void takeDamage(int damage) {
-        hp -= damage;
-        if (hp <= 0) {
-            die();
-        }
     }
 
     public void heal(int healAmount) {
@@ -371,7 +363,17 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
-                    dealtDamage = false;
+                    if(slashableEnemies.isEmpty())
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        for(Enemy e : slashableEnemies)
+                        {
+                            e.setDamagedState(false);
+                        }
+                    }
                     break;
                 }
                 switch(facing)
