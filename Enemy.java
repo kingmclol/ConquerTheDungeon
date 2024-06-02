@@ -5,7 +5,7 @@ public abstract class Enemy extends Entity {
     protected Animation up,down,left,right, dying;
     
     protected int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
-    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    
     //Speed/Movement:
     protected double spd;
     private String facing = "right";
@@ -95,14 +95,6 @@ public abstract class Enemy extends Entity {
     public boolean getDeath()
     {
         return death;
-    }
-    public boolean damaged()
-    {
-        return recievedDamage;
-    }
-    public void setDamagedState(boolean x)
-    {
-        recievedDamage = x;
     }
 }
 

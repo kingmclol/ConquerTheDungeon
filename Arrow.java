@@ -13,7 +13,7 @@ public class Arrow extends Projectile
     public Arrow(int spd, int dmg, Actor own, Actor targ){
         super(spd, dmg, own);
         target = targ;
-        arrowImage = new GreenfootImage("Arrow.png");
+        arrowImage = new GreenfootImage("arrow.png");
         int newWidth = arrowImage.getWidth() / 20; 
         int newHeight = arrowImage.getHeight() / 20; 
         arrowImage.scale(newWidth, newHeight);

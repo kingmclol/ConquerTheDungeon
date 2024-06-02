@@ -16,7 +16,7 @@ public class Barrel extends Destroyable
         super(new Color(240, 140, 48), 10);
     }
     public void onDestroy() {
-        getWorld().removeObject(this);
+        replaceMe(new EmptyFloor());
     }
     public String getID() {
         return "b";

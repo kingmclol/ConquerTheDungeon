@@ -205,7 +205,7 @@ public class Player extends Entity
         for (Enemy enemy : slashableEnemies) {
             if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
             {
-                enemy.takeDamage(damage);
+                enemy.damage(damage);
                 enemy.setDamagedState(true);
             }
         }
