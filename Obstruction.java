@@ -19,6 +19,7 @@ public abstract class Obstruction extends Tile
     }
     public Obstruction(GreenfootImage img) {
         super(false, img);
+        AABB = new CollisionBox(Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES, this);
     }
     public void addedToWorld(World w) {
         w.addObject(AABB, 0, 0);

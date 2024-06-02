@@ -12,11 +12,12 @@ public class Barrel extends Destroyable
      * Act - do whatever the Desructible wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    public static GreenfootImage img = new GreenfootImage("barrel.png");
     public Barrel() {
-        super(new Color(240, 140, 48), 10);
+        super(img, 10);
     }
     public void onDestroy() {
-        getWorld().removeObject(this);
+        replaceMe(new EmptyFloor());
     }
     public String getID() {
         return "b";
