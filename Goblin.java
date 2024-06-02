@@ -24,6 +24,7 @@ public class Goblin extends Enemy
     public Goblin()
     {
         collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
+        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
         death = false;
         dealtDamage = false;
@@ -63,6 +64,12 @@ public class Goblin extends Enemy
             deathAnimation();
         }
     }
+    
+    public void addedToWorld(World world) {
+        super.addedToWorld(world);
+        world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
+
+    }
 
     public void findTarget(){
         Player player = (Player)getClosestInRange(Player.class, 500);
@@ -82,7 +89,9 @@ public class Goblin extends Enemy
             up = Animation.createAnimation(new GreenfootImage("attack.png"), 2, 1, 4, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("attack.png"), 3, 1, 4, 64, 64);
             frame = 0;
+            target.get(0).damage(5);
         }
+        
     }
 
     /**

@@ -32,10 +32,6 @@ public abstract class Enemy extends Entity {
         //manageCollision();
     }
 
-    public void takeDamage(int damage) {
-        hp -= damage;
-    }
-
     public void die() {
         getWorld().removeObject(this);
     }

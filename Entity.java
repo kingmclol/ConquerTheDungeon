@@ -26,6 +26,8 @@ public abstract class Entity extends SuperActor implements Damageable
     protected int hp;
     protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
+    protected SuperStatBar hpBar;
+    
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -71,6 +73,7 @@ public abstract class Entity extends SuperActor implements Damageable
         hp -= dmg;
         dmgTaken = dmg;
         if (hp <= 0) die();
+        hpBar.update(hp);
         return dmgTaken;
     }
     public void heal(int heal) {
