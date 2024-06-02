@@ -14,6 +14,7 @@ public abstract class Enemy extends Entity {
     public void pathToEntity(Entity e) {
         // weird way to get player position, but ok i guess i just want to test 
         pathTowards(e, mvtSpd);
+        manageRotation();
     }
     public void addedToWorld(World w) {
         super.addedToWorld(w);
@@ -38,65 +39,27 @@ public abstract class Enemy extends Entity {
     public void die() {
         getWorld().removeObject(this);
     }
-    public void chasePlayer(double spd)
+    public void manageRotation()
     {
-        /*if(Player.returnX() < this.getX() && Player.returnY() > this.getY())
-        {
-            //facing = "left";
-            setLocation(this.getX()-spd, this.getY()+spd);
-        }
-        else if(Player.returnX() < this.getX() && Player.returnY() < this.getY())
-        {
-            //facing = "left";
-            setLocation(this.getX()-spd, this.getY()-spd);
-        }
-        else if(Player.returnX() > this.getX() && Player.returnY() > this.getY())
-        {
-            //facing = "right";
-            setLocation(this.getX()+spd, this.getY()+spd);
-        }
-        else if(Player.returnX() > this.getX() && Player.returnY() < this.getY())
-        {
-            //facing = "right";
-            setLocation(this.getX()+spd, this.getY()-spd);
-        }
-        else if(Player.returnX() < this.getX())
-        {
-            //facing = "left";
-            setLocation(this.getX()-spd, this.getY());
-        }
-        else if(Player.returnX() > this.getX())
-        {
-            //facing = "right";
-            setLocation(this.getX()+spd, this.getY());
-        }
-        else if(Player.returnY() > this.getY())
-        {
-            setLocation(this.getX(), this.getY()+spd);
-        }
-        else if(Player.returnY() < this.getY())
-        {
-            setLocation(this.getX(), this.getY()-spd);
-        }*/
-        x = getX();
+        /*x = getX();
         y = getY();
         //Find change in X and Y with respect to Player Position:
         int deltaX = Player.returnX() - x;
         int deltaY = Player.returnY() - y;
-        rotation = (int) Math.toDegrees(Math.atan2(deltaX,deltaY));
+        rotation = (int) Math.toDegrees(Math.atan2(deltaX,deltaY));*/
         // Normalize the angle to be within the range [0, 360)
-        if (rotation < 0) {
-            rotation += 360;
-        }
-        rotation = rotation%360 - 90;
-        
+        // if (rotation < 0) {
+            // rotation += 360;
+        // }
+        // rotation = rotation%360 - 90;
+        int rotation = getRotation();
         if((rotation >= 0 && rotation <= 45) || (rotation > 315 && rotation < 360))
         {
             facing = "right";
         }
         else if(rotation > 45 && rotation <= 135)//between 45-135 && between 135 and 225
         {
-            facing = "up";
+            facing = "down";
         }
         else if(rotation > 135 && rotation <= 225)//135 and 180, 180 to 225
         {
@@ -104,7 +67,7 @@ public abstract class Enemy extends Entity {
         }
         else if((rotation > 225 && rotation <= 315) || (rotation >= 135 || rotation <= -45))
         {
-            facing = "down";
+            facing = "up";
         }
     }
 

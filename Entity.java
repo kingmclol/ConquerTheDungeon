@@ -95,7 +95,6 @@ public abstract class Entity extends SuperActor implements Damageable
             Hit hit = b.intersectAABB(collisionBox);
             if (hit != null) { // collision oh no
                 Vector delta = hit.getDelta();
-                System.out.println("adf " + delta);
                 this.displace(delta);
             }
         }

@@ -43,7 +43,8 @@ public abstract class SuperActor extends SuperSmoothMover
     // getWorld().addObject(e, 0 ,0 );
     // 
     private ArrayList<Vector> path = new ArrayList<Vector>();
-    private static final boolean SHOW_PATHFINDING_DEBUG = GameWorld.SHOW_LOGS;
+    private static final boolean SHOW_PATHFINDING_DEBUG = false;
+    
     /**
      * Returns the current position as a Vector.
      */
@@ -142,7 +143,6 @@ public abstract class SuperActor extends SuperSmoothMover
         double rad = Math.atan2(displacement.getX(), displacement.getY());
         double degreesCCW = Math.toDegrees(rad);
         rotation = (360 - degreesCCW + 90)%360; // make CW;
-        System.out.println(displacement);
     }
 
     /**
