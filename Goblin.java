@@ -11,11 +11,12 @@ import java.util.List;
 public class Goblin extends Enemy
 {
     //Animations for Moving as well as other object behaviour: 
-    private Animation up,down,left,right, dying, attacking;
+    private Animation up,down,left,right, dying;
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
 
     //Speed/Movement:
     private double spd;
+    
     /**
      * Act - do whatever the Goblin wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -44,7 +45,6 @@ public class Goblin extends Enemy
         manageCollision();
         if(this.getHp() <= 0)
         {
-            death = true;
             inAttack = false;
         }
         if(this.getHp() > 0 && !inAttack)
@@ -58,7 +58,7 @@ public class Goblin extends Enemy
         {
             attackAnimation();
         }
-        if(death) // trigger death animation.
+        if(this.getHp() <= 0) // trigger death animation.
         {
             deathAnimation();
         }
@@ -113,12 +113,11 @@ public class Goblin extends Enemy
 
     public void deathAnimation()
     {
-        if(!death && frame > 0)
+        if(!death)
         {
             frame = 0;
-            death = true;
-            inAttack = false;
             spd = 0;
+            death = true;
         }
         if(acts % 10 == 0)
         {

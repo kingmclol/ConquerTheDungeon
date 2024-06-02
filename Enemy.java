@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public abstract class Enemy extends Entity {
     private int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
-    protected boolean inAttack, death, dealtDamage;
+    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
     private String facing = "right";
     public Enemy() {
         super(Team.ENEMY, 100);
@@ -87,6 +87,14 @@ public abstract class Enemy extends Entity {
     public boolean getDeath()
     {
         return death;
+    }
+    public boolean damaged()
+    {
+        return recievedDamage;
+    }
+    public void setDamagedState(boolean x)
+    {
+        recievedDamage = x;
     }
 }
 
