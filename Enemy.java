@@ -18,11 +18,8 @@ public abstract class Enemy extends Entity {
     public void addedToWorld(World w) {
         super.addedToWorld(w);
     }
+    
     protected abstract void attack();
-
-    public void pathToPosition(int x, int y) {
-
-    }
 
     /**
      * Act - do whatever the Enemy wants to do. This method is called whenever
@@ -43,7 +40,7 @@ public abstract class Enemy extends Entity {
     }
     public void chasePlayer(double spd)
     {
-        if(Player.returnX() < this.getX() && Player.returnY() > this.getY())
+        /*if(Player.returnX() < this.getX() && Player.returnY() > this.getY())
         {
             //facing = "left";
             setLocation(this.getX()-spd, this.getY()+spd);
@@ -80,7 +77,7 @@ public abstract class Enemy extends Entity {
         else if(Player.returnY() < this.getY())
         {
             setLocation(this.getX(), this.getY()-spd);
-        }
+        }*/
         x = getX();
         y = getY();
         //Find change in X and Y with respect to Player Position:

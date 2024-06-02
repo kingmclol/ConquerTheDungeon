@@ -223,6 +223,7 @@ public class Player extends Entity
         if (hp <= 0) {
             die();
         }
+        hpBar.update(hp);
     }
 
     public void heal(int healAmount) {

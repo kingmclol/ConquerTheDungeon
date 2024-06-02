@@ -60,7 +60,15 @@ public class Goblin extends Enemy
         {
             deathAnimation();
         }
+        findTarget();
+        manageCollision();
+    }
 
+    public void findTarget(){
+        Player player = (Player)getClosestInRange(Player.class, 500);
+        if(player != null){
+            pathToEntity(null);
+        }
     }
 
     public void attack()
@@ -82,7 +90,6 @@ public class Goblin extends Enemy
      */
     public void movement()
     {
-        chasePlayer(spd);
         if(acts%(5) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 

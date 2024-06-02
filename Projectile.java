@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.List;
 
-public class Projectile extends SuperSmoothMover {
+public abstract class Projectile extends SuperSmoothMover {
     private int spawnOffset = 10;
     private int rotation;
     private int speed;

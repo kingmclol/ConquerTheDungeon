@@ -22,7 +22,7 @@ public abstract class Box extends Actor
     protected Color color;
     private boolean visible;
     private boolean initialAct; // Combat z sorting always running addedToWorld();
-    public static final boolean SHOW_BOXES = false;
+    public static final boolean SHOW_BOXES = true;
     // /**
      // * Creates a basic Box, which is basically a box. Should be used for temporary collision checking,
      // * so having it visible or invisible does not matter.
