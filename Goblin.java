@@ -41,7 +41,6 @@ public class Goblin extends Enemy
     {
         // Add your action code here.
         acts++;
-        findTarget();
         manageCollision();
         if(this.getHp() <= 0)
         {
@@ -51,6 +50,7 @@ public class Goblin extends Enemy
         if(this.getHp() > 0 && !inAttack)
         {
             drawWeapon();
+            findTarget();
             manageAnimation();
             attack();
         }
@@ -73,7 +73,7 @@ public class Goblin extends Enemy
 
     public void attack()
     {
-        List<Player> target = getObjectsInRange(10, Player.class);
+        List<Player> target = getObjectsInRange(30, Player.class);
         if(!target.isEmpty())
         {
             inAttack = true;
