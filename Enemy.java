@@ -1,7 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public abstract class Enemy extends Entity {
-    private int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
+    private int mvtSpd = 2, x, y, rotation;//X and Y are Location
     protected boolean inAttack, death, dealtDamage;
     private String facing = "right";
     public Enemy() {
@@ -30,10 +30,6 @@ public abstract class Enemy extends Entity {
     public void act() {
         //pathToEntity(null); // Come on i need a player reference somewhere...
         //manageCollision();
-    }
-
-    public void takeDamage(int damage) {
-        hp -= damage;
     }
 
     public void die() {

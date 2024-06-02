@@ -28,7 +28,6 @@ public class Player extends Entity
     private boolean inAttack = false, mouseClick, dealtDamage = false;
     private static String[] weaponList = new String[2];
 
-    private SuperStatBar hpBar;
     private Aura aura;
 
     private int ultimateCooldown = 300;
@@ -132,7 +131,6 @@ public class Player extends Entity
 
     public void addedToWorld(World world) {
         super.addedToWorld(world);
-        world.addObject(collisionBox, getX(), getY()); // THIS SHOULD BE MOVED TO ENTITY ADDEDTOWORLD
         world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
 
         aura = new Aura(this);
@@ -206,7 +204,7 @@ public class Player extends Entity
             for (Enemy enemy : enemies) {
                 if(frame == 5) // So it doesn't appear like it died before sword hits.
                 {
-                    enemy.takeDamage(damage);
+                    enemy.damage(damage);
                     dealtDamage = true; 
                 }
             } 
@@ -216,14 +214,6 @@ public class Player extends Entity
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
-    }
-
-    public void takeDamage(int damage) {
-        hp -= damage;
-        if (hp <= 0) {
-            die();
-        }
-        hpBar.update(hp);
     }
 
     public void heal(int healAmount) {
