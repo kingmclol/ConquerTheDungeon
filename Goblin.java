@@ -22,7 +22,7 @@ public class Goblin extends Enemy
      */
     public Goblin()
     {
-        collisionBox = new CollisionBox(30, 30, Box.SHOW_BOXES, this);
+        collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
         spd = 2;
         death = false;
         dealtDamage = false;
@@ -67,7 +67,7 @@ public class Goblin extends Enemy
     public void findTarget(){
         Player player = (Player)getClosestInRange(Player.class, 500);
         if(player != null){
-            pathToEntity(null);
+            pathToEntity(player);
         }
     }
 

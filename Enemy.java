@@ -13,7 +13,7 @@ public abstract class Enemy extends Entity {
      */
     public void pathToEntity(Entity e) {
         // weird way to get player position, but ok i guess i just want to test 
-        pathTowards(new Vector(Player.returnX(), Player.returnY()), mvtSpd);
+        pathTowards(e, mvtSpd);
     }
     public void addedToWorld(World w) {
         super.addedToWorld(w);
@@ -27,8 +27,8 @@ public abstract class Enemy extends Entity {
      */
 
     public void act() {
-        pathToEntity(null); // Come on i need a player reference somewhere...
-        manageCollision();
+        //pathToEntity(null); // Come on i need a player reference somewhere...
+        //manageCollision();
     }
 
     public void takeDamage(int damage) {

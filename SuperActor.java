@@ -31,16 +31,16 @@ public abstract class SuperActor extends SuperSmoothMover
     private double speed;
     private boolean staticRotation;
     public SuperActor(double speed) {
-        this.speed = speed;
+    this.speed = speed;
     }
     Remove all "double distance" parameters in the methods, as will be managed 
     by instance variable speed. Or overload them instead.
-    */
+     */
     // /** 
-     // * Creates a given event by adding it into the world.
-     // */
+    // * Creates a given event by adding it into the world.
+    // */
     // protected void createEvent(Event e){
-        // getWorld().addObject(e, 0 ,0 );
+    // getWorld().addObject(e, 0 ,0 );
     // 
     private ArrayList<Vector> path = new ArrayList<Vector>();
     private static final boolean SHOW_PATHFINDING_DEBUG = GameWorld.SHOW_LOGS;
@@ -50,6 +50,7 @@ public abstract class SuperActor extends SuperSmoothMover
     public Vector getPosition() {
         return new Vector(getPreciseX(), getPreciseY());
     }
+
     /** 
      * Move towards a SuperActor.
      * @param target The SuperActor to move towards.
@@ -58,16 +59,17 @@ public abstract class SuperActor extends SuperSmoothMover
     protected void moveTowards(SuperActor target, double distance) {
         displace(getDisplacement(target, distance));
     }
+
     protected void pathTowards(Vector target, double distance) {
         Board board = ((GameWorld)getWorld()).getBoard();
         if (target == null) {
             return; // Can't do anything about this.
         }
-        
+
         // Get nodes from the nodeGrid for comparison
         Node targetNode = board.getCellWithRealPosition((int)target.getX(), (int)target.getY()).getNode();
         Node currentNode = board.getCellWithRealPosition(getX(), getY()).getNode();
-        
+
         if (targetNode == currentNode) { // Same node as target!!!
             moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
             return; // nothing else to do.
@@ -77,7 +79,7 @@ public abstract class SuperActor extends SuperSmoothMover
             targetNodePrev = targetNode; // store the target's node for comparison later on.
             path = null; // need new path to the target.
         }
-        
+
         if (path == null) { // no path, or target node changed (target moving), or target changed
             // Pathfind to target.
             ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
@@ -87,13 +89,13 @@ public abstract class SuperActor extends SuperSmoothMover
                 // if (SHOW_PATHFINDING_DEBUG) Board.displayPath(nodes, Color.YELLOW);
             }
         }
-        
+
         if (path != null) {
             if (path.size() > 0) { // If there is still a positino to go to,
                 Vector nextPos = path.get(0); // get that position
                 if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
                 moveTowards(nextPos, distance); // Move towards the next positino.
-                
+
                 if (displacementFrom(nextPos) < 1) { // If close to the target position
                     if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
                     path.remove(0); // remove from list of positions to move to.
@@ -108,6 +110,7 @@ public abstract class SuperActor extends SuperSmoothMover
             }
         }
     }
+
     /** 
      * Move towards a SuperActor. This time, with pathfinding involved.
      * @param target The SuperActor to move towards.
@@ -116,6 +119,7 @@ public abstract class SuperActor extends SuperSmoothMover
     protected void pathTowards(SuperActor target, double distance) {
         pathTowards(target.getPosition(), distance);
     }
+
     /**
      * Moves towards towards a position.
      * @param targetPos The target position to head towards. 
@@ -125,6 +129,7 @@ public abstract class SuperActor extends SuperSmoothMover
         //displace(getPosition().displacementFrom(v).scaleTo(distance));
         displace(getDisplacement(targetPos, distance));
     }
+
     /**
      * Apply the given displacement vector to the SuperActor's current position. Can be thought
      * of as "moving" the SuperActor.
@@ -132,12 +137,14 @@ public abstract class SuperActor extends SuperSmoothMover
      */
     public void displace(Vector displacement) {
         setLocation(getPreciseX()+displacement.getX(), getPreciseY()+displacement.getY());
-        
+
         // Keep track of rotation.
         double rad = Math.atan2(displacement.getX(), displacement.getY());
         double degreesCCW = Math.toDegrees(rad);
         rotation = (360 - degreesCCW + 90)%360; // make CW;
+        System.out.println(displacement);
     }
+
     /**
      * Returns the displacement Vector pointing from the current position to the SuperActor's
      * position.
@@ -148,6 +155,7 @@ public abstract class SuperActor extends SuperSmoothMover
     protected Vector getDisplacement(SuperActor target, double distance) {
         return getDisplacement(target.getPosition(), distance);
     }
+
     /**
      * Returns the displacement Vector pointing from the current position to a target position.
      * @param target The position to go to.
@@ -160,9 +168,10 @@ public abstract class SuperActor extends SuperSmoothMover
         speed of the SuperActor (in this case, it is equal to the distance travelled, as time = 1 act)
         Then, limit (cap) the magnitude of the displacement to the ACTUAL distance from the target, so it would
         not go past the target position, in case that scenario will occur.
-        */
+         */
         return getPosition().displacementFrom(target).scaleTo(distance).limitMagnitude(displacementFrom(target));
     }
+
     /**
      * Turns the SuperActor towards the given position.
      * @param position The position the SuperActor should turn towards.
@@ -170,6 +179,7 @@ public abstract class SuperActor extends SuperSmoothMover
     protected void turnTowards(Vector position) {
         turnTowards(Utility.round(position.getX()), Utility.round(position.getY()));
     }
+
     /**
      * Returns the magnitude of the distance from this SuperActor and the target SuperActor.
      * @param other The target SuperActor.
@@ -179,6 +189,7 @@ public abstract class SuperActor extends SuperSmoothMover
         //return getPosition().displacementFrom(other.getPosition()).getMagnitude();
         return displacementFrom(other.getPosition());
     }
+
     /**
      * Returns the magnitude of the distance from this SuperActor to the target position.
      * @param targetPos The target position.
@@ -187,6 +198,7 @@ public abstract class SuperActor extends SuperSmoothMover
     protected double displacementFrom(Vector targetPos) {
         return getPosition().displacementFrom(targetPos).getMagnitude();
     }
+
     /**
      * Returns true if the this SuperActor exists in a World.
      * @return Whether this SuperActor exists in a World.
@@ -194,6 +206,7 @@ public abstract class SuperActor extends SuperSmoothMover
     public boolean exists() {
         return (getWorld() != null);
     }
+
     /**
      * Set the SuperActor's location to the given position.
      * @param position The location the SuperActor should be at.
@@ -201,6 +214,7 @@ public abstract class SuperActor extends SuperSmoothMover
     public void setLocation(Vector position) {
         setLocation(position.getX(), position.getY());
     }
+
     /**
      * Get the closest SuperActor of a given class and radius. Inspired by Mr. Cohen's
      * implementation.
@@ -212,6 +226,7 @@ public abstract class SuperActor extends SuperSmoothMover
         ArrayList<SuperActor> targets = (ArrayList<SuperActor>)getObjectsInRange(range, c);
         return getClosest(targets);
     }
+
     /** 
      * Get the closest SuperActor in a given ArrayList of SuperActors. Inspired
      * by Mr.Cohen's implementation.
@@ -236,6 +251,7 @@ public abstract class SuperActor extends SuperSmoothMover
         }
         return target;
     }
+
     /**
      * 
      * <p>Returns the closest SuperActor of a given class within a the given radius, filtered by the given Predicate.</p>
@@ -249,6 +265,7 @@ public abstract class SuperActor extends SuperSmoothMover
         targets.removeIf(filter);
         return getClosest(targets);
     }
+
     @Override
     /**
      * Returns the rotation of this actor.
