@@ -68,6 +68,7 @@ public class Player extends Entity
     }
 
     public void act() {
+        super.act();
         slashableEnemies = getObjectsInRange(60, Enemy.class);
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -137,7 +138,6 @@ public class Player extends Entity
 
     public void addedToWorld(World world) {
         super.addedToWorld(world);
-        world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
 
         aura = new Aura(this);
         world.addObject(aura, getX(), getY());
@@ -185,7 +185,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
-        manageCollision(); // THIS NEEDS A BETTER PLACE (I HAVE NO IDEA HOW TO NAVIGATE THIS CLASS BUT HERE SEEMED LIKE IT WORKED)
+        manageCollision();
     }
 
     private void handleShooting(){

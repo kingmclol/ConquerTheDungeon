@@ -45,6 +45,14 @@ public abstract class SuperActor extends SuperSmoothMover
     private ArrayList<Vector> path = new ArrayList<Vector>();
     private static final boolean SHOW_PATHFINDING_DEBUG = false;
     
+    public double getDistance(Actor other) {
+        int x1 = getX();
+        int y1 = getY();
+        int x2 = other.getX();
+        int y2 = other.getY();
+        return Math.hypot(x2 - x1, y2 - y1); // Calculates the distance using Pythagorean theorem
+    }
+    
     /**
      * Returns the current position as a Vector.
      */

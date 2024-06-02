@@ -1,9 +1,15 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public abstract class Enemy extends Entity {
+    //Animations for Moving as well as other object behaviour: 
+    protected Animation up,down,left,right, dying;
+    
     protected int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
     protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    //Speed/Movement:
+    protected double spd;
     private String facing = "right";
+    protected Player player;
     public Enemy() {
         super(Team.ENEMY, 100);
         this.hp = 50;  
@@ -28,8 +34,9 @@ public abstract class Enemy extends Entity {
      */
 
     public void act() {
-        //pathToEntity(null); // Come on i need a player reference somewhere...
-        //manageCollision();
+        super.act();
+        player = (Player)getClosestInRange(Player.class, 1000);
+        manageCollision();
     }
 
     public void die() {

@@ -45,8 +45,11 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     public void addedToWorld(World w) {
         w.addObject(collisionBox, getX(), getY());
+        w.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
     }
+    
     public void act() {
+        //manageCollision();
         //animate();
     }
     // /**
@@ -101,5 +104,19 @@ public abstract class Entity extends SuperActor implements Damageable
                 this.displace(delta);
             }
         }
+        
+        if(getX() <= 10){
+            setLocation(11, getY());
+        }
+        if(getX() >= 1015){
+            setLocation(1014, getY());
+        }
+        if(getY() <= 20){
+            setLocation(getX(), 21);
+        }
+        if(getY() >= 740){
+            setLocation(getX(), 739);
+        }
     }
+
 }

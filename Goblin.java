@@ -10,12 +10,7 @@ import java.util.List;
  */
 public class Goblin extends Enemy
 {
-    //Animations for Moving as well as other object behaviour: 
-    private Animation up,down,left,right, dying;
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
-
-    //Speed/Movement:
-    private double spd;
     
     /**
      * Act - do whatever the Goblin wants to do. This method is called whenever
@@ -41,9 +36,9 @@ public class Goblin extends Enemy
 
     public void act()
     {
+        super.act();
         // Add your action code here.
         acts++;
-        manageCollision();
         if(this.getHp() <= 0)
         {
             inAttack = false;
@@ -63,12 +58,6 @@ public class Goblin extends Enemy
         {
             deathAnimation();
         }
-    }
-    
-    public void addedToWorld(World world) {
-        super.addedToWorld(world);
-        world.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
-
     }
 
     public void findTarget(){
