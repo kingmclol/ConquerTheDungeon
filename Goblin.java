@@ -41,6 +41,8 @@ public class Goblin extends Enemy
     {
         // Add your action code here.
         acts++;
+        findTarget();
+        manageCollision();
         if(this.getHp() <= 0)
         {
             death = true;
@@ -49,7 +51,7 @@ public class Goblin extends Enemy
         if(this.getHp() > 0 && !inAttack)
         {
             drawWeapon();
-            movement();
+            manageAnimation();
             attack();
         }
         if(inAttack) // If attacking:
@@ -60,8 +62,6 @@ public class Goblin extends Enemy
         {
             deathAnimation();
         }
-        findTarget();
-        manageCollision();
     }
 
     public void findTarget(){
@@ -86,9 +86,9 @@ public class Goblin extends Enemy
     }
 
     /**
-     * Deals with Movement and manages Animation.
+     * manages Animation.
      */
-    public void movement()
+    public void manageAnimation()
     {
         if(acts%(5) == 0)
         {
