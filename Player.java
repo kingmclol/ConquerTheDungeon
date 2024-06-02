@@ -68,7 +68,6 @@ public class Player extends Entity
     }
 
     public void act() {
-        super.act();
         slashableEnemies = getObjectsInRange(60, Enemy.class);
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -134,6 +133,7 @@ public class Player extends Entity
             timeForStaff = 600; // reset Timer
         }
         acts++;
+        super.act();        
     }
 
     public void addedToWorld(World world) {
@@ -185,7 +185,6 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
-        manageCollision();
     }
 
     private void handleShooting(){

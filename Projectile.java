@@ -17,15 +17,15 @@ public abstract class Projectile extends SuperSmoothMover {
     }
 
     public void act() {
-        if (!hasHit) { // Only do damage if the projectile has not yet hit something
-            doDamage();
-        }
         move(speed);
         checkEdge();
+        if (!hasHit && getWorld() != null) { // Only do damage if the projectile has not yet hit something
+            doDamage();
+        }
     }
 
     public void doDamage() {
-        Actor a = getOneIntersectingObject(Actor.class);
+        Entity a = (Entity)getOneIntersectingObject(Entity.class);
 
         if (a == null || a == owner) {
             return;

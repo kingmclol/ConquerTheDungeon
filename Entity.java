@@ -49,7 +49,7 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
-        //manageCollision();
+        manageCollision();
         //animate();
     }
     // /**
