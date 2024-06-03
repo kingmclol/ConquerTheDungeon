@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class Lava here.
@@ -18,7 +19,13 @@ public class Lava extends Floor
     }
     public void act()
     {
-        // Add your action code here.
+        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
+        for(Box box : boxes){
+            Actor owner = box.getOwner();
+            if(owner instanceof Entity){
+                ((Entity) owner).damage(Utility.randomIntInRange(5, 15));
+            }
+        }
     }
     public String getID(){
         return "lv";
