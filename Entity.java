@@ -28,7 +28,8 @@ public abstract class Entity extends SuperActor implements Damageable
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
     protected boolean inAttack, death, dealtDamage, recievedDamage = false;
-    
+    protected Timer iFrameTimer;
+    protected static final int IFRAMES = 10;
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -43,6 +44,7 @@ public abstract class Entity extends SuperActor implements Damageable
         // for (StatusModifier.Trigger t : StatusModifier.Trigger.values()) { // For types of status trigger times,
             // statusModifiers.put(t, new ArrayList<StatusModifier>()); // Greate an arraylist to keep track of them.
         // }
+        iFrameTimer = new Timer();
     }
     public void addedToWorld(World w) {
         w.addObject(collisionBox, getX(), getY());
@@ -69,6 +71,7 @@ public abstract class Entity extends SuperActor implements Damageable
         // statusModifiers.get(m.trigger).remove(m);
     // }
     public int damage(int dmg) {
+        if (iFrameTimer.acts() <= IFRAMES) return 0;
         TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
@@ -78,6 +81,7 @@ public abstract class Entity extends SuperActor implements Damageable
         dmgTaken = dmg;
         if (hp <= 0) die();
         hpBar.update(hp);
+        iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }
     public void heal(int heal) {

@@ -10,7 +10,7 @@ public class Landmine extends Floor
 {
 
 
-    public static GreenfootImage img = new GreenfootImage("landmine.jpg");
+    public static GreenfootImage img = new GreenfootImage("landmine.png");
     private HiddenBox hiddenBox;
 
     public Landmine() {
