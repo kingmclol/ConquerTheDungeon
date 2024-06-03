@@ -68,7 +68,7 @@ public class Player extends Entity
         }
         //Start at frame 0
         setImage(up.getFrame(0));
-        collisionBox = new CollisionBox(30, 48, Box.SHOW_BOXES, this); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
+        collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
     }
 
     public void act() {
