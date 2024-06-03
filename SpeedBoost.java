@@ -12,8 +12,9 @@ public class SpeedBoost extends Floor
      * Act - do whatever the SpeedBoost wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    private static GreenfootImage img = new GreenfootImage("speedboost.png");
     public SpeedBoost() {
-        super(new Color(13, 252, 252));
+        super(img);
     }
     public void act()
     {

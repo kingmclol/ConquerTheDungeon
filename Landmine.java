@@ -12,7 +12,7 @@ public class Landmine extends Floor
      * Act - do whatever the Landmine wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public static GreenfootImage img = new GreenfootImage("landmine.jpg");
+    public static GreenfootImage img = new GreenfootImage("landmine.png");
     public Landmine() {
         super(img);
     }
