@@ -25,7 +25,7 @@ public class Skeleton extends Enemy
     {
         super.act();
         acts++;
-        if(getDistance(player) <= 300){
+        if(player != null && getDistance(player) <= 300){
             inAttack = true;
         }else{
             inAttack = false;

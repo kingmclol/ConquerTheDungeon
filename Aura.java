@@ -14,6 +14,11 @@ public class Aura extends SuperSmoothMover {
     }
 
     public void act() {
+        if(owner.getWorld() == null){
+            getWorld().removeObject(this);
+            return;
+        }
+        
         setLocation(owner.getX()-(offset/5), owner.getY()-offset);
         animate();
         updateVisibility();
@@ -47,6 +52,7 @@ public class Aura extends SuperSmoothMover {
             getImage().setTransparency(0); // Fully invisible
         }
     }
+
 }
 
 

@@ -12,7 +12,7 @@ public abstract class Enemy extends Entity {
     protected Player player;
     public Enemy() {
         super(Team.ENEMY, 100);
-        this.hp = 50;  
+        this.hp = 100;  
     }
     /**
      * THIS IS TEMPORARY IMPLEMENTATION. I NEED A PLAYER REFERENCE SOMEWHERE
