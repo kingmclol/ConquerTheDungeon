@@ -9,20 +9,23 @@ import java.util.List;
 public class Skeleton extends Enemy
 {
     private int frame = 0, acts = -1;
+    private int arrowCooldown;
+
     public Skeleton(){
-        collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
+        collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
         death = false;
         dealtDamage = false;
         inAttack = false;
-        
+        arrowCooldown = 60;
     }
+
     public void act()
     {
         super.act();
         acts++;
-        if(getDistance(player) <= 300){
+        if(player != null && getDistance(player) <= 300){
             inAttack = true;
         }else{
             inAttack = false;
@@ -35,48 +38,49 @@ public class Skeleton extends Enemy
         {
             findTarget();
             manageAnimation();
-            attack();
         }
         if(inAttack) // If attacking:
         {
+            attack();
             attackAnimation();
         }
         if(this.getHp() <= 0) // trigger death animation.
         {
             deathAnimation();
         }
-        
+
     }
-    
+
     public void findTarget(){
-        
+
         if(player != null && getDistance(player) >= 300){
             pathToEntity(player);
         }
     }
-    
+
     public void attack()
     {
-        List<Player> target = getObjectsInRange(200, Player.class);
-        if(!target.isEmpty())
-        {
-            //inAttack = true;
-            //Animation here
+        arrowCooldown++;
+        if(arrowCooldown >= 60){
+            Arrow arrow = new Arrow(4, 10, this, player);
+            getWorld().addObject(arrow, getX(), getY());
+            arrowCooldown = 0;
         }
+
     }
-    
+
     public void manageAnimation()
     {
-        
+
     }
-    
+
     public void deathAnimation()
     {
-    
+
     }
-    
+
     public void attackAnimation()
     {
-        
+
     }
 }

@@ -9,8 +9,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Landmine extends Floor
 {
 
+
     public static GreenfootImage img = new GreenfootImage("landmine.jpg");
     private HiddenBox hiddenBox;
+
     public Landmine() {
         super(img);        
     }

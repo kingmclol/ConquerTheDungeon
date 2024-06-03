@@ -18,7 +18,7 @@ public class Goblin extends Enemy
      */
     public Goblin()
     {
-        collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
+        collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
         death = false;
@@ -138,22 +138,6 @@ public class Goblin extends Enemy
             right = Animation.createAnimation(new GreenfootImage("goblin.png"), 1, 1, 7, 64, 64);
             up = Animation.createAnimation(new GreenfootImage("goblin.png"), 2, 1, 7, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("goblin.png"), 3, 1, 7, 64, 64);
-            switch(this.getFacing())
-            {
-                case "up":
-                    setImage(up.getFrame(frame));
-                    break;
-                case "down":
-                    setImage(down.getFrame(frame));
-                    break;
-                case "right":
-                    setImage(right.getFrame(frame));
-                    break;
-                case "left":
-                    setImage(left.getFrame(frame));
-                    break;
-            }
-            return;
         }
         switch(this.getFacing())
         {

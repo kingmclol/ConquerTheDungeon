@@ -148,6 +148,7 @@ public class Cell extends SuperActor
         setWalkable(t.isWalkable());
         getWorld().removeObject(tile);
         tile = t;
+        t.setCell(this);
         getWorld().addObject(t, getX(), getY());
     }
     public boolean containsCellEffect() {

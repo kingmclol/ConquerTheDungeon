@@ -27,6 +27,7 @@ public abstract class Entity extends SuperActor implements Damageable
     protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
+    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
     
     public Entity(Team team, int maxHp) {
         // this.team = team;
@@ -49,7 +50,7 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
-        //manageCollision();
+        manageCollision();
         //animate();
     }
     // /**
@@ -118,5 +119,19 @@ public abstract class Entity extends SuperActor implements Damageable
             setLocation(getX(), 739);
         }
     }
-
+    
+    public boolean damaged()
+    {
+        return recievedDamage;
+    }
+    public void setDamagedState(boolean x)
+    {
+        recievedDamage = x;
+    }
+    /**
+     * Returns the position of this Entity AT ITS ACTUAL COLLISIONBOX (at its feet)
+     */
+    public Vector getPosition(){
+        return collisionBox.getPosition();
+    }
 }

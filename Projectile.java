@@ -17,28 +17,23 @@ public abstract class Projectile extends SuperSmoothMover {
     }
 
     public void act() {
-        if (!hasHit) { // Only do damage if the projectile has not yet hit something
-            doDamage();
-        }
         move(speed);
         checkEdge();
+        if (!hasHit && getWorld() != null) { // Only do damage if the projectile has not yet hit something
+            doDamage();
+        }
     }
 
     public void doDamage() {
-        Actor a = getOneIntersectingObject(Actor.class);
+        Damageable a = (Damageable)getOneIntersectingObject(Damageable.class);
 
         if (a == null || a == owner) {
             return;
         }
-        if (a instanceof Player) {
-            ((Player) a).damage(damage);
-            hasHit = true; // Set the flag to true once damage is dealt
-            getWorld().removeObject(this); // Remove the projectile from the world
-        } else if (a instanceof Enemy) {
-            ((Enemy) a).damage(damage);
-            hasHit = true; // Set the flag to true once damage is dealt
-            getWorld().removeObject(this); // Remove the projectile from the world
-        }
+
+        a.damage(damage);
+        hasHit = true; // Set the flag to true once damage is dealt
+        getWorld().removeObject(this); // Remove the projectile from the world
     }
 
     private void checkEdge() {

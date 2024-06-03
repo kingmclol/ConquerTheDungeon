@@ -17,8 +17,10 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
 
-    private int speed, atkSpd = 10, frame = 0, acts = 0, index = 0;
-    private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX 
+    private int speed,xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
+    private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
+    private HiddenBox Xhitbox, Yhitbox;
+
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
@@ -26,7 +28,7 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, mouseClick;
+    private boolean inAttack = false, mouseClick, hitboxLoaded = false;
     private static String[] weaponList = new String[2];
 
     private Aura aura;
@@ -53,6 +55,9 @@ public class Player extends Entity
         weaponList[0] = "sword";
         weaponList[1] = "staff";
 
+        Xhitbox = new HiddenBox(40, 60);
+        Yhitbox = new HiddenBox(62, 40);
+
         //weapon:
         for(int i = 0; i<swingingUp.length; i++)
         {
@@ -61,14 +66,12 @@ public class Player extends Entity
             swingingDown[i] = new GreenfootImage("sword/down" + (i+1) + ".png");
             swingingRight[i] = new GreenfootImage("sword/right" + (i+1) + ".png");
         }
-
         //Start at frame 0
         setImage(up.getFrame(0));
-        collisionBox = new CollisionBox(30, 48, Box.SHOW_BOXES, this); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
+        collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
     }
 
     public void act() {
-        super.act();
         slashableEnemies = getObjectsInRange(60, Enemy.class);
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -125,7 +128,7 @@ public class Player extends Entity
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
-        
+
         // if still in staff and not middle of attack animation,
         if(timeForStaff < 0 && !inAttack)
         {
@@ -134,6 +137,7 @@ public class Player extends Entity
             timeForStaff = 600; // reset Timer
         }
         acts++;
+        super.act();
     }
 
     public void addedToWorld(World world) {
@@ -185,7 +189,6 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
-        manageCollision();
     }
 
     private void handleShooting(){
@@ -203,13 +206,58 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        for (Enemy enemy : slashableEnemies) {
-            if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
+        if(frame ==5)
+        {
+            List<Actor> targets;
+            switch(facing)
             {
-                enemy.takeDamage(damage);
-                enemy.setDamagedState(true);
+                case "right":
+                    Xhitbox.makeVisible();
+                    getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
+                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    break;
+                case "left":
+                    Xhitbox.makeVisible();
+                    getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
+                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    break;
+                case "up":
+                    Yhitbox.makeVisible();
+                    getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
+                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    break;
+                case "down":
+                    Yhitbox.makeVisible();
+                    getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
+                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    break;
+                default:
+                    targets = null;
+            }
+            for(Actor a : targets)
+            {
+                if(a instanceof Enemy)
+                {
+                    Enemy e = (Enemy)a;
+                    /*
+                    if(e.damaged() == false)
+                    {
+                        e.damage(damage);
+                        e.setDamagedState(true);
+                    }*/
+                    e.damage(damage);
+                    e.setDamagedState(true);
+                }
             }
         }
+        /** OLD CODE
+        for (Enemy enemy : slashableEnemies) {
+        if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
+        {   
+        enemy.damage(damage);
+        enemy.setDamagedState(true);
+        }
+        }*/
     }
 
     private void shoot(int targetX, int targetY) {

@@ -5,14 +5,14 @@ public abstract class Enemy extends Entity {
     protected Animation up,down,left,right, dying;
     
     protected int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
-    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    
     //Speed/Movement:
     protected double spd;
     private String facing = "right";
     protected Player player;
     public Enemy() {
         super(Team.ENEMY, 100);
-        this.hp = 50;  
+        this.hp = 100;  
     }
     /**
      * THIS IS TEMPORARY IMPLEMENTATION. I NEED A PLAYER REFERENCE SOMEWHERE
@@ -95,14 +95,6 @@ public abstract class Enemy extends Entity {
     public boolean getDeath()
     {
         return death;
-    }
-    public boolean damaged()
-    {
-        return recievedDamage;
-    }
-    public void setDamagedState(boolean x)
-    {
-        recievedDamage = x;
     }
 }
 
