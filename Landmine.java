@@ -8,17 +8,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Landmine extends Floor
 {
-    /**
-     * Act - do whatever the Landmine wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
     public static GreenfootImage img = new GreenfootImage("landmine.jpg");
+    private HiddenBox hiddenBox;
     public Landmine() {
-        super(img);
+        super(img);        
+    }
+    private void explode(){
     }
     public void act()
     {
-        // Add your action code here.
+
     }
     public String getID() {
         return "lm";
