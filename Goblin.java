@@ -138,22 +138,6 @@ public class Goblin extends Enemy
             right = Animation.createAnimation(new GreenfootImage("goblin.png"), 1, 1, 7, 64, 64);
             up = Animation.createAnimation(new GreenfootImage("goblin.png"), 2, 1, 7, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("goblin.png"), 3, 1, 7, 64, 64);
-            switch(this.getFacing())
-            {
-                case "up":
-                    setImage(up.getFrame(frame));
-                    break;
-                case "down":
-                    setImage(down.getFrame(frame));
-                    break;
-                case "right":
-                    setImage(right.getFrame(frame));
-                    break;
-                case "left":
-                    setImage(left.getFrame(frame));
-                    break;
-            }
-            return;
         }
         switch(this.getFacing())
         {

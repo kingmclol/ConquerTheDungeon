@@ -74,7 +74,7 @@ public abstract class Box extends Actor
     public void act() {
         // Remove any orphaned Boxes. They should not exist to act without an owner. If used for instant
         // collision checks, they should've been removed anyways.
-        if (owner.getWorld() == null && this.getWorld() != null) { 
+        if (owner == null || owner.getWorld() == null) { 
             getWorld().removeObject(this);
             return;
         }
@@ -158,6 +158,9 @@ public abstract class Box extends Actor
             return;
         }
         setLocation(owner.getX()+xOffset, owner.getY()+yOffset); // Match with the owner, factoring in the yOffset.
+    }
+    public List<Actor> getIntersectingActors(Class<Actor> cls) {
+        return super.getIntersectingObjects(cls);
     }
     /**
      * Retuns all intersecting boxes of the given box subclass.
