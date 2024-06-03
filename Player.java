@@ -196,7 +196,10 @@ public class Player extends Entity
     public void move(double dx, double dy, double spd)
     {
         double vectorMagnitude = Math.sqrt(dx*dx + dy*dy);
-        
+        if(vectorMagnitude == 0)
+        {
+            return;
+        }
         double xComponent = dx/vectorMagnitude * spd;
         double yComponent = dy/vectorMagnitude * spd;
         System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
