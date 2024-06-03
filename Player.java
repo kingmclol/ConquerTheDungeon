@@ -17,7 +17,8 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
 
-    private int speed,xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
+    private double speed;
+    private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
     private HiddenBox Xhitbox, Yhitbox;
 
@@ -72,7 +73,6 @@ public class Player extends Entity
     }
 
     public void act() {
-        slashableEnemies = getObjectsInRange(60, Enemy.class);
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -148,7 +148,8 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
-        int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        double speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
         {
@@ -164,31 +165,41 @@ public class Player extends Entity
         }
         acts++;
         if (Greenfoot.isKeyDown("w")) {
-            setLocation(getX(), getY() - speed);
+            dy -= speed;
             setImage(up.getFrame(frame));
             facing = "up";
         }
         if (Greenfoot.isKeyDown("s")) {
-            setLocation(getX(), getY() + speed);
+            dy += speed;
             setImage(down.getFrame(frame));
             facing = "down";
         }
         if (Greenfoot.isKeyDown("a")) {
-            setLocation(getX() - speed, getY());
+            dx -= speed;
             setImage(left.getFrame(frame));
             facing = "left";
         }
         if (Greenfoot.isKeyDown("d")) {
-            setLocation(getX() + speed, getY());
+            dx += speed;
             setImage(right.getFrame(frame));
             facing = "right";
         }
         x = getX();
         y = getY();
+        move(dx, dy, speed);
         if(acts % 2 == 0)
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
+    }
+    public void move(double dx, double dy, double spd)
+    {
+        double vectorMagnitude = Math.sqrt(dx*dx + dy*dy);
+        
+        double xComponent = dx/vectorMagnitude * spd;
+        double yComponent = dy/vectorMagnitude * spd;
+        System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
+        setLocation(getX() + xComponent, getY() + yComponent);
     }
 
     private void handleShooting(){
@@ -411,17 +422,6 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
-                    if(slashableEnemies.isEmpty())
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        for(Enemy e : slashableEnemies)
-                        {
-                            e.setDamagedState(false);
-                        }
-                    }
                     break;
                 }
                 switch(facing)
