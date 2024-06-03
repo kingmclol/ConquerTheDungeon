@@ -12,7 +12,7 @@ public class Skeleton extends Enemy
     private int arrowCooldown;
 
     public Skeleton(){
-        collisionBox = new CollisionBox(30, 55, Box.SHOW_BOXES, this);
+        collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
         death = false;
