@@ -73,6 +73,8 @@ public class Player extends Entity
     }
 
     public void act() {
+        x = getX();
+        y = getY();
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -184,8 +186,7 @@ public class Player extends Entity
             setImage(right.getFrame(frame));
             facing = "right";
         }
-        x = getX();
-        y = getY();
+        
         move(dx, dy, speed);
         if(acts % 2 == 0)
         {
@@ -199,7 +200,7 @@ public class Player extends Entity
         double xComponent = dx/vectorMagnitude * spd;
         double yComponent = dy/vectorMagnitude * spd;
         System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
-        setLocation(getX() + xComponent, getY() + yComponent);
+        setLocation(x + xComponent, y + yComponent);
     }
 
     private void handleShooting(){
