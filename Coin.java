@@ -16,4 +16,8 @@ public class Coin extends Drop
     {
         // Add your action code here.
     }
+    
+    public void checkCollisionWithPlayer(){
+        
+    }
 }

@@ -21,7 +21,7 @@ public class PowerUp extends Drop
         
     }
 
-    private void checkCollisionWithPlayer() {
+    public void checkCollisionWithPlayer() {
         Player player = (Player) getOneIntersectingObject(Player.class);
         if (player != null) {
             player.activatePowerUp();

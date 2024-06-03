@@ -20,7 +20,7 @@ public class Heal extends Drop
         checkCollisionWithPlayer();
     }
 
-    private void checkCollisionWithPlayer() {
+    public void checkCollisionWithPlayer() {
         acts++;
         if(!spawning)
         {
