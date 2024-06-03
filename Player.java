@@ -118,7 +118,6 @@ public class Player extends Entity
         }
         else
         {
-            attackAnimation();
             if(this.getCurrentWeapon().equals("staff"))
             {
                 handleShooting();
@@ -127,6 +126,8 @@ public class Player extends Entity
             {
                 attack(10);
             }
+            attackAnimation();
+            
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
@@ -150,6 +151,15 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
+        if(isPoweredUp)
+        {
+            speed = powerUpSpeed;
+
+        }
+        else
+        {
+            speed = normalSpeed;
+        }
         double speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
@@ -186,13 +196,14 @@ public class Player extends Entity
             setImage(right.getFrame(frame));
             facing = "right";
         }
-        
+
         move(dx, dy, speed);
         if(acts % 2 == 0)
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
     }
+
     public void move(double dx, double dy, double spd)
     {
         double vectorMagnitude = Math.sqrt(dx*dx + dy*dy);
@@ -257,14 +268,15 @@ public class Player extends Entity
                     /*
                     if(e.damaged() == false)
                     {
-                        e.damage(damage);
-                        e.setDamagedState(true);
+                    e.damage(damage);
+                    e.setDamagedState(true);
                     }*/
                     e.damage(damage);
                     e.setDamagedState(true);
                 }
             }
         }
+
         /** OLD CODE
         for (Enemy enemy : slashableEnemies) {
         if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
