@@ -128,5 +128,10 @@ public abstract class Entity extends SuperActor implements Damageable
     {
         recievedDamage = x;
     }
-
+    /**
+     * Returns the position of this Entity AT ITS ACTUAL COLLISIONBOX (at its feet)
+     */
+    public Vector getPosition(){
+        return collisionBox.getPosition();
+    }
 }
