@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Heal class represents a healing item that the player can collect to restore health.
  */
-public class Heal extends SuperSmoothMover
+public class Heal extends Drop
 {
     private int healAmount, actsBeforeExpired = 3600, frame = 0, acts = 0;
     private boolean spawning = true;

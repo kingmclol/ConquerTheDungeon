@@ -1,6 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class PowerUp extends SuperSmoothMover
+public class PowerUp extends Drop
 {
     private GreenfootImage[] animate = new GreenfootImage[3];
     private int frame = 0, acts = 0;
