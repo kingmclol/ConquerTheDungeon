@@ -16,6 +16,7 @@ public class Lava extends Floor
     public static GreenfootImage img = new GreenfootImage("lava.jpg");
     public Lava() {
         super(img);
+        walkable = false;
     }
     public void act()
     {
