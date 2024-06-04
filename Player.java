@@ -45,7 +45,7 @@ public class Player extends Entity
         powerUpShootingInterval = 30;
         shootingTimer = 0;
         hp = 100;
-        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
+        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
@@ -237,22 +237,22 @@ public class Player extends Entity
             switch(facing)
             {
                 case "right":
-                    Xhitbox.makeVisible();
+                    //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
                     targets = Xhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "left":
-                    Xhitbox.makeVisible();
+                    //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
                     targets = Xhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "up":
-                    Yhitbox.makeVisible();
+                    //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
                     targets = Yhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "down":
-                    Yhitbox.makeVisible();
+                    //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
                     targets = Yhitbox.getIntersectingActors(Actor.class);
                     break;
@@ -498,6 +498,10 @@ public class Player extends Entity
             case "bow":
                 break;
         }
+    }
+    public static String getFacing()
+    {
+        return facing;
     }
 }
 

@@ -28,6 +28,9 @@ public class Heal extends Drop
             animate();
             if (player != null) {
                 player.heal(healAmount);
+                getWorld().addObject(new HealingEffect(player, -20, -10), player.getX(), player.getY()); // up Left
+                getWorld().addObject(new HealingEffect(player, -15, 30), player.getX(), player.getY()); // down left
+                getWorld().addObject(new HealingEffect(player, 35, 0), player.getX(), player.getY()); // middle right
                 getWorld().removeObject(this);
             }
         }

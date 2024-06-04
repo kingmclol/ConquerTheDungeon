@@ -23,6 +23,7 @@ public class RoomEditor extends GameWorld
     public RoomEditor()
     {    
         super();
+        setPaintOrder(HealingEffect.class, Player.class);
         board = new Board(16, 12);
         addObject(board, 0,0);
         drawID = "f";
