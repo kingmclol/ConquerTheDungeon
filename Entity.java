@@ -78,6 +78,7 @@ public abstract class Entity extends SuperActor implements Damageable
         // // Get the ArrayList that holds the modifiers of same trigger type as m, then remove from the arraylist.
         // statusModifiers.get(m.trigger).remove(m);
     // }
+    protected abstract void deathAnimation();
     public int damage(int dmg) {
         if (iFrameTimer.acts() <= IFRAMES) return 0;
         TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
@@ -88,7 +89,12 @@ public abstract class Entity extends SuperActor implements Damageable
         hp -= dmg;
         dmgTaken = dmg;
         hpBar.update(hp);
-        iFrameTimer.mark(); // reset iframes
+        iFrameTimer.mark();
+        // reset iframes
+        if(hp <= 0)
+        {
+            deathAnimation();
+        }
         return dmgTaken;
     }
     public void heal(int heal) {

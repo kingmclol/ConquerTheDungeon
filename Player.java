@@ -301,6 +301,11 @@ public class Player extends Entity
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
     }
+    
+    public void deathAnimation()
+    {
+        getWorld().removeObject(this);
+    }
 
     private void checkPowerUpStatus() {
         if (isPoweredUp && (System.currentTimeMillis() - powerUpStartTime >= 8000)) {
@@ -503,10 +508,6 @@ public class Player extends Entity
             case "bow":
                 break;
         }
-    }
-    public static String getFacing()
-    {
-        return facing;
     }
 }
 

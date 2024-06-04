@@ -26,7 +26,6 @@ public class Landmine extends SpecialTiles
     }
     public void act()
     {
-        acts++;
         checkTouchTile();
     }
 
