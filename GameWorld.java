@@ -18,7 +18,7 @@ public class GameWorld extends World
     public GameWorld()
     { 
         super(1200, 768, 1, false); 
-        setPaintOrder(Cursor.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Projectile.class, Entity.class, Aura.class, PowerUp.class, Heal.class, CellEffect.class, Tile.class);
+        setPaintOrder(Cursor.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Projectile.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
