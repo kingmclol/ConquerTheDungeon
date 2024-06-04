@@ -37,6 +37,11 @@ public class Player extends Entity
     private int ultimateCooldown = 300;
     private int cooldownTimer = 0;
 
+    private boolean isDashing = false;
+    private long dashCooldownTime = 0;
+    private int dashFrames = 0;
+    private double dashDx = 0, dashDy = 0;
+
     public Player() {
         super(Team.ALLY, 100);
         normalSpeed = 5;
@@ -75,9 +80,26 @@ public class Player extends Entity
     public void act() {
         x = getX();
         y = getY();
+
+        if (isDashing) {
+            dashFrames++;
+            move(dashDx, dashDy, 10);
+            if (dashFrames >= 10) {
+                isDashing = false;
+                dashCooldownTime = System.currentTimeMillis();
+            }
+        } else {
+            if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
+                if (Greenfoot.isKeyDown("shift")) {
+                    dash();
+                }
+            }
+        }
+
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
+
         if (weapon.equals("staff") && cooldownTimer <= 0) {
             useStaffUltimate();
         }
@@ -182,8 +204,7 @@ public class Player extends Entity
             dy -= speed;
             setImage(up.getFrame(frame));
             facing = "up";
-        }
-        if (Greenfoot.isKeyDown("s")) {
+        }if (Greenfoot.isKeyDown("s")) {
             dy += speed;
             setImage(down.getFrame(frame));
             facing = "down";
@@ -217,6 +238,31 @@ public class Player extends Entity
         double yComponent = dy/vectorMagnitude * spd;
         System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
         setLocation(x + xComponent, y + yComponent);
+    }
+
+    private void dash() {
+        if (isDashing) return; // Prevent dashing again if already dashing
+
+        isDashing = true;
+        dashFrames = 0;
+        dashDx = 0;
+        dashDy = 0;
+
+        double dashSpeed = 20.0; // Speed per frame for a total distance of 200 over 10 frames
+        switch (facing) {
+            case "up":
+                dashDy = -dashSpeed;
+                break;
+            case "down":
+                dashDy = dashSpeed;
+                break;
+            case "left":
+                dashDx = -dashSpeed;
+                break;
+            case "right":
+                dashDx = dashSpeed;
+                break;
+        }
     }
 
     private void handleShooting(){
@@ -288,9 +334,11 @@ public class Player extends Entity
         }
         }*/
     }
+
     public static String getFacing (){
         return facing;
     }
+
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
@@ -301,7 +349,7 @@ public class Player extends Entity
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
     }
-    
+
     public void deathAnimation()
     {
         getWorld().removeObject(this);
