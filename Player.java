@@ -504,9 +504,5 @@ public class Player extends Entity
                 break;
         }
     }
-    public static String getFacing()
-    {
-        return facing;
-    }
 }
 
