@@ -291,13 +291,6 @@ public class Player extends Entity
         getWorld().addObject(bullet, getX(), getY());
     }
 
-    public void heal(int healAmount) {
-        hp += healAmount;
-        if (hp > 100) {
-            hp = 100; // Assuming max HP is 100
-        }
-    }
-
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
