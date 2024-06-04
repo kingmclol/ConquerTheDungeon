@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Lava extends Floor
+public class Lava extends SpecialTiles
 {
     /**
      * Act - do whatever the Lava wants to do. This method is called whenever
@@ -20,6 +20,9 @@ public class Lava extends Floor
     }
     public void act()
     {
+        checkTouchTile();
+    }
+    protected void checkTouchTile(){
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
         for(Box box : boxes){
             Actor owner = box.getOwner();
@@ -27,6 +30,9 @@ public class Lava extends Floor
                 ((Entity) owner).damage(Utility.randomIntInRange(5, 15));
             }
         }
+    }
+    protected void doEffect(Actor a){
+        ((Entity) a).damage(Utility.randomIntInRange(5, 15));
     }
     public String getID(){
         return "lv";
