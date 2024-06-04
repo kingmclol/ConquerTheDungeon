@@ -10,7 +10,7 @@ public class HealingEffect extends Heal
 {
     private int currentXOffset, yOffset, frame = 0, acts = 0;
     private int[] xOffsets = new int[2];
-    private double speed = 1.4;
+    private double speed = 1.7;
     private Actor owner;
     private Player player;
     private boolean updatePositionFirst = false;
@@ -43,6 +43,10 @@ public class HealingEffect extends Heal
             updatePositionFirst = true;
         }
         acts++;
+        if(acts % 90 == 0)
+        {
+            player.heal(1);
+        }
         animate();
         moveMe();
         if(acts >= 1800 || owner.getWorld() == null)
@@ -74,7 +78,7 @@ public class HealingEffect extends Heal
         {
             setLocation(owner.getX() + currentXOffset, getY() - speed);
         }
-        if((owner.getY() - this.getY()) >= 8 || (this.getY() - owner.getY()) >= 8)
+        if((owner.getY() - this.getY()) >= 15 || (this.getY() - owner.getY()) >= 15)
         {
             setLocation(owner.getX() + currentXOffset, owner.getY() + yOffset);
         }
