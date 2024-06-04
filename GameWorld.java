@@ -30,6 +30,7 @@ public class GameWorld extends World
     public void act() {
         Timer.tick();
         Mouse.getMouse();
+        Keyboard.update();
     }
     public Board getBoard() {
         return board;

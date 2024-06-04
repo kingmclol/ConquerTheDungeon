@@ -36,7 +36,7 @@ public class RoomEditor extends GameWorld
         // if (mousePosition != null) {
             // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
         // }
-        String key = Greenfoot.getKey();
+        String key = Keyboard.getCurrentKey();
        
         if (Greenfoot.mouseClicked(null)) {
             Cell c = Mouse.getClickedActor(Cell.class);

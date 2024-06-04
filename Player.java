@@ -40,7 +40,8 @@ public class Player extends Entity
     private boolean isDashing = false;
     private long dashCooldownTime = 0;
     private int dashFrames = 0;
-    private double dashDx = 0, dashDy = 0;
+    //private double dashDx = 0, dashDy = 0;
+    private Vector dashVelocity;
 
     public Player() {
         super(Team.ALLY, 100);
@@ -81,21 +82,6 @@ public class Player extends Entity
         x = getX();
         y = getY();
 
-        if (isDashing) {
-            dashFrames++;
-            move(dashDx, dashDy, 10);
-            if (dashFrames >= 10) {
-                isDashing = false;
-                dashCooldownTime = System.currentTimeMillis();
-            }
-        } else {
-            if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
-                if (Greenfoot.isKeyDown("shift")) {
-                    dash();
-                }
-            }
-        }
-
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -110,8 +96,7 @@ public class Player extends Entity
         }
         else
         {
-            String key = Greenfoot.getKey();
-            if("r".equals(key))
+            if("r".equals(Keyboard.getCurrentKey()))
             {
                 switchWeapon();
             }
@@ -135,7 +120,7 @@ public class Player extends Entity
             //set frame 0 when attacking.
         }
         if(!flung){
-            if(!inAttack )
+            if(!inAttack)
             {
                 movePlayer();
             }
@@ -225,6 +210,22 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
+        
+        if (isDashing) {
+            dashFrames++;
+            displace(dashVelocity);
+            if (dashFrames >= 10) {
+                isDashing = false;
+                dashCooldownTime = System.currentTimeMillis();
+            }
+        } else {
+            if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
+                String key = Keyboard.getCurrentKey();
+                if ("shift".equals(key) && (dx + dy) != 0){
+                    dash(dx, dy);
+                }
+            }
+        }
     }
 
     public void move(double dx, double dy, double spd)
@@ -236,33 +237,20 @@ public class Player extends Entity
         }
         double xComponent = dx/vectorMagnitude * spd;
         double yComponent = dy/vectorMagnitude * spd;
-        System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
+        //System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
         setLocation(x + xComponent, y + yComponent);
     }
 
-    private void dash() {
+    private void dash(int x, int y) {
+        dashVelocity = new Vector(x, y);
         if (isDashing) return; // Prevent dashing again if already dashing
 
         isDashing = true;
         dashFrames = 0;
-        dashDx = 0;
-        dashDy = 0;
 
-        double dashSpeed = 20.0; // Speed per frame for a total distance of 200 over 10 frames
-        switch (facing) {
-            case "up":
-                dashDy = -dashSpeed;
-                break;
-            case "down":
-                dashDy = dashSpeed;
-                break;
-            case "left":
-                dashDx = -dashSpeed;
-                break;
-            case "right":
-                dashDx = dashSpeed;
-                break;
-        }
+        double dashSpeed = 10.0; 
+        dashVelocity.scaleTo(dashSpeed);
+        
     }
 
     private void handleShooting(){
