@@ -10,8 +10,6 @@ import java.util.ArrayList;
 public class Landmine extends SpecialTiles
 {
 
-    private GreenfootImage[] animate = new GreenfootImage[12];
-    private int frame = 0, acts = 0;
     public static GreenfootImage img = new GreenfootImage("landmine.png");
     private HiddenBox hiddenBox;
     private boolean exploded;

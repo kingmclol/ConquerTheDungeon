@@ -14,7 +14,7 @@ public abstract class Tile extends SuperActor
     /**
      * Constructor for objects of class Tile
      */
-    private boolean walkable;
+    protected boolean walkable;
     private static HashMap<String, Class> tileDatabase;
     private Cell cell;
     public Tile(boolean walkable, Color c)
