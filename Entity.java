@@ -89,12 +89,8 @@ public abstract class Entity extends SuperActor implements Damageable
         hp -= dmg;
         dmgTaken = dmg;
         hpBar.update(hp);
-        iFrameTimer.mark();
-        // reset iframes
-        if(hp <= 0)
-        {
-            deathAnimation();
-        }
+        if(hp <= 0) die();
+        iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }
     public void heal(int heal) {
