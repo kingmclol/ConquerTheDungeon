@@ -118,6 +118,7 @@ public class Player extends Entity
         }
         else
         {
+            attackAnimation();
             if(this.getCurrentWeapon().equals("staff"))
             {
                 handleShooting();
@@ -125,9 +126,7 @@ public class Player extends Entity
             else
             {
                 attack(10);
-            }
-            attackAnimation();
-            
+            }            
         }
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
@@ -272,7 +271,7 @@ public class Player extends Entity
                     e.setDamagedState(true);
                     }*/
                     e.damage(damage);
-                    e.setDamagedState(true);
+                    //e.setDamagedState(true);
                 }
             }
         }

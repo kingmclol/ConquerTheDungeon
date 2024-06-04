@@ -4,7 +4,7 @@ public abstract class Enemy extends Entity {
     //Animations for Moving as well as other object behaviour: 
     protected Animation up,down,left,right, dying;
     
-    protected int hp, mvtSpd = 2, x, y, rotation;//X and Y are Location
+    protected int mvtSpd = 2, x, y, rotation;//X and Y are Location
     
     //Speed/Movement:
     protected double spd;

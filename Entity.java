@@ -73,10 +73,9 @@ public abstract class Entity extends SuperActor implements Damageable
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         int dmgTaken;
-        if (hp <= dmg) dmgTaken = hp;
+        if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
         dmgTaken = dmg;
-        if (hp <= 0) die();
         hpBar.update(hp);
         return dmgTaken;
     }
