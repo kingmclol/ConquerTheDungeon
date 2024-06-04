@@ -76,6 +76,7 @@ public class Skeleton extends Enemy
 
     public void deathAnimation()
     {
+        die();
 
     }
 

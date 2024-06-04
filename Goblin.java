@@ -36,7 +36,10 @@ public class Goblin extends Enemy
 
     public void act()
     {
-        super.act();
+        if(!death)
+        {
+           super.act(); 
+        }
         // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
