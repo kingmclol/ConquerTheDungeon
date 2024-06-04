@@ -87,7 +87,7 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     //protected abstract void animate();
     public void die() {
-        return;
+        getWorld().removeObject(this);
     }
     public boolean isAlive() {
         //return hp >= 0;
