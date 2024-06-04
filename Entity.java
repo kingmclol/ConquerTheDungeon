@@ -24,11 +24,12 @@ public abstract class Entity extends SuperActor implements Damageable
     //protected HealthBar healthBar;
     // protected Team team;
     protected int hp;
+    protected int recoveryActs = 0;
     protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
-    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
-    
+    protected boolean inAttack, death, dealtDamage, recievedDamage, flung = false;
+    protected ParabolicProjectile projPath;
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -50,6 +51,9 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
+        if(flung){
+            fling();
+        }
         manageCollision();
         //animate();
     }
@@ -119,7 +123,32 @@ public abstract class Entity extends SuperActor implements Damageable
             setLocation(getX(), 739);
         }
     }
-    
+    public void setFlungState(boolean state){
+        flung = state;
+    }
+    public void fling(){
+        if(projPath != null && !projPath.pathDone()){
+            //Iterates through 1 point per flungTimer act
+            
+            //Turns the actor as it moves through the projectile path
+            turn(8);
+            Vector pos = projPath.nextCoord();
+            if(Player.getFacing().equals("right")){
+                setLocation(getX() - pos.getX(), getY() - pos.getY());
+            }
+            else{
+                setLocation(getX() + pos.getX(), getY() - pos.getY());
+            }
+            if(projPath.pathDone()){
+            
+                setRotation(0);
+                flung = false;
+            }
+        }
+        else {
+            projPath = new ParabolicProjectile(40, Greenfoot.getRandomNumber(40) + 10, Greenfoot.getRandomNumber(20) + 10);
+        }
+    }
     public boolean damaged()
     {
         return recievedDamage;

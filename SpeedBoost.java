@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class SpeedBoost here.
@@ -19,8 +20,19 @@ public class SpeedBoost extends SpecialTiles
     }
     public void act()
     {
-        // Add your action code here.
+        checkTouchTile();
     }
+    protected void checkTouchTile(){
+        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
+        for(Box box : boxes){
+            Actor owner = box.getOwner();
+            if(owner instanceof Entity){
+                //doEffect(owner);
+            }
+        }
+    }
+ 
+    
     public String getID() {
         return "spb";
     }

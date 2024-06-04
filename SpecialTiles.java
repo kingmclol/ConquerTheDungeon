@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class SpecialTiles here.
@@ -20,11 +21,9 @@ public abstract class SpecialTiles extends Floor
     public void addedToWorld(World w) {
         w.addObject(hiddenBox, getX(), getY());
     }
+    protected abstract void checkTouchTile();
     public void initBox(){
         hiddenBox = new HiddenBox(Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES, this);
     }
-    public void act()
-    {
-        // Add your action code here.
-    }
+    //protected abstract void doEffect(Actor a);
 }

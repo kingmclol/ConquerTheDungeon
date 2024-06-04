@@ -110,22 +110,25 @@ public class Player extends Entity
             frame = 0;
             //set frame 0 when attacking.
         }
-        if(!inAttack)
-        {
-            movePlayer();
-        }
-        else
-        {
-            attackAnimation();
-            if(this.getCurrentWeapon().equals("staff"))
+        if(!flung){
+            if(!inAttack )
             {
-                handleShooting();
+                movePlayer();
             }
             else
             {
-                attack(10);
+                attackAnimation();
+                if(this.getCurrentWeapon().equals("staff"))
+                {
+                    handleShooting();
+                }
+                else
+                {
+                    attack(10);
+                }
             }
         }
+
         // Add other behaviours here (like checking for collisions, etc.)
         checkPowerUpStatus();
 
@@ -259,7 +262,9 @@ public class Player extends Entity
         }
         }*/
     }
-
+    public static String getFacing (){
+        return facing;
+    }
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
