@@ -19,7 +19,7 @@ public class GameWorld extends World
     { 
         super(1200, 768, 1, false); 
 
-        setPaintOrder(Cursor.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Explosion.class, Projectile.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+        setPaintOrder(Cursor.class, Segment.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Projectile.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
 
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
@@ -30,6 +30,7 @@ public class GameWorld extends World
     public void act() {
         Timer.tick();
         Mouse.getMouse();
+        Keyboard.update();
     }
     public Board getBoard() {
         return board;
