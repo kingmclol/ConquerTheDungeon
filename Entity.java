@@ -84,10 +84,9 @@ public abstract class Entity extends SuperActor implements Damageable
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         int dmgTaken;
-        if (hp <= dmg) dmgTaken = hp;
+        if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
         dmgTaken = dmg;
-        if (hp <= 0) die();
         hpBar.update(hp);
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;
@@ -97,10 +96,11 @@ public abstract class Entity extends SuperActor implements Damageable
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
+        hpBar.update(hp);
     }
     //protected abstract void animate();
     public void die() {
-        return;
+        getWorld().removeObject(this);
     }
     public boolean isAlive() {
         //return hp >= 0;
