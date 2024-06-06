@@ -223,7 +223,7 @@ public class Player extends Entity
         } else {
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
-                if ("shift".equals(key) && dx != 0 && dy != 0){
+                if ("shift".equals(key) && (dx != 0 || dy != 0)){
                     dash(dx, dy);
                 }
             }
