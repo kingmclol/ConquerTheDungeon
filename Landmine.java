@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Landmine extends SpecialTiles
+public class Landmine extends Floor
 {
 
     public static GreenfootImage img = new GreenfootImage("landmine.png");
@@ -26,7 +26,6 @@ public class Landmine extends SpecialTiles
     }
     public void act()
     {
-        acts++;
         checkTouchTile();
     }
 

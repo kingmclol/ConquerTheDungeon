@@ -152,6 +152,10 @@ public class Player extends Entity
 
     private void movePlayer() {
         int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        if(speedBoost > 0){
+            speed = (int)((double) speed * 1.4);
+        }
+        
         int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
         {

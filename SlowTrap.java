@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class SlowTrap here.
@@ -18,6 +19,15 @@ public class SlowTrap extends Floor
     public void act()
     {
         // Add your action code here.
+    }
+    protected void checkTouchTile(){
+        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
+        for(Box box : boxes){
+            Actor owner = box.getOwner();
+            if(owner instanceof Entity){
+                //doEffect(owner);
+            }
+        }
     }
     public String getID() {
         return "slw";
