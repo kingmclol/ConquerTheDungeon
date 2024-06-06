@@ -32,12 +32,13 @@ public class Landmine extends SpecialTiles
     protected void checkTouchTile(){
         if(!exploded){
             ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
-            System.out.println(boxes);
+            //System.out.println(boxes);
             for(Box box : boxes){
                 Actor owner = box.getOwner();
                 if(owner instanceof Entity){
-                    
+                    exploded = true;
                     explode();
+                    break;
                 }
             }
         }

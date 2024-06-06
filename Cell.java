@@ -149,24 +149,44 @@ public class Cell extends SuperActor
         getWorld().removeObject(tile);
         tile = t;
         t.setCell(this);
+        if (t instanceof EmptyFloor) { // Enemies can spawn in this cell now.
+            board.addValidSpawnCell(this);
+        } else {
+            board.removeValidSpawnCell(this);
+        }
         getWorld().addObject(t, getX(), getY());
     }
     public boolean containsCellEffect() {
         return (!cellEffects.isEmpty());
     }
     // ============================SHADOWCASTING METHODS but i gave up===========================================
+    /**
+     * Do not use.
+     */
     public void setEdgeID(int direction, int id) {
         edgeID[direction] = id;
     }
+    /**
+     * Do not use.
+     */
     public int getEdgeID(int direction) {
         return edgeID[direction];
     }
+    /**
+     * Do not use.
+     */
     public void setEdgeExist(int direction, boolean exists) {
         edgeExist[direction] = exists;
     }
+    /**
+     * Do not use.
+     */
     public boolean edgeExist(int direction) {
         return edgeExist[direction];
     }
+    /**
+     * Do not use.
+     */
     public void clearEdgeData() {
         edgeID = new int[4];
         edgeExist = new boolean[4];

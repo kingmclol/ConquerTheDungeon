@@ -35,4 +35,14 @@ public class GameWorld extends World
     public Board getBoard() {
         return board;
     }
+    /**
+     * Displays some text alert on the screen.
+     * @param str The text to display
+     * @param c the color of the text.
+     */
+    public void alert(String str, Color c) {
+        TextBox info = new TextBox(str, 36, c, null, 2, 255);
+        addObject(info, getWidth()/2, 100);
+        info.fadeOut();
+    }
 }
