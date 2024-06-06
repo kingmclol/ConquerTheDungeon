@@ -81,6 +81,8 @@ public class Player extends Entity
     public void act() {
         x = getX();
         y = getY();
+        
+        
 
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -221,7 +223,7 @@ public class Player extends Entity
         } else {
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
-                if ("shift".equals(key) && (dx + dy) != 0){
+                if ("shift".equals(key) && dx != 0 && dy != 0){
                     dash(dx, dy);
                 }
             }
@@ -358,6 +360,10 @@ public class Player extends Entity
 
     public int getHp() {
         return hp;
+    }
+    
+    public void setHp(int health){
+        hp = health;
     }
 
     public static int returnX()
@@ -545,5 +551,7 @@ public class Player extends Entity
                 break;
         }
     }
+    
+    
 }
 
