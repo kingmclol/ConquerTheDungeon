@@ -36,8 +36,9 @@ public class Landmine extends SpecialTiles
             for(Box box : boxes){
                 Actor owner = box.getOwner();
                 if(owner instanceof Entity){
-                    
+                    exploded = true;
                     explode();
+                    break;
                 }
             }
         }

@@ -19,7 +19,7 @@ public class Mouse
     private static World w;
     private static int x, y;
     private static boolean mouseDown;
-    private static final boolean SHOW_INFO = true;
+    private static final boolean SHOW_INFO = false;
     private static Timer mouseDownTimer = new Timer(false);
     private Mouse()
     {
