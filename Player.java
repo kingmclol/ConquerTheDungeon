@@ -359,6 +359,10 @@ public class Player extends Entity
     public int getHp() {
         return hp;
     }
+    
+    public void setHp(int health){
+        hp = health;
+    }
 
     public static int returnX()
     {
@@ -545,5 +549,7 @@ public class Player extends Entity
                 break;
         }
     }
+    
+    
 }
 
