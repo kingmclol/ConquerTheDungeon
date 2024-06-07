@@ -29,7 +29,7 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, mouseClick, hitboxLoaded = false;
+    private boolean inAttack = false, mouseClick, moving = false;
     private static String[] weaponList = new String[2];
 
     private Aura aura;
@@ -75,6 +75,7 @@ public class Player extends Entity
     public void act() {
         x = getX();
         y = getY();
+        moving = false;
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -116,6 +117,7 @@ public class Player extends Entity
             if(!inAttack )
             {
                 movePlayer();
+
             }
             else
             {
@@ -156,7 +158,6 @@ public class Player extends Entity
         if(isPoweredUp)
         {
             speed = powerUpSpeed;
-
         }
         else
         {
@@ -182,23 +183,30 @@ public class Player extends Entity
             dy -= speed;
             setImage(up.getFrame(frame));
             facing = "up";
+            moving = true;
         }
         if (Greenfoot.isKeyDown("s")) {
             dy += speed;
             setImage(down.getFrame(frame));
             facing = "down";
+            moving = true;
         }
         if (Greenfoot.isKeyDown("a")) {
             dx -= speed;
             setImage(left.getFrame(frame));
             facing = "left";
+            moving = true;
         }
         if (Greenfoot.isKeyDown("d")) {
             dx += speed;
             setImage(right.getFrame(frame));
             facing = "right";
+            moving = true;
         }
-
+        if(Greenfoot.getKey() == null && (moving == false))
+        {
+            idle();
+        }
         move(dx, dy, speed);
         if(acts % 2 == 0)
         {
@@ -288,9 +296,11 @@ public class Player extends Entity
         }
         }*/
     }
+
     public static String getFacing (){
         return facing;
     }
+
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
@@ -301,7 +311,7 @@ public class Player extends Entity
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
     }
-    
+
     public void deathAnimation()
     {
         getWorld().removeObject(this);
@@ -336,7 +346,21 @@ public class Player extends Entity
 
     public void idle()
     {
-
+        switch(facing)
+        {
+            case "right":
+                setImage(right.getFrame(0));
+                break;
+            case "left":
+                setImage(left.getFrame(0));
+                break;
+            case "up":
+                setImage(up.getFrame(0));
+                break;
+            case "down":
+                setImage(down.getFrame(0));
+                break;
+        }
     }
 
     public void useStaffUltimate() {
@@ -457,7 +481,7 @@ public class Player extends Entity
                         setImage(swingingRight[frame]);
                         break;
                 }
-                if(acts % atkSpd == 0)
+                if(acts % (atkSpd/2) == 0)
                 {
                     frame = (frame+1)%(swingingRight.length);
                 }

@@ -12,6 +12,11 @@ public class Skeleton extends Enemy
     private int arrowCooldown;
 
     public Skeleton(){
+        //Animation: 
+        up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
+        left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 9, 1, 9, 64, 64);
+        down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 10, 1, 9, 64, 64);
+        right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 11, 1, 9, 64, 64, 10);
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
@@ -71,7 +76,25 @@ public class Skeleton extends Enemy
 
     public void manageAnimation()
     {
-
+        if(acts % 5 == 0)
+        {
+            frame = (frame+1)%(up.getAnimationLength());
+        }
+        switch(this.getFacing())
+        {
+            case "right":
+                setImage(right.getFrame(frame));
+                break;
+            case "left":
+                setImage(left.getFrame(frame));
+                break;
+            case "up":
+                setImage(up.getFrame(frame));
+                break;
+            case "down":
+                setImage(down.getFrame(frame));
+                break;
+        }
     }
 
     public void deathAnimation()
