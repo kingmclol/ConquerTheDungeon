@@ -271,44 +271,47 @@ public class Player extends Entity
     private void attack(int damage) {
         if(frame ==5)
         {
-            List<Actor> targets;
+            List<Damageable> targets;
             switch(facing)
             {
                 case "right":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "left":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "up":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "down":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 default:
                     targets = null;
             }
-            for(Actor a : targets)
+            for(Damageable a : targets)
             {
-                if(a instanceof Damageable)
-                {
-                    Enemy e = (Enemy)a;
+                if(!(a instanceof Player)){
+                    a.damage(damage);
+                    if(a instanceof Enemy){
+                        Enemy e = (Enemy)a;
+                        e.setDamagedState(true);
+                    }
                     /*
                     if(e.damaged() == false)
                     {
                     e.damage(damage);
                     e.setDamagedState(true);
                     }*/
-                    e.damage(damage);
+                    
                     //e.setDamagedState(true);
                 }
             }
