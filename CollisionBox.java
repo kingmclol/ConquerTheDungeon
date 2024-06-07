@@ -13,13 +13,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class CollisionBox extends Box
 {
     /**
-     * Creates a basic CollisionBox, which is basically a box. Should be used for temporary collision checking,
-     * so having it visible or invisible does not matter.
+     * Creates a basic CollisionBox, which is basically a box. This constructor creates a collision box that is not tied
+     * to any owner, so it will simply just exist.
      * @param width The width of the CollisionBox.
      * @param height The height of the CollisionBox.
+     * @param visible whether the box should be visible.
      */
-    public CollisionBox (int width, int height) {
-        this(width, height, false, null, 0, 0);
+    public CollisionBox (int width, int height, boolean visible) {
+        this(width, height, visible, null, 0, 0);
+        hasOwner = false; // no owner for this 
     }
     /**
      * Creates a CollisionBox that is tied to an owner.

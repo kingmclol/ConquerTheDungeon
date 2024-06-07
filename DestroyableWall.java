@@ -12,9 +12,9 @@ public class DestroyableWall extends Destroyable
      * Act - do whatever the DestroyableWall wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    private static GreenfootImage img = new GreenfootImage("destroyablewall.png");
+    //private static GreenfootImage img = new GreenfootImage("destroyablewall.png");
     public DestroyableWall() {
-        super(img, 30);
+        super(new Color(23, 56, 93), 30);
     }
     public void act()
     {

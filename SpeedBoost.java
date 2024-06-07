@@ -14,8 +14,9 @@ public class SpeedBoost extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
+    public static GreenfootImage img = new GreenfootImage("speedBoost.png");
     public SpeedBoost() {
-        super(Color.BLUE);
+        super(img);
     }
 
     public void act()

@@ -76,26 +76,37 @@ public abstract class SuperActor extends SuperSmoothMover
         }
 
         // Get nodes from the nodeGrid for comparison
-        Node targetNode = board.getCellWithRealPosition((int)target.getX(), (int)target.getY()).getNode();
-        Node currentNode = board.getCellWithRealPosition(getX(), getY()).getNode();
-
-        if (targetNode == currentNode) { // Same node as target!!!
-            moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
-            return; // nothing else to do.
+        Node targetNode = board.getNode(board.getCellWithRealPosition((int)target.getX(), (int)target.getY()));
+        Node currentNode = board.getNode(board.getCellWithRealPosition(this.getX(), this.getY()));
+        if (targetNode == null || currentNode == null || !targetNode.isWalkable() || !currentNode.isWalkable()) { // A node does not exist or is not walk to able.
+            if (SHOW_PATHFINDING_DEBUG) System.out.println("warn: one node was not found or not walkable when pathfinding.");
         }
-        else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
-            if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
-            targetNodePrev = targetNode; // store the target's node for comparison later on.
-            path = null; // need new path to the target.
+        else { // Do pathfdingin depending on the nodes given.
+            if (targetNode == currentNode) { // Same node as target!!!
+                moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
+                return; // nothing else to do.
+            }
+            else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
+                if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
+                targetNodePrev = targetNode; // store the target's node for comparison later on.
+                
+                // Create a new path to the new target node.
+                ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
+                if (nodes != null) {
+                    path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
+                    path.remove(0); // This is the node I am currently in.
+                }
+                // if (board.findPath(currentNode, targetNode) != null)path = null; // need new path to the target.
+            }
         }
-
+    
+        // The actual moving part.
         if (path == null) { // no path, or target node changed (target moving), or target changed
             // Pathfind to target.
             ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
             if (nodes != null) {
                 path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
                 path.remove(0); // This is the node I am currently in.
-                // if (SHOW_PATHFINDING_DEBUG) Board.displayPath(nodes, Color.YELLOW);
             }
         }
 
@@ -105,7 +116,7 @@ public abstract class SuperActor extends SuperSmoothMover
                 if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
                 moveTowards(nextPos, distance); // Move towards the next positino.
 
-                if (displacementFrom(nextPos) < 1) { // If close to the target position
+                if (displacementFrom(nextPos) < 5) { // If close to the target position
                     if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
                     path.remove(0); // remove from list of positions to move to.
                 }
@@ -119,7 +130,6 @@ public abstract class SuperActor extends SuperSmoothMover
             }
         }
     }
-
     /** 
      * Move towards a SuperActor. This time, with pathfinding involved.
      * @param target The SuperActor to move towards.

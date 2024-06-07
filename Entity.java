@@ -127,18 +127,18 @@ public abstract class Entity extends SuperActor implements Damageable
             }
         }
         
-        if(getX() <= 10){
-            setLocation(11, getY());
-        }
-        if(getX() >= 1015){
-            setLocation(1014, getY());
-        }
-        if(getY() <= 20){
-            setLocation(getX(), 21);
-        }
-        if(getY() >= 740){
-            setLocation(getX(), 739);
-        }
+        // if(getX() <= 10){
+            // setLocation(11, getY());
+        // }
+        // if(getX() >= 1015){
+            // setLocation(1014, getY());
+        // }
+        // if(getY() <= 20){
+            // setLocation(getX(), 21);
+        // }
+        // if(getY() >= 740){
+            // setLocation(getX(), 739);
+        // }
     }
     public void setFlungState(boolean state){
         flung = state;
