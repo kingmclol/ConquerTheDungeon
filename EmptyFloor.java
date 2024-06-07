@@ -20,7 +20,10 @@ public class EmptyFloor extends Floor
     {
         // Add your action code here.
     }
+    protected void checkTouchTile(){
+    }
     public String getID() {
         return "f";
     }
+    
 }

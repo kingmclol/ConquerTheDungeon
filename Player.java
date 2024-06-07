@@ -29,7 +29,7 @@ public class Player extends Entity
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
-    private boolean inAttack = false, mouseClick, hitboxLoaded = false;
+    private boolean inAttack = false, mouseClick, moving = false;
     private static String[] weaponList = new String[2];
 
     private Aura aura;
@@ -81,8 +81,7 @@ public class Player extends Entity
     public void act() {
         x = getX();
         y = getY();
-        
-        
+        moving = false;
 
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -125,6 +124,7 @@ public class Player extends Entity
             if(!inAttack)
             {
                 movePlayer();
+
             }
             else
             {
@@ -162,16 +162,12 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
-        if(isPoweredUp)
-        {
-            speed = powerUpSpeed;
 
+        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        
+        if(speedBoost > 0){
+            speed = speed * 1.4;
         }
-        else
-        {
-            speed = normalSpeed;
-        }
-        double speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
@@ -191,22 +187,30 @@ public class Player extends Entity
             dy -= speed;
             setImage(up.getFrame(frame));
             facing = "up";
-        }if (Greenfoot.isKeyDown("s")) {
+            moving = true;
+        }
+        if (Greenfoot.isKeyDown("s")) {
             dy += speed;
             setImage(down.getFrame(frame));
             facing = "down";
+            moving = true;
         }
         if (Greenfoot.isKeyDown("a")) {
             dx -= speed;
             setImage(left.getFrame(frame));
             facing = "left";
+            moving = true;
         }
         if (Greenfoot.isKeyDown("d")) {
             dx += speed;
             setImage(right.getFrame(frame));
             facing = "right";
+            moving = true;
         }
-
+        if(Greenfoot.getKey() == null && (moving == false))
+        {
+            idle();
+        }
         move(dx, dy, speed);
         if(acts % 2 == 0)
         {
@@ -272,44 +276,47 @@ public class Player extends Entity
     private void attack(int damage) {
         if(frame ==5)
         {
-            List<Actor> targets;
+            List<Damageable> targets;
             switch(facing)
             {
                 case "right":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "left":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "up":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "down":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 default:
                     targets = null;
             }
-            for(Actor a : targets)
+            for(Damageable a : targets)
             {
-                if(a instanceof Enemy)
-                {
-                    Enemy e = (Enemy)a;
+                if(!(a instanceof Player)){
+                    a.damage(damage);
+                    if(a instanceof Enemy){
+                        Enemy e = (Enemy)a;
+                        e.setDamagedState(true);
+                    }
                     /*
                     if(e.damaged() == false)
                     {
                     e.damage(damage);
                     e.setDamagedState(true);
                     }*/
-                    e.damage(damage);
+                    
                     //e.setDamagedState(true);
                 }
             }
@@ -378,7 +385,21 @@ public class Player extends Entity
 
     public void idle()
     {
-
+        switch(facing)
+        {
+            case "right":
+                setImage(right.getFrame(0));
+                break;
+            case "left":
+                setImage(left.getFrame(0));
+                break;
+            case "up":
+                setImage(up.getFrame(0));
+                break;
+            case "down":
+                setImage(down.getFrame(0));
+                break;
+        }
     }
 
     public void useStaffUltimate() {
@@ -499,7 +520,7 @@ public class Player extends Entity
                         setImage(swingingRight[frame]);
                         break;
                 }
-                if(acts % atkSpd == 0)
+                if(acts % (atkSpd/2) == 0)
                 {
                     frame = (frame+1)%(swingingRight.length);
                 }

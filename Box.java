@@ -162,7 +162,7 @@ public abstract class Box extends SuperActor
         }
         setLocation(owner.getX()+xOffset, owner.getY()+yOffset); // Match with the owner, factoring in the yOffset.
     }
-    public List<Actor> getIntersectingActors(Class<Actor> cls) {
+    public List<?> getIntersectingActors(Class cls) {
         return super.getIntersectingObjects(cls);
     }
     /**

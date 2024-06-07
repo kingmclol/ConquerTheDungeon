@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Lava extends SpecialTiles
+public class Lava extends Floor
 {
     /**
      * Act - do whatever the Lava wants to do. This method is called whenever
