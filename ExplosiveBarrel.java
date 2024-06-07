@@ -12,8 +12,9 @@ public class ExplosiveBarrel extends Destroyable
      * Act - do whatever the ExplosiveBarrel wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    private static GreenfootImage img = new GreenfootImage("explosivebarrel.png");
     public ExplosiveBarrel() {
-        super(new GreenfootImage(1,1), 15);
+        super(img, 15);
     }
     public void act()
     {
