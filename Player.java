@@ -124,7 +124,6 @@ public class Player extends Entity
             if(!inAttack)
             {
                 movePlayer();
-
             }
             else
             {
@@ -163,22 +162,16 @@ public class Player extends Entity
 
     private void movePlayer() {
 
-        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        
         
         if(speedBoost > 0){
             speed = speed * 1.4;
         }
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
-        if(isPoweredUp)
-        {
-            x = powerUpSpeed;
-        }
-        else
-        {
-            x = normalSpeed;
-        }
-        if(acts%(atkSpd-(x)/2) == 0)
+        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        x = (int)speed;
+        if(acts%(10) == 0)
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
@@ -563,7 +556,7 @@ public class Player extends Entity
                         setImage(staffRight.getFrame(frame));
                         break;
                 }
-                if(acts % atkSpd == 0)
+                if(acts % (10) == 0)
                 {
                     frame = (frame+1)%(staffUp.getAnimationLength());
                 }
