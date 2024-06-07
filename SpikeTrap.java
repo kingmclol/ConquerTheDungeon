@@ -13,21 +13,23 @@ public class SpikeTrap extends Floor
     private GreenfootImage img2 = new GreenfootImage("spiketrap2.png");
     private int activeCounter; 
     private int acts;
+    private int period;
     public SpikeTrap() {
            
         super(new Color(252, 13, 121));
         activeCounter = 0;
+        period = Utility.randomIntInRange(120, 240);
+        acts = Greenfoot.getRandomNumber(period);
     }
     public void act()
     {
-        if(acts % 130 == 0 && activeCounter == 0) {
-            activeCounter = Utility.randomIntInRange(30, 70);
+        if(++acts % period == 0 && activeCounter == 0) {
+            activeCounter = Utility.randomIntInRange(period/4, period/2);
             setImage(img2);
         }
         if(activeCounter == 0){
             setImage(img);
         }
-        acts++;
         checkTouchTile();
     }
     public String getID() {
