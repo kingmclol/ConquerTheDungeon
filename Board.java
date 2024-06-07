@@ -213,6 +213,7 @@ public class Board extends Actor
      * @return the Node at the position where the cell is, null if not found
      */
     public Node getNode(Cell c) {
+        if (c == null) return null;
         return getNode(c.getBoardX(), c.getBoardY());
     }
     /**
@@ -305,6 +306,7 @@ public class Board extends Actor
      * @return An array list of nodes representing the path
      */
     public ArrayList<Node> findPath(Node start, Node end) {
+        if (start == null || end == null) return null;
         // Create nodes based on the given positions.
         Node startNode = start;
         Node endNode = end;

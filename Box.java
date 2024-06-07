@@ -22,7 +22,8 @@ public abstract class Box extends SuperActor
     protected Color color;
     private boolean visible;
     private boolean initialAct; // Combat z sorting always running addedToWorld();
-    public static final boolean SHOW_BOXES = false;
+    public static final boolean SHOW_BOXES = true;
+    protected boolean hasOwner;
     // /**
      // * Creates a basic Box, which is basically a box. Should be used for temporary collision checking,
      // * so having it visible or invisible does not matter.
@@ -60,6 +61,7 @@ public abstract class Box extends SuperActor
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         initialAct = true;
+        hasOwner = true; // true on default
     }
     public void addedToWorld(World w){
         if (!initialAct) return;
@@ -72,6 +74,7 @@ public abstract class Box extends SuperActor
         initialAct = false;
     }
     public void act() {
+        if (!hasOwner) return;
         // Remove any orphaned Boxes. They should not exist to act without an owner. If used for instant
         // collision checks, they should've been removed anyways.
         if (owner == null || owner.getWorld() == null) { 

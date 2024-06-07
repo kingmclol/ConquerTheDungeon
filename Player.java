@@ -50,7 +50,7 @@ public class Player extends Entity
         normalShootingInterval = 50;
         powerUpShootingInterval = 30;
         shootingTimer = 0;
-        hp = 100;
+        hp = 1000000;
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);

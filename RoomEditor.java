@@ -31,8 +31,24 @@ public class RoomEditor extends GameWorld
         drawID = "f";
         SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
         addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
-        //addObject(new Player(), 30, 30);
-        //for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
+        addObject(new Player(), 30, 30);
+        
+        int boardWidth = board.width() * Cell.SIZE;
+        int boardHeight = board.height() * Cell.SIZE;
+        int height = getHeight();
+        int width = getWidth();
+        // Add a collision box that blocks the RIGHT edge of the playable zone.
+        CollisionBox rightBox = new CollisionBox(width-boardWidth, height, Box.SHOW_BOXES);
+        addObject(rightBox, boardWidth + (width - boardWidth)/2, height/2);
+        // now, to the left (beyond the visible area.
+        CollisionBox leftBox = new CollisionBox(Cell.SIZE, height, Box.SHOW_BOXES);
+        addObject(leftBox, -Cell.SIZE/2, height/2); 
+        // Top now, with 2 extra cells just in case (to makae a rectangle with filled corners
+        CollisionBox topBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
+        addObject(topBox, boardWidth/2, -Cell.SIZE/2);
+        // Finally, bottom!
+        CollisionBox bottomBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
+        addObject(bottomBox, boardWidth/2, height+Cell.SIZE/2);
     }
     public void act(){
         super.act();
