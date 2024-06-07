@@ -18,7 +18,9 @@ public class GameWorld extends World
     public GameWorld()
     { 
         super(1200, 768, 1, false); 
-        setPaintOrder(Cursor.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Explosion.class, Projectile.class, Entity.class, Aura.class, PowerUp.class, Heal.class, CellEffect.class, Tile.class);
+
+        setPaintOrder(Cursor.class, Segment.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Projectile.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
@@ -28,8 +30,19 @@ public class GameWorld extends World
     public void act() {
         Timer.tick();
         Mouse.getMouse();
+        Keyboard.update();
     }
     public Board getBoard() {
         return board;
+    }
+    /**
+     * Displays some text alert on the screen.
+     * @param str The text to display
+     * @param c the color of the text.
+     */
+    public void alert(String str, Color c) {
+        TextBox info = new TextBox(str, 36, c, null, 2, 255);
+        addObject(info, getWidth()/2, 100);
+        info.fadeOut();
     }
 }

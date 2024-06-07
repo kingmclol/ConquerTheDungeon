@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Heal class represents a healing item that the player can collect to restore health.
  */
-public class Heal extends SuperSmoothMover
+public class Heal extends Drop
 {
     private int healAmount, actsBeforeExpired = 3600, frame = 0, acts = 0;
     private boolean spawning = true;
@@ -20,7 +20,7 @@ public class Heal extends SuperSmoothMover
         checkCollisionWithPlayer();
     }
 
-    private void checkCollisionWithPlayer() {
+    public void checkCollisionWithPlayer() {
         acts++;
         if(!spawning)
         {
@@ -28,6 +28,9 @@ public class Heal extends SuperSmoothMover
             animate();
             if (player != null) {
                 player.heal(healAmount);
+                getWorld().addObject(new HealingEffect(player, -20, -10), player.getX(), player.getY()); // up Left
+                getWorld().addObject(new HealingEffect(player, -15, 30), player.getX(), player.getY()); // down left
+                getWorld().addObject(new HealingEffect(player, 35, 0), player.getX(), player.getY()); // middle right
                 getWorld().removeObject(this);
             }
         }

@@ -17,7 +17,8 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
 
-    private int speed,xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
+    private double speed;
+    private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
     private HiddenBox Xhitbox, Yhitbox;
 
@@ -36,6 +37,12 @@ public class Player extends Entity
     private int ultimateCooldown = 300;
     private int cooldownTimer = 0;
 
+    private boolean isDashing = false;
+    private long dashCooldownTime = 0;
+    private int dashFrames = 0;
+    //private double dashDx = 0, dashDy = 0;
+    private Vector dashVelocity;
+
     public Player() {
         super(Team.ALLY, 100);
         normalSpeed = 5;
@@ -44,7 +51,7 @@ public class Player extends Entity
         powerUpShootingInterval = 30;
         shootingTimer = 0;
         hp = 100;
-        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
+        hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
@@ -72,10 +79,15 @@ public class Player extends Entity
     }
 
     public void act() {
-        slashableEnemies = getObjectsInRange(60, Enemy.class);
+        x = getX();
+        y = getY();
+        
+        
+
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
+
         if (weapon.equals("staff") && cooldownTimer <= 0) {
             useStaffUltimate();
         }
@@ -86,8 +98,7 @@ public class Player extends Entity
         }
         else
         {
-            String key = Greenfoot.getKey();
-            if("r".equals(key))
+            if("r".equals(Keyboard.getCurrentKey()))
             {
                 switchWeapon();
             }
@@ -111,7 +122,7 @@ public class Player extends Entity
             //set frame 0 when attacking.
         }
         if(!flung){
-            if(!inAttack )
+            if(!inAttack)
             {
                 movePlayer();
             }
@@ -151,11 +162,16 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
-        int speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        if(speedBoost > 0){
-            speed = (int)((double) speed * 1.4);
-        }
+
+
+
+        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         
+        if(speedBoost > 0){
+            speed = speed * 1.4;
+        }
+        int dx = 0, dy = 0; //Change in X and Y based on movement
+
         int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
         {
@@ -171,31 +187,71 @@ public class Player extends Entity
         }
         acts++;
         if (Greenfoot.isKeyDown("w")) {
-            setLocation(getX(), getY() - speed);
+            dy -= speed;
             setImage(up.getFrame(frame));
             facing = "up";
-        }
-        if (Greenfoot.isKeyDown("s")) {
-            setLocation(getX(), getY() + speed);
+        }if (Greenfoot.isKeyDown("s")) {
+            dy += speed;
             setImage(down.getFrame(frame));
             facing = "down";
         }
         if (Greenfoot.isKeyDown("a")) {
-            setLocation(getX() - speed, getY());
+            dx -= speed;
             setImage(left.getFrame(frame));
             facing = "left";
         }
         if (Greenfoot.isKeyDown("d")) {
-            setLocation(getX() + speed, getY());
+            dx += speed;
             setImage(right.getFrame(frame));
             facing = "right";
         }
-        x = getX();
-        y = getY();
+
+        move(dx, dy, speed);
         if(acts % 2 == 0)
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
+        
+        if (isDashing) {
+            dashFrames++;
+            displace(dashVelocity);
+            if (dashFrames >= 10) {
+                isDashing = false;
+                dashCooldownTime = System.currentTimeMillis();
+            }
+        } else {
+            if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
+                String key = Keyboard.getCurrentKey();
+                if ("shift".equals(key) && (dx != 0 || dy != 0)){
+                    dash(dx, dy);
+                }
+            }
+        }
+    }
+
+    public void move(double dx, double dy, double spd)
+    {
+        double vectorMagnitude = Math.sqrt(dx*dx + dy*dy);
+        if(vectorMagnitude == 0)
+        {
+            return;
+        }
+        double xComponent = dx/vectorMagnitude * spd;
+        double yComponent = dy/vectorMagnitude * spd;
+        //System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
+        setLocation(x + xComponent, y + yComponent);
+    }
+
+    private void dash(int x, int y) {
+        dashVelocity = new Vector(x, y);
+        if (isDashing) return; // Prevent dashing again if already dashing
+
+        isDashing = true;
+        dashFrames = 0;
+
+        double dashSpeed = 10.0; 
+        dashVelocity.scaleTo(dashSpeed);
+        
     }
 
     private void handleShooting(){
@@ -219,22 +275,22 @@ public class Player extends Entity
             switch(facing)
             {
                 case "right":
-                    Xhitbox.makeVisible();
+                    //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
                     targets = Xhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "left":
-                    Xhitbox.makeVisible();
+                    //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
                     targets = Xhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "up":
-                    Yhitbox.makeVisible();
+                    //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
                     targets = Yhitbox.getIntersectingActors(Actor.class);
                     break;
                 case "down":
-                    Yhitbox.makeVisible();
+                    //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
                     targets = Yhitbox.getIntersectingActors(Actor.class);
                     break;
@@ -249,14 +305,15 @@ public class Player extends Entity
                     /*
                     if(e.damaged() == false)
                     {
-                        e.damage(damage);
-                        e.setDamagedState(true);
-                    }*/
                     e.damage(damage);
                     e.setDamagedState(true);
+                    }*/
+                    e.damage(damage);
+                    //e.setDamagedState(true);
                 }
             }
         }
+
         /** OLD CODE
         for (Enemy enemy : slashableEnemies) {
         if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
@@ -266,25 +323,25 @@ public class Player extends Entity
         }
         }*/
     }
+
     public static String getFacing (){
         return facing;
     }
+
     private void shoot(int targetX, int targetY) {
         Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
-    }
-
-    public void heal(int healAmount) {
-        hp += healAmount;
-        if (hp > 100) {
-            hp = 100; // Assuming max HP is 100
-        }
     }
 
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
+    }
+
+    public void deathAnimation()
+    {
+        getWorld().removeObject(this);
     }
 
     private void checkPowerUpStatus() {
@@ -302,6 +359,10 @@ public class Player extends Entity
 
     public int getHp() {
         return hp;
+    }
+    
+    public void setHp(int health){
+        hp = health;
     }
 
     public static int returnX()
@@ -420,17 +481,6 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
-                    if(slashableEnemies.isEmpty())
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        for(Enemy e : slashableEnemies)
-                        {
-                            e.setDamagedState(false);
-                        }
-                    }
                     break;
                 }
                 switch(facing)
@@ -500,5 +550,7 @@ public class Player extends Entity
                 break;
         }
     }
+    
+    
 }
 

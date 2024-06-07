@@ -82,17 +82,18 @@ public abstract class Entity extends SuperActor implements Damageable
         // // Get the ArrayList that holds the modifiers of same trigger type as m, then remove from the arraylist.
         // statusModifiers.get(m.trigger).remove(m);
     // }
+    protected abstract void deathAnimation();
     public int damage(int dmg) {
         if (iFrameTimer.acts() <= IFRAMES) return 0;
         TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         int dmgTaken;
-        if (hp <= dmg) dmgTaken = hp;
+        if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
         dmgTaken = dmg;
-        if (hp <= 0) die();
         hpBar.update(hp);
+        if(hp <= 0) die();
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }
@@ -101,10 +102,14 @@ public abstract class Entity extends SuperActor implements Damageable
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
+        if(hp > 100){
+            hp = 100;
+        }
+        hpBar.update(hp);
     }
     //protected abstract void animate();
     public void die() {
-        return;
+        getWorld().removeObject(this);
     }
     public boolean isAlive() {
         //return hp >= 0;
