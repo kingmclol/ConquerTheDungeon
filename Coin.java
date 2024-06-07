@@ -17,7 +17,11 @@ public class Coin extends Drop
         // Add your action code here.
     }
     
-    public void checkCollisionWithPlayer(){
-        
+    public void checkCollisionWithPlayer() {
+        Player player = (Player) getOneIntersectingObject(Player.class);
+        if (player != null) {
+            player.activatePowerUp();
+            getWorld().removeObject(this);
+        }
     }
 }
