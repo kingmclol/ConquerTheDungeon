@@ -31,7 +31,7 @@ public class RoomEditor extends GameWorld
         SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
         addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
         addObject(new Player(), 30, 30);
-        for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
+        //for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
     }
     public void act(){
         super.act();

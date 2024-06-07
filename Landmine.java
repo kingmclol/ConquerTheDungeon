@@ -20,7 +20,7 @@ public class Landmine extends Floor
     }
     private void explode(){
         
-        getWorld().addObject(new Explosion(), getX(), getY());
+        getWorld().addObject(new Explosion(1.0), getX(), getY());
         replaceMe(getInstanceFromID("f"));
   
     }
