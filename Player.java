@@ -243,7 +243,7 @@ public class Player extends Entity
             }
             for(Actor a : targets)
             {
-                if(a instanceof Enemy)
+                if(a instanceof Damageable)
                 {
                     Enemy e = (Enemy)a;
                     /*
