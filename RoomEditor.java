@@ -32,7 +32,7 @@ public class RoomEditor extends GameWorld
         SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
         addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
         addObject(new Player(), 30, 30);
-        
+
         int boardWidth = board.width() * Cell.SIZE;
         int boardHeight = board.height() * Cell.SIZE;
         int height = getHeight();
@@ -49,15 +49,17 @@ public class RoomEditor extends GameWorld
         // Finally, bottom!
         CollisionBox bottomBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
         addObject(bottomBox, boardWidth/2, height+Cell.SIZE/2);
+        prepare();
     }
+
     public void act(){
         super.act();
         // Vector mousePosition = Mouse.getPosition();
         // if (mousePosition != null) {
-            // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
+        // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
         // }
         String key = Keyboard.getCurrentKey();
-       
+
         if (Mouse.isMouseDown()) {
             Cell c = Mouse.getHoveredActor(Cell.class);
             if (c != null) {
@@ -66,10 +68,10 @@ public class RoomEditor extends GameWorld
                 // board.drawEdges();
             }
         }
-        
+
         if (",".equals(key)) {
             a = Mouse.getHoveredActor(Cell.class);
-            
+
         }
         else if (".".equals(key)) {
             b = Mouse.getHoveredActor(Cell.class);
@@ -106,5 +108,12 @@ public class RoomEditor extends GameWorld
         else if ("\\".equals(key)) {
             for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
         }
+    }
+    /**
+     * Prepare the world for the start of the program.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepare()
+    {
     }
 }
