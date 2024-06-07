@@ -2,6 +2,7 @@ import greenfoot.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+
 /**
  * The Board holds everything about the actual game positions. It has a 2D array of Cells, and manages pathfinding within the board.
  * 
@@ -14,10 +15,12 @@ import java.util.Collections;
 public class Board extends Actor
 {
     Cell[][] worldMap;
-    ArrayList<Edge> edgePool;
+    ArrayList<Edge> edgePool; //Not used anymore.
+    ArrayList<Cell> validSpawnTiles;
     private int width, height;
     private static final String DELIM_DATA = "~";
     private static final String DELIM_CELL = "/";
+    // Both are not used anymore, but here just in case I change my mind.
     private static Picture tempCanvas;
     private static Picture cast;
     /**
@@ -29,7 +32,8 @@ public class Board extends Actor
         width = lengthX;
         edgePool = new ArrayList<Edge>();
         worldMap = new Cell[height][width];
-        populate(worldMap);
+        validSpawnTiles = new ArrayList<Cell>();
+        populate();
     }
     public Board(String buildString) {
         // Structure of 
@@ -39,33 +43,44 @@ public class Board extends Actor
         width = Integer.valueOf(elements[0]);
         height = Integer.valueOf(elements[1]);
         worldMap = new Cell[height][width];
-        populate(worldMap, elements[2]);
+        validSpawnTiles = new ArrayList<Cell>();
+        populate(elements[2]);
     }
+    /**
+     * Adds all of the other Cells to the World in this board.
+     */
     public void addedToWorld(World w) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 w.addObject(worldMap[i][j], getX() + (j)*Cell.SIZE+Cell.SIZE/2, getY() + i*Cell.SIZE+Cell.SIZE/2);
             }
         }
-        // All temp.
-        tempCanvas = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
-        cast = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
-        w.addObject(tempCanvas, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
-        w.addObject(cast, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
-        convertTileMapToEdges();
-        drawEdges();
+        // All temp. not used anymore.
+        // tempCanvas = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
+        // cast = new Picture(new GreenfootImage(Cell.SIZE*width, Cell.SIZE*height));
+        // w.addObject(tempCanvas, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
+        // w.addObject(cast, getX() + width/2*Cell.SIZE, getY() + height/2*Cell.SIZE);
+        // convertTileMapToEdges();
+        // drawEdges();
     }
+    /**
+     * Removes this Board from the world, along with all of its cells.
+     */
     public void removeFromWorld() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 worldMap[i][j].removeFromWorld();
             }
         }
-        getWorld().removeObject(cast);
-        getWorld().removeObject(tempCanvas);
+        // getWorld().removeObject(cast);
+        // getWorld().removeObject(tempCanvas);
         getWorld().removeObject(this); // Finally, remove the board itself.
     }
-    private void populate(Cell[][] map, String cellData) {
+    /**
+     * Generate the board from the given cell data in the structure of "d/f/df/e/g/d/" and so on.
+     * @param cellData the data of the cells.
+     */
+    private void populate(String cellData) {
         // Structure of
         // "d/w/df/e/g/d"
         String[] cells = cellData.split(DELIM_CELL);
@@ -74,16 +89,25 @@ public class Board extends Actor
                 // Parse through the data.
                 Tile tile = Tile.getInstanceFromID(cells[y*width+x]);
                 worldMap[y][x] = new Cell (this, x, y, tile);
+                if (tile instanceof EmptyFloor) validSpawnTiles.add(worldMap[y][x]);
             }
         }
     }
-    private void populate(Cell[][] map) {
+    /**
+     * Populates the map with EmptyFloors.
+     */
+    private void populate() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 worldMap[y][x] = new Cell(this, x, y, new EmptyFloor());
+                validSpawnTiles.add(worldMap[y][x]);
             }
         }
     }
+    /**
+     * Get the representation of this Board as a String.
+     * @return the buildString of this board.
+     */
     public String getBuildString() {
         String buildString = width + DELIM_DATA + height + DELIM_DATA;
         for (int y = 0; y < height; y++) {
@@ -93,14 +117,45 @@ public class Board extends Actor
         }
         return buildString;
     }
+    /**
+     * Prints out this Board's build string onto terminal.
+     */
     public void outputBuildString() {
         System.out.println(getBuildString());
     }
-    public List<Cell> getCellsInRadius(Cell c, double r) {
+    /**
+     * Adds the given cell as a valid one for entitys to spawn in.
+     * @param cell the cell to add. If already registered as spawnable, nothing happens.
+     */
+    public void addValidSpawnCell(Cell cell) {
+        if (validSpawnTiles.contains(cell)) return; // already has
+        else validSpawnTiles.add(cell);
+    }
+    /**
+     * Marks the given cell as invalid for enemies to spawn in.
+     * @param cell the cell to remove.
+     */
+    public void removeValidSpawnCell(Cell cell) {
+        validSpawnTiles.remove(cell);
+    }
+    /**
+     * Gets a random Cell marked as spawnable (an empty floor tile)
+     * @return a random Cell that contains an EmptyFloor.
+     */
+    public Cell getRandomSpawnableCell() {
+        return validSpawnTiles.get(Greenfoot.getRandomNumber(validSpawnTiles.size()));
+    }
+    /**
+     * Returns a list of cells within the given radius around an origin cell using manhattan distance.
+     * @param c The cell in the center (origin)
+     * @param r The radius, in cells, calculated using manhattan distance (diagonal = 2 units)
+     * @return The list of cells that are within the given radius around the cell.
+     */
+    public List<Cell> getCellsInRadius(Cell c, int r) {
         List<Cell> cells = new ArrayList<Cell>();
         int targetX = c.getBoardX();
         int targetY = c.getBoardY();
-        int range = (int) Math.ceil(r); // Round r up.
+        int range = r;
         for (int y = targetY-range; y <= targetY + range; y++) {
             for (int x = targetX-range; x <= targetX + range; x++) {
                 if (y < 0 || y > height-1 || x < 0 || x > width-1) continue; // If out of bounds just skip...
@@ -111,24 +166,60 @@ public class Board extends Actor
         }
         return cells;
     }
+    /**
+     * Returns the cell at the given board coordinates. Returns null if nothing found.
+     * @param boardX the X coordinate, in Cells.
+     * @param boardY the Y coordinate, in Cells.
+     * @return the Cell that resides at that coordinate pair or null if none found.
+     */
     public Cell getCell(int boardX, int boardY) {
         if (boardX < 0 || boardX >= width || boardY < 0 || boardY >= height) return null;
         return worldMap[boardY][boardX];
     }
+    /**
+     * Given a Node, get the Cell that the node resides in.
+     * @param n The node to look at
+     * @param c the Cell that the node is in
+     */
     public Cell getCell(Node n) {
         return getCell(n.getX(), n.getY());
     }
+    /**
+     * Given real (world) x and y coordinates, get the cell that exists at that position.
+     * @param x the x coordinate in pixels.
+     * @param y the y coordinate in pixels.
+     * @return the Cell that resides at that position, null if none found.
+     */
     public Cell getCellWithRealPosition(int x, int y) {
         int boardX = (int) (x - getX()) / Cell.SIZE;
         int boardY = (int) (y - getY()) / Cell.SIZE;
         return getCell(boardX, boardY);
     }
+    /**
+     * Gets the node that resides at the given coordinate in Cells.
+     * @param boardX the x coordinate in Cells
+     * @param boardY the y coordinate in cells
+     * @return the Node that resides at that cooridnate, null it not found.
+     */
     public Node getNode(int boardX, int boardY) {
-        return getCell(boardX, boardY).getNode();
+        Cell c = getCell(boardX, boardY);
+        if (c == null) return null;
+        
+        return c.getNode();
     }
+    /**
+     * Gets the Node given a Cell.
+     * @param c the Cell to look at
+     * @return the Node at the position where the cell is, null if not found
+     */
     public Node getNode(Cell c) {
         return getNode(c.getBoardX(), c.getBoardY());
     }
+    /**
+     * Applies a given CellEffect on to the given Cell.
+     * @param e The cellEffect to apply.
+     * @param c the Cell to apply the CellEffect on.
+     */
     public void applyEffect(CellEffect e, Cell c) {
         c.applyEffect(e);
     }
@@ -137,23 +228,45 @@ public class Board extends Actor
             // c.applyEffect(e.clone());
         // }
     // }
-    public void addEntity(Entity e, int boardX, int boardY) {
-        // worldMap[boardY][boardX].addEntity(e);
-        // Calculate proper world coordinates to add?
+    /**
+     * Spawns in the given Entity at the given Cell.
+     * @param e The entity to spawn
+     * @param c the cell the entity spawns in
+     */
+    public void addEntity(Entity e, Cell c) {
+        // TODO: Add an warning effect/move this method to the cell?
+        // c.addEntity(e);
+        getWorld().addObject(e, c.getX(), c.getY());
     }
+    /**
+     * Returns the width of this board, in terms of Cells.
+     * @return the width of the board.
+     */
     public int width() {
         return width;
     }
+    /**
+     * Returns the height of this board, in terms of Cells.
+     * @return the height of this board.
+     */
     public int height() {
         return height;
     }
-    public static double distanceFrom(Cell a, Cell b) {
+    /**
+     * Calculates the distance between two cells using manhattan distance (diagnoals = 2 distance)
+     * @param a The first cell.
+     * @param b the second cell.
+     * @return The distance between a and b using manhattan distance
+     */
+    public static int distanceFrom(Cell a, Cell b) {
         // Uses taxicab/manhattan gemoetry
         // The distance between P(p1, p2) and Q(q1, q2) is |p1-q1| + |p2-q2|
         return Math.abs(b.getBoardX()-a.getBoardX()) + Math.abs(b.getBoardY()-a.getBoardY());
     }
     /**
      * Returns the adjacent nodes to the given node. Diagonals included.
+     * @param n The node to look at.
+     * @return an List of neightbouring nodes.
      */
     public ArrayList<Node> getNeighbours(Node n) {
         ArrayList<Node> neighbours = new ArrayList<Node>();
@@ -176,6 +289,12 @@ public class Board extends Actor
         }
         return neighbours;
     }
+    /**
+     * Returns an List of Cells that paths from the start cell to end cell.
+     * @param start The start cell
+     * @param end the end cell
+     * @param a list of cells representing the path.
+     */
     public List<Cell> findPath(Cell start, Cell end) {
         return convertNodePathToCells(findPath(getNode(start), getNode(end)));
     }
@@ -183,6 +302,7 @@ public class Board extends Actor
      * A* pathfinding algorithm
      * @param start the starting position to path from, relative to grid.
      * @param end the ending position to be at, relative to grid
+     * @return An array list of nodes representing the path
      */
     public ArrayList<Node> findPath(Node start, Node end) {
         // Create nodes based on the given positions.
@@ -236,6 +356,11 @@ public class Board extends Actor
         if (GameWorld.SHOW_LOGS) System.out.println("warn: no path was found in a pathfinding attempt");
         return null;
     } 
+    /**
+     * Given a list of nodes, convert them to a list of cells.
+     * @param nodes The nodes to convert.
+     * @return a list of cells from the given nodes.
+     */
     private List<Cell> convertNodePathToCells(List<Node> nodes) {
         if (nodes == null) return null;
         List<Cell> cells = new ArrayList<Cell>();
@@ -244,6 +369,11 @@ public class Board extends Actor
         }
         return cells;
     }
+    /**
+     * Converts the given List of Nodes into a list of position Vectors.
+     * @param nodes The list of nodes to convert.
+     * @return a List of Vectors to travel to to follow the path.
+     */
     public List<Vector> convertPathToPositions(List<Node> nodes) {
         if (nodes == null) return null;
         List<Vector> vectors = new ArrayList<Vector>();
@@ -270,9 +400,10 @@ public class Board extends Actor
         return path;
     }
     
-    // ========poor attempt at shadowcasting, so please ignore,
+    // ========poor attempt at shadowcasting, so please ignore. I gave up so its dead now.
+    // So that's why the code is not the greatest + no comment, but I don't want to remove it.
     /**
-     * Stolen code
+     * Stolen code. Unused method. Do not use.
      */
     public void convertTileMapToEdges() {
         edgePool.clear();
@@ -400,7 +531,7 @@ public class Board extends Actor
         }
     }
     /**
-     * Only used for debuggin (scuffed)
+     * Only used for debuggin (scuffed). Do not use.
      */
     public void drawEdges() {
         GreenfootImage img = tempCanvas.getImage();
@@ -412,6 +543,9 @@ public class Board extends Actor
             img.fillOval(e.getEndX()-3, e.getEndY()-3, 6,6);
         }
     }
+    /**
+     * Do not use.
+     */
     public void rayCastToEdges(int originX, int originY){
         GreenfootImage img = cast.getImage();
         img.clear();

@@ -17,18 +17,21 @@ public class RoomEditor extends GameWorld
      * 
      */
     //private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
-    private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
-    Cell a, b;
+    //private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
+    private String buildString = "16~12~w/f/f/f/f/f/w/f/f/f/f/f/f/f/f/w/f/f/f/f/f/w/f/f/f/f/w/f/w/f/f/f/f/f/f/w/f/w/f/w/f/f/f/f/w/w/f/f/f/f/f/w/f/f/f/f/f/w/f/f/w/w/f/f/f/w/f/w/w/w/f/w/f/w/w/w/f/f/f/f/f/f/f/w/w/f/f/w/f/f/f/w/f/f/w/f/f/w/f/w/f/w/w/w/w/w/f/w/w/f/f/w/f/f/w/f/w/f/w/w/w/w/w/w/f/f/f/w/f/f/f/f/f/f/f/w/w/w/w/w/f/f/w/w/w/w/f/f/f/w/w/w/w/w/w/w/w/w/w/w/f/f/f/w/f/f/w/w/w/f/w/f/w/w/w/w/w/f/w/f/w/f/f/w/w/w/f/w/w/w/w/w/";
+    private Cell a, b;
     private String drawID;
     public RoomEditor()
     {    
         super();
-        board = new Board(16, 12);
+        //board = new Board(16, 12);
+        board = new Board(buildString);
         addObject(board, 0,0);
         drawID = "f";
         SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
         addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
         addObject(new Player(), 30, 30);
+        //for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
     }
     public void act(){
         super.act();
@@ -36,14 +39,14 @@ public class RoomEditor extends GameWorld
         // if (mousePosition != null) {
             // board.rayCastToEdges((int)mousePosition.getX(), (int)mousePosition.getY());
         // }
-        String key = Greenfoot.getKey();
+        String key = Keyboard.getCurrentKey();
        
-        if (Greenfoot.mouseClicked(null)) {
-            Cell c = Mouse.getClickedActor(Cell.class);
+        if (Mouse.isMouseDown()) {
+            Cell c = Mouse.getHoveredActor(Cell.class);
             if (c != null) {
                 c.setTile(Tile.getInstanceFromID(drawID));
-                board.convertTileMapToEdges();
-                board.drawEdges();
+                // board.convertTileMapToEdges();
+                // board.drawEdges();
             }
         }
         
@@ -70,20 +73,21 @@ public class RoomEditor extends GameWorld
             board.outputBuildString();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getBuildString()), null);
+            alert("Copied build string to clipboard.", Color.WHITE);
         } else if ("/".equals(key)) {
             board.removeFromWorld();
             board = Room.getRandomBoard();
             addObject(board, 0,0);
         } else if ("e".equals(key)) {
             drawID = Greenfoot.ask("Give an ID of a tile to use.");
-            TextBox info;
             if (Tile.verifyID(drawID)) {
-                info = new TextBox("Now drawing with " + Tile.getClassName(drawID) + "s", 36, Color.WHITE, null, 2, 255);                
+                alert("Now drawing with " + Tile.getClassName(drawID) + " tiles", Color.WHITE);
             } else {
-                info = new TextBox("Given invalid ID " + drawID + ".", 36, Color.RED, null, 2, 255);
+                alert("Given invalid ID " + drawID + ".", Color.RED);
             }
-            addObject(info, getWidth()/2, 100);
-            info.fadeOut();
+        }
+        else if ("\\".equals(key)) {
+            for (int i = 0; i < 5; i++) board.addEntity(new Goblin(), board.getRandomSpawnableCell());
         }
     }
 }

@@ -13,14 +13,15 @@ public class ExplosiveBarrel extends Destroyable
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public ExplosiveBarrel() {
-        super(new GreenfootImage(1,1), 20);
+        super(new GreenfootImage(1,1), 15);
     }
     public void act()
     {
         // Add your action code here.
     }
     public void onDestroy() {
-        
+        getWorld().addObject(new Explosion(1.8), getX(), getY());
+        replaceMe(new EmptyFloor());
     }
     public String getID() {
         return "eb";

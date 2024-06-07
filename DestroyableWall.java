@@ -20,7 +20,7 @@ public class DestroyableWall extends Destroyable
         // Add your action code here.
     }
     public void onDestroy() {
-        return;
+        replaceMe(new EmptyFloor());
     }
     public String getID() {
         return "wd";

@@ -37,6 +37,12 @@ public class Player extends Entity
     private int ultimateCooldown = 300;
     private int cooldownTimer = 0;
 
+    private boolean isDashing = false;
+    private long dashCooldownTime = 0;
+    private int dashFrames = 0;
+    //private double dashDx = 0, dashDy = 0;
+    private Vector dashVelocity;
+
     public Player() {
         super(Team.ALLY, 100);
         normalSpeed = 5;
@@ -76,9 +82,11 @@ public class Player extends Entity
         x = getX();
         y = getY();
         moving = false;
+
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
+
         if (weapon.equals("staff") && cooldownTimer <= 0) {
             useStaffUltimate();
         }
@@ -89,8 +97,7 @@ public class Player extends Entity
         }
         else
         {
-            String key = Greenfoot.getKey();
-            if("r".equals(key))
+            if("r".equals(Keyboard.getCurrentKey()))
             {
                 switchWeapon();
             }
@@ -114,7 +121,7 @@ public class Player extends Entity
             //set frame 0 when attacking.
         }
         if(!flung){
-            if(!inAttack )
+            if(!inAttack)
             {
                 movePlayer();
 
@@ -155,15 +162,12 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
-        if(isPoweredUp)
-        {
-            speed = powerUpSpeed;
+
+        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        
+        if(speedBoost > 0){
+            speed = speed * 1.4;
         }
-        else
-        {
-            speed = normalSpeed;
-        }
-        double speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
         if(isPoweredUp)
@@ -212,6 +216,22 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
+        
+        if (isDashing) {
+            dashFrames++;
+            displace(dashVelocity);
+            if (dashFrames >= 10) {
+                isDashing = false;
+                dashCooldownTime = System.currentTimeMillis();
+            }
+        } else {
+            if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
+                String key = Keyboard.getCurrentKey();
+                if ("shift".equals(key) && (dx != 0 || dy != 0)){
+                    dash(dx, dy);
+                }
+            }
+        }
     }
 
     public void move(double dx, double dy, double spd)
@@ -223,8 +243,20 @@ public class Player extends Entity
         }
         double xComponent = dx/vectorMagnitude * spd;
         double yComponent = dy/vectorMagnitude * spd;
-        System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
+        //System.out.println(Math.sqrt(xComponent*xComponent + yComponent*yComponent));
         setLocation(x + xComponent, y + yComponent);
+    }
+
+    private void dash(int x, int y) {
+        dashVelocity = new Vector(x, y);
+        if (isDashing) return; // Prevent dashing again if already dashing
+
+        isDashing = true;
+        dashFrames = 0;
+
+        double dashSpeed = 10.0; 
+        dashVelocity.scaleTo(dashSpeed);
+        
     }
 
     private void handleShooting(){
@@ -244,44 +276,47 @@ public class Player extends Entity
     private void attack(int damage) {
         if(frame ==5)
         {
-            List<Actor> targets;
+            List<Damageable> targets;
             switch(facing)
             {
                 case "right":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "left":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
-                    targets = Xhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "up":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 case "down":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
-                    targets = Yhitbox.getIntersectingActors(Actor.class);
+                    targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     break;
                 default:
                     targets = null;
             }
-            for(Actor a : targets)
+            for(Damageable a : targets)
             {
-                if(a instanceof Enemy)
-                {
-                    Enemy e = (Enemy)a;
+                if(!(a instanceof Player)){
+                    a.damage(damage);
+                    if(a instanceof Enemy){
+                        Enemy e = (Enemy)a;
+                        e.setDamagedState(true);
+                    }
                     /*
                     if(e.damaged() == false)
                     {
                     e.damage(damage);
                     e.setDamagedState(true);
                     }*/
-                    e.damage(damage);
+                    
                     //e.setDamagedState(true);
                 }
             }
@@ -332,6 +367,10 @@ public class Player extends Entity
 
     public int getHp() {
         return hp;
+    }
+    
+    public void setHp(int health){
+        hp = health;
     }
 
     public static int returnX()
@@ -533,5 +572,7 @@ public class Player extends Entity
                 break;
         }
     }
+    
+    
 }
 

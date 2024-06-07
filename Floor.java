@@ -21,8 +21,8 @@ public abstract class Floor extends Tile
     public Floor(Animation a) {
         super(true, a);
     }
-    public void act()
-    {
-        // Add your action code here.
+    public void act(){
+        checkTouchTile();
     }
+    protected abstract void checkTouchTile();
 }

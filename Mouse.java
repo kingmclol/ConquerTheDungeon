@@ -71,7 +71,7 @@ public class Mouse
             x = mouse.getX();
             y = mouse.getY();
             if(SHOW_INFO) {
-                System.out.printf("(%d, %d) | hld: %d | ", x, y, mouseDownTimer.acts());
+                System.out.printf("(%d, %d) | %b | hld: %d | ", x, y, mouseDown, mouseDownTimer.acts());
                 for (Actor a : w.getObjectsAt(x, y, Actor.class)) {
                     System.out.print(a + " | ");
                 }
@@ -87,6 +87,13 @@ public class Mouse
             mouseExists = true;
         }
         else mouseExists = false;
+    }
+    /**
+     * Returns whether the mouse is being held down or not at the current time.
+     * @return whether the mouse is held is down or not.
+     */
+    public static boolean isMouseDown() {
+        return mouseDown;
     }
     /**
      * Gets the position of the mouse as a Vector. returns null if mouse not found.

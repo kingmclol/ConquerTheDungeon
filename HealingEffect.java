@@ -49,7 +49,7 @@ public class HealingEffect extends Heal
         }
         animate();
         moveMe();
-        if(acts >= 1800 || owner.getWorld() == null)
+        if(acts >= 180 || owner.getWorld() == null)
         {
             getWorld().removeObject(this);
         }

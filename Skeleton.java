@@ -63,15 +63,27 @@ public class Skeleton extends Enemy
         }
     }
 
-    public void attack()
-    {
+    public void attack() {
         arrowCooldown++;
-        if(arrowCooldown >= 60){
-            Arrow arrow = new Arrow(4, 10, this, player);
-            getWorld().addObject(arrow, getX(), getY());
-            arrowCooldown = 0;
-        }
+        if (arrowCooldown >= 60 && player != null) {
+            // Check if there's a wall between the skeleton and the player
+            Vector skeletonPos = new Vector(getX(), getY());
+            Vector playerPos = new Vector(player.getX(), player.getY());
 
+            // Create a segment from the skeleton to the player
+            Segment lineOfSight = new Segment(skeletonPos, playerPos);
+            getWorld().addObject(lineOfSight, getX(), getY()); // Add the segment to the world
+            lineOfSight.draw();
+            // Check for intersection with walls
+            System.out.println(lineOfSight.intersectsWall());
+            if (!lineOfSight.intersectsWall()) {
+                // If no collision with walls, shoot the arrow
+                Arrow arrow = new Arrow(4, 10, this, player);
+                getWorld().addObject(arrow, getX(), getY());
+                arrowCooldown = 0;
+            }
+            getWorld().removeObject(lineOfSight);
+        }
     }
 
     public void manageAnimation()

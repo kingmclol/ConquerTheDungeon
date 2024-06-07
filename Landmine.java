@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Landmine extends SpecialTiles
+public class Landmine extends Floor
 {
 
     public static GreenfootImage img = new GreenfootImage("landmine.png");
@@ -20,7 +20,7 @@ public class Landmine extends SpecialTiles
     }
     private void explode(){
         
-        getWorld().addObject(new Explosion(), getX(), getY());
+        getWorld().addObject(new Explosion(1.0), getX(), getY());
         replaceMe(getInstanceFromID("f"));
   
     }
@@ -32,12 +32,13 @@ public class Landmine extends SpecialTiles
     protected void checkTouchTile(){
         if(!exploded){
             ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
-            System.out.println(boxes);
+            //System.out.println(boxes);
             for(Box box : boxes){
                 Actor owner = box.getOwner();
                 if(owner instanceof Entity){
-                    
+                    exploded = true;
                     explode();
+                    break;
                 }
             }
         }

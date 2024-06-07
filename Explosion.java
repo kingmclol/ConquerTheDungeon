@@ -11,15 +11,18 @@ public class Explosion extends SuperSmoothMover
 {
     private GreenfootImage[] animate = new GreenfootImage[10];
     private int frame = 0, acts = 0;
-    public Explosion(){
+    private double size;
+    public Explosion(double size){
+        this.size = size;
         for(int i = 0; i<animate.length; i++)
         {
             //animate[i] = new GreenfootImage("Star/star" + (i+1) + ".png");
             animate[i] = new GreenfootImage("Explosion/explode" + (i + 3) + ".png");
+            animate[i].scale((int) ((double)animate[i].getWidth() * size), (int)((double)animate[i].getHeight()*size));
         }
     }
     public void addedToWorld(World w){
-        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getObjectsInRange(80, CollisionBox.class);
+        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getObjectsInRange((int) (80.0 * size), CollisionBox.class);
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){

@@ -24,7 +24,7 @@ public abstract class Entity extends SuperActor implements Damageable
     //protected HealthBar healthBar;
     // protected Team team;
     protected int hp;
-    protected int recoveryActs = 0;
+    protected double speedBoost = 0 ;
     protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
@@ -34,7 +34,7 @@ public abstract class Entity extends SuperActor implements Damageable
 
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
-
+    
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -60,6 +60,10 @@ public abstract class Entity extends SuperActor implements Damageable
         if(flung){
             fling();
         }
+        if(speedBoost > 0){
+            speedBoost--;
+        }
+
         manageCollision();
         //animate();
     }
@@ -98,6 +102,9 @@ public abstract class Entity extends SuperActor implements Damageable
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
+        if(hp > 100){
+            hp = 100;
+        }
         hpBar.update(hp);
     }
     //protected abstract void animate();
@@ -172,5 +179,8 @@ public abstract class Entity extends SuperActor implements Damageable
      */
     public Vector getPosition(){
         return collisionBox.getPosition();
+    }
+    public void setSpeed(double speedTime){
+        this.speedBoost = speedTime;
     }
 }
