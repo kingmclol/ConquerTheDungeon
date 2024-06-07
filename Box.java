@@ -22,7 +22,7 @@ public abstract class Box extends SuperActor
     protected Color color;
     private boolean visible;
     private boolean initialAct; // Combat z sorting always running addedToWorld();
-    public static final boolean SHOW_BOXES = true;
+    public static final boolean SHOW_BOXES = false;
     protected boolean hasOwner;
     // /**
      // * Creates a basic Box, which is basically a box. Should be used for temporary collision checking,
