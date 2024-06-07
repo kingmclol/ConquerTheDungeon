@@ -14,8 +14,8 @@ public class SpeedBoost extends SpecialTiles
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
-
-    public SpeedBoost(GreenfootImage img) {
+    public static GreenfootImage img = new GreenfootImage("speedBoost.png");
+    public SpeedBoost() {
         super(img);
     }
     public void act()
