@@ -85,7 +85,7 @@ public abstract class Entity extends SuperActor implements Damageable
     protected abstract void deathAnimation();
     public int damage(int dmg) {
         if (iFrameTimer.acts() <= IFRAMES) return 0;
-        TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
+        TextBox dmgBox = new TextBox("-" + dmg, Utility.randomIntInRange(20, 36), Color.ORANGE, null, 3, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         int dmgTaken;
@@ -98,7 +98,7 @@ public abstract class Entity extends SuperActor implements Damageable
         return dmgTaken;
     }
     public void heal(int heal) {
-        TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
+        TextBox dmgBox = new TextBox("+" + heal, Utility.randomIntInRange(20, 36), Color.GREEN, null, 3, 255);
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
