@@ -24,6 +24,7 @@ public class GameWorld extends World
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
+        Enemy.initializeEnemyDatabase();
         Cursor cursor = new Cursor();
         addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
@@ -41,8 +42,38 @@ public class GameWorld extends World
      * @param c the color of the text.
      */
     public void alert(String str, Color c) {
+        alert(str, c, 100);
+    }
+    /**
+     * Displays some text alert on the screen at your chosen y-level.
+     * @param str The text to display
+     * @param c the text color.
+     * @param yLevel the y position in pixels it should appear.
+     */
+    public void alert(String str, Color c, int yLevel) {
         TextBox info = new TextBox(str, 36, c, null, 2, 255);
-        addObject(info, getWidth()/2, 100);
+        addObject(info, getWidth()/2, yLevel);
         info.fadeOut();
+    }
+    /**
+     * adds some colllison boxes around the playable area.
+     */
+    protected void addBorderBoxes() {
+        int boardWidth = board.width() * Cell.SIZE;
+        int boardHeight = board.height() * Cell.SIZE;
+        int height = getHeight();
+        int width = getWidth();
+        // Add a collision box that blocks the RIGHT edge of the playable zone.
+        CollisionBox rightBox = new CollisionBox(width-boardWidth, height, Box.SHOW_BOXES);
+        addObject(rightBox, boardWidth + (width - boardWidth)/2, height/2);
+        // now, to the left (beyond the visible area.
+        CollisionBox leftBox = new CollisionBox(Cell.SIZE, height, Box.SHOW_BOXES);
+        addObject(leftBox, -Cell.SIZE/2, height/2); 
+        // Top now, with 2 extra cells just in case (to makae a rectangle with filled corners
+        CollisionBox topBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
+        addObject(topBox, boardWidth/2, -Cell.SIZE/2);
+        // Finally, bottom!
+        CollisionBox bottomBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
+        addObject(bottomBox, boardWidth/2, height+Cell.SIZE/2);
     }
 }

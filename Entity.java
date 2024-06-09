@@ -34,7 +34,6 @@ public abstract class Entity extends SuperActor implements Damageable
 
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
-    
     public Entity(Team team, int maxHp) {
         // this.team = team;
         hp = maxHp;
@@ -57,6 +56,7 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
+        if (getWorld() == null) return; // No need for these shenanigans now.
         if(flung){
             fling();
         }
