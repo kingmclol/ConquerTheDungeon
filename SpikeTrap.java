@@ -9,14 +9,13 @@ import java.util.ArrayList;
  */
 public class SpikeTrap extends Floor
 {
-    private GreenfootImage img = new GreenfootImage("spiketrap1.png");
-    private GreenfootImage img2 = new GreenfootImage("spiketrap2.png");
+    private static GreenfootImage img = new GreenfootImage("spiketrap1.png");
+    private static GreenfootImage img2 = new GreenfootImage("spiketrap2.png");
     private int activeCounter; 
     private int acts;
     private int period;
     public SpikeTrap() {
-           
-        super(new Color(252, 13, 121));
+        super(img);
         activeCounter = 0;
         period = Utility.randomIntInRange(120, 240);
         acts = Greenfoot.getRandomNumber(period);

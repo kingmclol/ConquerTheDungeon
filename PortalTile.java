@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class PortalTile here.
@@ -17,7 +18,13 @@ public class PortalTile extends Floor
         super(Color.GREEN);
     }
     protected void checkTouchTile(){
-        return;
+        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
+        for(Box box : boxes){
+            Actor owner = box.getOwner();
+            if(owner instanceof Player){
+                GameWorld.goToNextLevel();
+            }
+        }
     }
     public String getID() {
         return "ptl";

@@ -1,4 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.HashMap;
+import java.util.ArrayList;
 
 public abstract class Enemy extends Entity {
     //Animations for Moving as well as other object behaviour: 
@@ -10,6 +12,9 @@ public abstract class Enemy extends Entity {
     protected double spd;
     private String facing = "right";
     protected Player player;
+    
+    private static HashMap<String, Class> enemyDatabase;
+    private static ArrayList<String> enemyIDs;
     public Enemy() {
         super(Team.ENEMY, 100);
         this.hp = 100;  
@@ -91,6 +96,51 @@ public abstract class Enemy extends Entity {
     public boolean getDeath()
     {
         return death;
+    }
+    /**
+     * Gets an instance of an enemy given its ID.
+     * @return the enemy instance as an entity
+     */
+    public static Entity getInstanceFromID(String id) {
+        Class c = enemyDatabase.get(id);
+        if (c == null) {
+            if (GameWorld.SHOW_LOGS) System.out.println("err: the enemy ID \"" + id + "\" was invalid");
+            return new Goblin(); // fallback to goblin
+        }
+        
+        try
+        {
+            return (Entity) c.newInstance();
+        }
+        catch (IllegalAccessException iae) {
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: encountered IllegalAccessException from enemy ID: " + id);
+        }
+        catch (InstantiationException ie)
+        {
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: encountered InstantiationException from enemy ID: " + id);
+        }
+        return new Goblin(); // Something really bad went wrong. ouch. fallback to goblin
+    }
+    /**
+     * Returns a random enemy ID.
+     * @return the enemy ID.
+     */
+    public static String getRandomEnemyID() {
+        if (enemyIDs == null && enemyDatabase != null) {
+            enemyIDs = new ArrayList<String>(enemyDatabase.keySet());
+        }
+        return enemyIDs.get(Greenfoot.getRandomNumber(enemyIDs.size()));
+    }
+    /**
+     * Initilalizes the map of ID -> Class pairs for the enemies.
+     */
+    public static void initializeEnemyDatabase() {
+        if (enemyDatabase != null) return;
+        enemyDatabase = new HashMap<String, Class>();
+        enemyDatabase.put("gob", Goblin.class);
+        enemyDatabase.put("ske", Skeleton.class);
+        enemyDatabase.put("zom", Zombie.class);
+        if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in enemy database");
     }
 }
 

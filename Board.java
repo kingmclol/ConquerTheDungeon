@@ -236,8 +236,8 @@ public class Board extends Actor
      */
     public void addEntity(Entity e, Cell c) {
         // TODO: Add an warning effect/move this method to the cell?
-        // c.addEntity(e);
-        getWorld().addObject(e, c.getX(), c.getY());
+        c.applyEffect(new EntitySpawn(e));
+        //getWorld().addObject(e, c.getX(), c.getY());
     }
     /**
      * Returns the width of this board, in terms of Cells.
