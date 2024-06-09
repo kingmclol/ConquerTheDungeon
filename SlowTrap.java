@@ -18,17 +18,19 @@ public class SlowTrap extends Floor
     }
     public void act()
     {
-        // Add your action code here.
+        checkTouchTile();
     }
+
     protected void checkTouchTile(){
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
-                //doEffect(owner);
+                ((Entity) owner).setSpeed(0.6);
             }
         }
     }
+
     public String getID() {
         return "slw";
     }

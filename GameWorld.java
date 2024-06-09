@@ -19,8 +19,9 @@ public class GameWorld extends World
     { 
         super(1200, 768, 1, false); 
 
-        setPaintOrder(Cursor.class, Segment.class, CollisionBox.class, TextBox.class, Picture.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
-
+        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+        StatsUI ui = new StatsUI();
+        addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();

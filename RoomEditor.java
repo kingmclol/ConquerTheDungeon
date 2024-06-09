@@ -29,8 +29,8 @@ public class RoomEditor extends GameWorld
         //board = new Board(buildString);
         addObject(board, 0,0);
         drawID = "f";
-        SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
-        addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
+        //SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
+        //addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
         addObject(new Player(), 30, 30);
 
         int boardWidth = board.width() * Cell.SIZE;
