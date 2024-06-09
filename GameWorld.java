@@ -13,7 +13,7 @@ public class GameWorld extends World
      * Constructor for objects of class SuperWorld.
      * 
      */
-    public static final boolean SHOW_LOGS = true;
+    public static final boolean SHOW_LOGS = true;    
     protected Board board;
     public GameWorld()
     { 
@@ -52,7 +52,7 @@ public class GameWorld extends World
      */
     public void alert(String str, Color c, int yLevel) {
         TextBox info = new TextBox(str, 36, c, null, 2, 255);
-        addObject(info, getWidth()/2, yLevel);
+        addObject(info, (board.width()*Cell.SIZE)/2, yLevel);
         info.fadeOut();
     }
     /**
@@ -75,5 +75,13 @@ public class GameWorld extends World
         // Finally, bottom!
         CollisionBox bottomBox = new CollisionBox(boardWidth + 2*Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES);
         addObject(bottomBox, boardWidth/2, height+Cell.SIZE/2);
+    }
+    
+    /**
+     * 
+     */
+    public static void goToNextLevel() {
+        GameData.incrementLevel(); // going to next level now
+        Greenfoot.setWorld(new Room(GameData.getLevel())); // new room
     }
 }

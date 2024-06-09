@@ -22,9 +22,9 @@ public class Room extends GameWorld
     private List<List<String>> spawnWaves;
     private int currentLevel;
     private Timer timer;
-    private static final int FIRST_WAVE_WAIT = 60;
+    private static final int FIRST_WAVE_WAIT = 180;
     private int currentWave;
-    private static final int ENEMY_ALIVE_CHECK_PERIOD = 30; // Will check if all enemies are dead every this amount of acts.
+    private static final int ENEMY_ALIVE_CHECK_PERIOD = 60; // Will check if all enemies are dead every this amount of acts.
     private boolean portalSpawned;
     private static final String fallbackBuildString = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/w/w/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
     
@@ -35,21 +35,26 @@ public class Room extends GameWorld
         board = getRandomBoard();
         currentLevel = level;
         addObject(board, 0, 0);
-        board.addEntity(new Player(), board.getRandomSpawnableCell());
-        spawnWaves = generateSpawnWaves(3);
-        currentWave = 0;
+        board.addEntity(GameData.getPlayer(), board.getRandomSpawnableCell());
+        spawnWaves = generateSpawnWaves(currentLevel);
+        currentWave = 1;
         portalSpawned = false;
-        alert("LEVEL " + level, Color.WHITE, getHeight()-100);
+        alert("LEVEL " + currentLevel, Color.WHITE, getHeight()-100);
         addBorderBoxes();
     }
     public void act() {
         super.act();
-        if (timer.actsPassed() % ENEMY_ALIVE_CHECK_PERIOD == 0 && getObjects(Enemy.class).size() == 0) {
+        // Give the player a bit of time to get their bearings first before spawning the first wave.
+        if (currentWave == 1 && timer.actsPassed() >= FIRST_WAVE_WAIT) { 
+            spawnNextWave();
+        }
+        // After, just spawn in a new wave once all enemies are dead.
+        else if (currentWave > 1 && timer.actsPassed() % ENEMY_ALIVE_CHECK_PERIOD == 0 && getObjects(Enemy.class).size() == 0) {
             spawnNextWave();
         }
     }
     private void spawnNextWave() {
-        if (currentWave >= spawnWaves.size()) { // The player has beat all of the enemy waves, and should move to the next room.
+        if (currentWave-1 >= spawnWaves.size()) { // The player has beat all of the enemy waves, and should move to the next room.
             if (!portalSpawned) { // If a portal tile did not exist yet, spawn one in.
                 Cell randomCell = board.getRandomSpawnableCell();
                 randomCell.setTile(new PortalTile());
@@ -58,8 +63,8 @@ public class Room extends GameWorld
             return;
         }
         // Spawn the next wave, since we haven't finished all the enemy waves.
-        alert("SPAWNING WAVE " + (currentWave + 1), Color.RED);
-        List<String> nextWave = spawnWaves.get(currentWave);
+        alert("SPAWNING WAVE " + currentWave, Color.RED);
+        List<String> nextWave = spawnWaves.get(currentWave-1);
         for (String id : nextWave) { // Add all the enemies from that wave into the world.
             board.addEntity(Enemy.getInstanceFromID(id), board.getRandomSpawnableCell());
         }
@@ -72,7 +77,7 @@ public class Room extends GameWorld
         int numWaves = level/3 + 1;
         // And the max and min levels.
         int minEnemies = 3 + Greenfoot.getRandomNumber(level/2 + 1);
-        int maxEnemies = minEnemies + Greenfoot.getRandomNumber(level/4 + 1);
+        int maxEnemies = minEnemies + Greenfoot.getRandomNumber(level/3 + 2);
         
         for (int wave = 0; wave < numWaves; wave++) { // For each wave in this level...
             int waveEnemies = Utility.randomIntInRange(minEnemies, maxEnemies); // randomly choose the num of enemies in this wave.
