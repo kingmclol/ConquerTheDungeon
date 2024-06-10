@@ -25,7 +25,6 @@ public class Zombie extends Enemy
 
     public void act()
     {
-        super.act();
         // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
@@ -46,6 +45,7 @@ public class Zombie extends Enemy
         {
             deathAnimation();
         }
+        super.act();
     }
 
     public void findTarget(){

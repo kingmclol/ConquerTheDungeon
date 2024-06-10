@@ -37,10 +37,6 @@ public class Goblin extends Enemy
     public void act()
     {
         target = getObjectsInRange(30, Player.class);
-        if(!death)
-        {
-            super.act(); 
-        }
         // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
@@ -61,6 +57,10 @@ public class Goblin extends Enemy
         if(this.getHp() <= 0) // trigger death animation.
         {
             deathAnimation();
+        }
+        if(!death)
+        {
+           super.act(); 
         }
     }
 

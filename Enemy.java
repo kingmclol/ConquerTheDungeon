@@ -16,7 +16,7 @@ public abstract class Enemy extends Entity {
     private static HashMap<String, Class> enemyDatabase;
     private static ArrayList<String> enemyIDs;
     public Enemy() {
-        super(Team.ENEMY, 100);
+        super(100);
         this.hp = 100;  
     }
     /**

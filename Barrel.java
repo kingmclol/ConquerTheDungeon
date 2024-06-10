@@ -17,8 +17,15 @@ public class Barrel extends Destroyable
         super(img, 10);
     }
     public void onDestroy() {
-        if (Greenfoot.getRandomNumber(2) == 0) {
+        int randomDrop = Greenfoot.getRandomNumber(7);
+        if (randomDrop == 0 ||randomDrop == 1) {
             getWorld().addObject(new Coin(), getX(), getY());
+        }
+        else if (randomDrop == 2){
+            getWorld().addObject(new PowerUp(), getX(), getY());
+        }
+        else if(randomDrop == 3){
+            getWorld().addObject(new Heal(Utility.randomIntInRange(30, 60)), getX(), getY());
         }
         replaceMe(new EmptyFloor());
         
