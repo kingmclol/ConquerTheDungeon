@@ -15,7 +15,7 @@ public class Zombie extends Enemy
         inAttack = false;
         //Using Mr Cohen's animation class: 
         down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 10, 1, 9, 64, 64);
-        right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 12, 1, 9, 64, 64, 10);
+        right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 11, 1, 9, 64, 64, 10);
         up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
 
@@ -122,10 +122,10 @@ public class Zombie extends Enemy
         {
             frame = 0;
             inAttack = false;
-            down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 10, 1, 8, 64, 64);
-            right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 12, 1, 8, 64, 64, 10);
-            up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 8, 64, 64);
-            left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 8, 64, 64);
+            down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 10, 1, 9, 64, 64);
+            right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 11, 1, 9, 64, 64, 10);
+            up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
+            left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
         }
         switch(this.getFacing())
         {
@@ -142,7 +142,7 @@ public class Zombie extends Enemy
                 setImage(left.getFrame(frame));
                 break;
         }
-        if(acts % 5 == 0)
+        if(acts % 3 == 0)
         {
             frame = (frame+1)%(up.getAnimationLength());
         }

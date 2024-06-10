@@ -87,7 +87,6 @@ public class Player extends Entity
         x = getX();
         y = getY();
         moving = false;
-
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -169,8 +168,7 @@ public class Player extends Entity
     }
 
     private void movePlayer() {
-        
-        
+
         if(speedBoost > 0){
             speed = speed * speedMod;
         }
@@ -178,11 +176,12 @@ public class Player extends Entity
         int x;// Animation Speed base on a factor of variable X
         speed = isPoweredUp ? powerUpSpeed : normalSpeed;
         x = (int)speed;
-        if(acts%(10) == 0)
+        if(acts % 10 == 0)
         {
-            frame = (frame+1)%(up.getAnimationLength()); 
+            frame = (frame+1)%(up.getAnimationLength());
         }
         acts++;
+        
         if (Greenfoot.isKeyDown("w")) {
             dy -= speed;
             setImage(up.getFrame(frame));
@@ -212,11 +211,10 @@ public class Player extends Entity
             idle();
         }
         move(dx, dy, speed);
-        if(acts % 2 == 0)
+        if(acts%(10) == 0)
         {
-            frame = (frame+1)%(right.getAnimationLength());
+            frame = (frame+1)%(up.getAnimationLength()); 
         }
-
         if (isDashing) {
             dashFrames++;
             displace(dashVelocity);
@@ -226,7 +224,6 @@ public class Player extends Entity
             }
         } else {
             StatsUI.updateCd2(((double) (System.currentTimeMillis() - dashCooldownTime)/ 1000.0)*100.0);
-            
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
                 if ("shift".equals(key) && (dx != 0 || dy != 0)){
@@ -318,7 +315,7 @@ public class Player extends Entity
                     e.damage(damage);
                     e.setDamagedState(true);
                     }*/
-                    
+
                     //e.setDamagedState(true);
                 }
             }
@@ -337,6 +334,7 @@ public class Player extends Entity
     public static String getFacing (){
         return facing;
     }
+
     public static int getAttackDmg(){
         return attackDmg;
     }
@@ -504,7 +502,7 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
-                    break;
+                    return;
                 }
                 switch(facing)
                 {

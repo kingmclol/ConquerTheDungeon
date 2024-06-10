@@ -142,5 +142,9 @@ public abstract class Enemy extends Entity {
         enemyDatabase.put("zom", Zombie.class);
         if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in enemy database");
     }
+    public void setFacing(String facing)
+    {
+        this.facing = facing;
+    }
 }
 

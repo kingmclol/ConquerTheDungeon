@@ -124,7 +124,8 @@ public class Skeleton extends Enemy
 
     public void attackAnimation()
     {
-        if(frame == up.getAnimationLength()-1)
+        setDirection();
+        if(frame >= up.getAnimationLength()-1)
         {
             frame = 0;
             inAttack = false;
@@ -132,6 +133,7 @@ public class Skeleton extends Enemy
             left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 9, 1, 9, 64, 64);
             down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 10, 1, 9, 64, 64);
             right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 11, 1, 9, 64, 64, 10);
+            return;
         }
         switch(this.getFacing())
         {
@@ -152,5 +154,27 @@ public class Skeleton extends Enemy
         {
             frame = (frame+1)%(up.getAnimationLength());
         }
+    }
+    public void setDirection()
+    {
+        int x = Player.returnX(), y = Player.returnY();
+        //Change in Y and X
+        x = x - this.getX();
+        y = y - this.getY();
+        
+        double angle = Math.atan2(y, x);
+        //Calculate angle:
+        
+        //Set Facing based off angle:
+        if (angle > -Math.PI / 4 && angle <= Math.PI / 4) {
+            setFacing("right");
+        } else if (angle > Math.PI / 4 && angle <= 3 * Math.PI / 4) {
+            setFacing("down");
+        } else if (angle > -3 * Math.PI / 4 && angle <= -Math.PI / 4) {
+            setFacing("up");
+        } else {
+            setFacing("left");
+        }
+        
     }
 }
