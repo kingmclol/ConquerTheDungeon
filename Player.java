@@ -16,7 +16,7 @@ public class Player extends Entity
     private int normalShootingInterval;
     private int powerUpShootingInterval;
     private int shootingTimer;
-
+    private static int attackDmg = 10;
     private double speed;
     private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
@@ -25,6 +25,7 @@ public class Player extends Entity
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
+    private boolean lockStaff = false;
     //Moving
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
@@ -38,19 +39,19 @@ public class Player extends Entity
     private int cooldownTimer = 0;
 
     private boolean isDashing = false;
-    private long dashCooldownTime = 0;
+    private long dashCooldownTime = System.currentTimeMillis();
     private int dashFrames = 0;
     //private double dashDx = 0, dashDy = 0;
     private Vector dashVelocity;
-
+    private static int maxHp = 100;
     public Player() {
-        super(Team.ALLY, 100);
+        super(Team.ALLY, maxHp);
         normalSpeed = 5;
         powerUpSpeed = 8;
         normalShootingInterval = 50;
         powerUpShootingInterval = 30;
         shootingTimer = 0;
-        hp = 100;
+        hp = maxHp;
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
@@ -91,7 +92,7 @@ public class Player extends Entity
             useStaffUltimate();
         }
 
-        if(remainingCds != 0) // 1 minute
+        if(remainingCds > 0) // 1 minute
         {
             remainingCds--;
         }
@@ -105,11 +106,13 @@ public class Player extends Entity
         if(this.getCurrentWeapon().equals("staff"))
         {
             timeForStaff--;
+            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
             // continue timer, up to 10 seconds per time whether you end early or not.
         }
         else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
         {
-            timeForStaff = timeForStaff+(600/remainingCds); 
+            timeForStaff = timeForStaff+(600.0/3600.0); 
+            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
             // for every second spent in sword, regenerate 1/6th of the timer second for staff.
         }
         //Mouse click == false prevents spam clicking, which keeps resetting the animation.
@@ -120,7 +123,7 @@ public class Player extends Entity
             frame = 0;
             //set frame 0 when attacking.
         }
-        if(!flung){
+        if(flung.equals("none")){
             if(!inAttack)
             {
                 movePlayer();
@@ -134,7 +137,7 @@ public class Player extends Entity
                 }
                 else
                 {
-                    attack(10);
+                    attack(attackDmg);
                 }
             }
         }
@@ -143,11 +146,12 @@ public class Player extends Entity
         checkPowerUpStatus();
 
         // if still in staff and not middle of attack animation,
-        if(timeForStaff < 0 && !inAttack)
+        if(timeForStaff <= 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
             remainingCds = 3600; // restart Cooldown once staff is expired.
-            timeForStaff = 600; // reset Timer
+            timeForStaff = 0;
+            //timeForStaff = 600; // reset Timer
         }
         acts++;
         super.act();
@@ -165,7 +169,7 @@ public class Player extends Entity
         
         
         if(speedBoost > 0){
-            speed = speed * 1.4;
+            speed = speed * speedMod;
         }
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
@@ -218,6 +222,8 @@ public class Player extends Entity
                 dashCooldownTime = System.currentTimeMillis();
             }
         } else {
+            StatsUI.updateCd2(((double) (System.currentTimeMillis() - dashCooldownTime)/ 1000.0)*100.0);
+            
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
                 if ("shift".equals(key) && (dx != 0 || dy != 0)){
@@ -327,6 +333,9 @@ public class Player extends Entity
 
     public static String getFacing (){
         return facing;
+    }
+    public static int getAttackDmg(){
+        return attackDmg;
     }
 
     private void shoot(int targetX, int targetY) {

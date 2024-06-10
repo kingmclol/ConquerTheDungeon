@@ -15,7 +15,12 @@ public class Landmine extends Floor
     private boolean exploded;
     public Landmine() {
         super(img);  
+        hiddenBox = new HiddenBox(40, 40, Box.SHOW_BOXES, this);
         
+
+    }
+    public void addedToWorld(World w) {
+        w.addObject(hiddenBox, getX(), getY());
 
     }
     private void explode(){
@@ -31,7 +36,7 @@ public class Landmine extends Floor
 
     protected void checkTouchTile(){
         if(!exploded){
-            ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
+            ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) hiddenBox.getIntersectingBoxes(CollisionBox.class);
             //System.out.println(boxes);
             for(Box box : boxes){
                 Actor owner = box.getOwner();

@@ -24,19 +24,22 @@ public abstract class Entity extends SuperActor implements Damageable
     //protected HealthBar healthBar;
     // protected Team team;
     protected int hp;
+    protected int maxHp;
     protected double speedBoost = 0 ;
     protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
 
-    protected boolean inAttack, death, dealtDamage, recievedDamage, flung = false;
-    protected ParabolicProjectile projPath;
+    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    protected double speedMod = 1.0;
+    protected ParabolicProjectile projPath; 
+    protected String flung = "none";
 
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
-    
     public Entity(Team team, int maxHp) {
         // this.team = team;
+        this.maxHp = maxHp;
         hp = maxHp;
         // // healthBar = new HealthBar(maxHp);
         // skillPoints = MAX_SKILL_POINTS/2;
@@ -57,12 +60,15 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
-        if(flung){
+        if(!flung.equals("none")){
+
             fling();
         }
         if(speedBoost > 0){
             speedBoost--;
         }
+    
+        
 
         manageCollision();
         //animate();
@@ -85,20 +91,23 @@ public abstract class Entity extends SuperActor implements Damageable
     protected abstract void deathAnimation();
     public int damage(int dmg) {
         if (iFrameTimer.acts() <= IFRAMES) return 0;
-        TextBox dmgBox = new TextBox("-" + dmg, 24, Color.ORANGE, null, 2, 255);
+        TextBox dmgBox = new TextBox("-" + dmg, Utility.randomIntInRange(20, 36), Color.ORANGE, null, 3, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         int dmgTaken;
         if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
         dmgTaken = dmg;
+        if(this instanceof Player){
+            StatsUI.updateHP(((double) hp / maxHp )* 100.0);
+        }
         hpBar.update(hp);
         if(hp <= 0) die();
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }
     public void heal(int heal) {
-        TextBox dmgBox = new TextBox("+" + heal, 24, Color.GREEN, null, 2, 255);
+        TextBox dmgBox = new TextBox("+" + heal, Utility.randomIntInRange(20, 36), Color.GREEN, null, 3, 255);
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
@@ -127,21 +136,34 @@ public abstract class Entity extends SuperActor implements Damageable
             }
         }
         
-        if(getX() <= 10){
-            setLocation(11, getY());
-        }
-        if(getX() >= 1015){
-            setLocation(1014, getY());
-        }
-        if(getY() <= 20){
-            setLocation(getX(), 21);
-        }
-        if(getY() >= 740){
-            setLocation(getX(), 739);
-        }
+        // if(getX() <= 10){
+            // setLocation(11, getY());
+        // }
+        // if(getX() >= 1015){
+            // setLocation(1014, getY());
+        // }
+        // if(getY() <= 20){
+            // setLocation(getX(), 21);
+        // }
+        // if(getY() >= 740){
+            // setLocation(getX(), 739);
+        // }
     }
     public void setFlungState(boolean state){
-        flung = state;
+        if(state){
+            if(Player.getFacing().equals("right") ){
+                flung = "left";
+            }
+            else if (Player.getFacing().equals("left")){
+                flung = "right";
+            }
+            else if (Utility.randomIntInRange(0, 1) == 0){
+                flung = "right";
+            }
+            else{
+                flung = "left";
+            }
+        }
     }
     public void fling(){
         if(projPath != null && !projPath.pathDone()){
@@ -150,16 +172,16 @@ public abstract class Entity extends SuperActor implements Damageable
             //Turns the actor as it moves through the projectile path
             turn(8);
             Vector pos = projPath.nextCoord();
-            if(Player.getFacing().equals("right")){
+            if(flung.equals("left") ){
                 setLocation(getX() - pos.getX(), getY() - pos.getY());
             }
-            else{
+            else if (flung.equals("right")){
                 setLocation(getX() + pos.getX(), getY() - pos.getY());
             }
             if(projPath.pathDone()){
             
                 setRotation(0);
-                flung = false;
+                flung = "none";
             }
         }
         else {
@@ -180,7 +202,8 @@ public abstract class Entity extends SuperActor implements Damageable
     public Vector getPosition(){
         return collisionBox.getPosition();
     }
-    public void setSpeed(double speedTime){
-        this.speedBoost = speedTime;
+    public void setSpeed(double speedMod){
+        this.speedMod = speedMod;
+        this.speedBoost = 50;
     }
 }

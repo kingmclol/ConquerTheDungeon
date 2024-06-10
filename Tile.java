@@ -1,6 +1,5 @@
 import greenfoot.*;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.ArrayList;
 /**
  * Write a description of class Tile here.
@@ -54,18 +53,14 @@ public abstract class Tile extends SuperActor
         
         try
         {
-            try
-            {
-                return (Tile) c.newInstance();
-            }
-            catch (IllegalAccessException iae)
-            {
-                iae.printStackTrace();
-            }
+            return (Tile) c.newInstance();
+        }
+        catch (IllegalAccessException iae) {
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: encountered IllegalAccessException from tile ID: " + id);
         }
         catch (InstantiationException ie)
         {
-            ie.printStackTrace();
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: encountered InstantiationException from tile ID: " + id);
         }
         return new EmptyFloor(); // Something really bad went wrong. ouch.
     }
@@ -82,6 +77,7 @@ public abstract class Tile extends SuperActor
         tileDatabase.put("lm", Landmine.class);
         tileDatabase.put("lv", Lava.class);
         tileDatabase.put("slw", SlowTrap.class);
+        tileDatabase.put("ptl", PortalTile.class);
         if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in tile database");
     }
     public static String[] getLegend() {

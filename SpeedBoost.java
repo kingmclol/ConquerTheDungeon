@@ -14,8 +14,9 @@ public class SpeedBoost extends Floor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
+    public static GreenfootImage img = new GreenfootImage("speedBoost.png");
     public SpeedBoost() {
-        super(Color.BLUE);
+        super(img);
     }
 
     public void act()
@@ -28,7 +29,7 @@ public class SpeedBoost extends Floor
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
-                ((Entity) owner).setSpeed(120);
+                ((Entity) owner).setSpeed(1.4);
             }
         }
     }

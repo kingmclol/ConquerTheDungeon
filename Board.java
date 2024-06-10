@@ -213,6 +213,7 @@ public class Board extends Actor
      * @return the Node at the position where the cell is, null if not found
      */
     public Node getNode(Cell c) {
+        if (c == null) return null;
         return getNode(c.getBoardX(), c.getBoardY());
     }
     /**
@@ -235,8 +236,8 @@ public class Board extends Actor
      */
     public void addEntity(Entity e, Cell c) {
         // TODO: Add an warning effect/move this method to the cell?
-        // c.addEntity(e);
-        getWorld().addObject(e, c.getX(), c.getY());
+        c.applyEffect(new EntitySpawn(e));
+        //getWorld().addObject(e, c.getX(), c.getY());
     }
     /**
      * Returns the width of this board, in terms of Cells.
@@ -305,6 +306,7 @@ public class Board extends Actor
      * @return An array list of nodes representing the path
      */
     public ArrayList<Node> findPath(Node start, Node end) {
+        if (start == null || end == null) return null;
         // Create nodes based on the given positions.
         Node startNode = start;
         Node endNode = end;
