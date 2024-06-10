@@ -31,7 +31,7 @@ public class EntitySpawn extends CellEffect
             }
             setImage(animation[index++]);
             if (index == spawnFrame) {
-                getWorld().addObject(entity, getX(), getY());
+                getWorld().addObject(entity, getX(), getY()-20);
             }
         }
     }

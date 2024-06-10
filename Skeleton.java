@@ -28,7 +28,6 @@ public class Skeleton extends Enemy
 
     public void act()
     {
-        super.act();
         acts++;
         if(player != null && getDistance(player) <= 300){
             inAttack = true;
@@ -53,7 +52,7 @@ public class Skeleton extends Enemy
         {
             deathAnimation();
         }
-
+        super.act();
     }
 
     public void findTarget(){
