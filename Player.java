@@ -75,6 +75,10 @@ public class Player extends Entity
             swingingDown[i] = new GreenfootImage("sword/down" + (i+1) + ".png");
             swingingRight[i] = new GreenfootImage("sword/right" + (i+1) + ".png");
         }
+        staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
+        staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
+        staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
+        staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64,7);
         //Start at frame 0
         setImage(up.getFrame(0));
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
@@ -84,7 +88,6 @@ public class Player extends Entity
         x = getX();
         y = getY();
         moving = false;
-
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -128,7 +131,6 @@ public class Player extends Entity
             if(!inAttack)
             {
                 movePlayer();
-
             }
             else
             {
@@ -152,6 +154,7 @@ public class Player extends Entity
         if(timeForStaff <= 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
+
             remainingCds = 600; // restart Cooldown once staff is expired.
             timeForStaff = 0;
             //timeForStaff = 600; // reset Timer
@@ -169,26 +172,19 @@ public class Player extends Entity
 
     private void movePlayer() {
 
-        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
-        
         if(speedBoost > 0){
             speed = speed * speedMod;
         }
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
-        if(isPoweredUp)
+        speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        x = (int)speed;
+        if(acts % 10 == 0)
         {
-            x = powerUpSpeed;
-        }
-        else
-        {
-            x = normalSpeed;
-        }
-        if(acts%(atkSpd-(x)/2) == 0)
-        {
-            frame = (frame+1)%(up.getAnimationLength()); 
+            frame = (frame+1)%(up.getAnimationLength());
         }
         acts++;
+        
         if (Greenfoot.isKeyDown("w")) {
             dy -= speed;
             setImage(up.getFrame(frame));
@@ -218,11 +214,10 @@ public class Player extends Entity
             idle();
         }
         move(dx, dy, speed);
-        if(acts % 2 == 0)
+        if(acts%(10) == 0)
         {
-            frame = (frame+1)%(right.getAnimationLength());
+            frame = (frame+1)%(up.getAnimationLength()); 
         }
-        
         if (isDashing) {
             dashFrames++;
             displace(dashVelocity);
@@ -232,7 +227,6 @@ public class Player extends Entity
             }
         } else {
             StatsUI.updateCd2(((double) (System.currentTimeMillis() - dashCooldownTime)/ 1000.0)*100.0);
-            
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
                 if ("shift".equals(key) && (dx != 0 || dy != 0)){
@@ -264,7 +258,7 @@ public class Player extends Entity
 
         double dashSpeed = 10.0; 
         dashVelocity.scaleTo(dashSpeed);
-        
+
     }
 
     private void handleShooting(){
@@ -324,7 +318,7 @@ public class Player extends Entity
                     e.damage(damage);
                     e.setDamagedState(true);
                     }*/
-                    
+
                     //e.setDamagedState(true);
                 }
             }
@@ -343,7 +337,9 @@ public class Player extends Entity
     public static String getFacing (){
         return facing;
     }
+
     public int getAttackDmg(){
+
         return attackDmg;
     }
 
@@ -379,7 +375,7 @@ public class Player extends Entity
     public int getHp() {
         return hp;
     }
-    
+
     public void setHp(int health){
         hp = health;
     }
@@ -414,7 +410,7 @@ public class Player extends Entity
     }
 
     public void useStaffUltimate() {
-        String key = Greenfoot.getKey();
+        String key = Keyboard.getCurrentKey();
         if("q".equals(key)){
             for (int i = 0; i < 15; i++) {
                 Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
@@ -479,10 +475,6 @@ public class Player extends Entity
                     setImage(left.getFrame(frame));
                     break;
             }
-            staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
-            staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
-            staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
-            staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64,7);
         }
     }
 
@@ -514,7 +506,7 @@ public class Player extends Entity
                             break;
                     }
                     mouseClick = false;
-                    break;
+                    return;
                 }
                 switch(facing)
                 {
@@ -574,6 +566,7 @@ public class Player extends Entity
                         setImage(staffRight.getFrame(frame));
                         break;
                 }
+
                 if(acts % (atkSpd/4) == 0)
                 {
                     frame = (frame+1)%(staffUp.getAnimationLength());
@@ -587,5 +580,5 @@ public class Player extends Entity
         return attackDmg +"," + normalSpeed  + "," + maxHp + "," + hp;
     }
     
-}
 
+}

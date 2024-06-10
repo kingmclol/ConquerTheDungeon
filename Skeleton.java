@@ -12,7 +12,6 @@ public class Skeleton extends Enemy
     private int arrowCooldown;
 
     public Skeleton(){
-        //Animation: 
         up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 10, 1, 9, 64, 64);
@@ -24,6 +23,7 @@ public class Skeleton extends Enemy
         dealtDamage = false;
         inAttack = false;
         arrowCooldown = 60;
+        setImage(right.getFrame(0));
     }
 
     public void act()
@@ -78,9 +78,16 @@ public class Skeleton extends Enemy
             System.out.println(lineOfSight.intersectsWall());
             if (!lineOfSight.intersectsWall()) {
                 // If no collision with walls, shoot the arrow
+                inAttack = true;
+                manageRotation();
+                down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 6, 1, 8, 64, 64);
+                right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 7, 1, 8, 64, 64, 10);
+                up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 4, 1, 8, 64, 64);
+                left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 5, 1, 8, 64, 64);
                 Arrow arrow = new Arrow(4, 10, this, player);
                 getWorld().addObject(arrow, getX(), getY());
                 arrowCooldown = 0;
+                attackAnimation();
             }
             getWorld().removeObject(lineOfSight);
         }
@@ -88,9 +95,10 @@ public class Skeleton extends Enemy
 
     public void manageAnimation()
     {
-        if(acts % 5 == 0)
+
+        if(acts % 10 == 0)
         {
-            frame = (frame+1)%(up.getAnimationLength());
+            frame = (frame + 1) % (up.getAnimationLength());
         }
         switch(this.getFacing())
         {
@@ -112,11 +120,61 @@ public class Skeleton extends Enemy
     public void deathAnimation()
     {
         die();
-
     }
 
     public void attackAnimation()
     {
-
+        setDirection();
+        if(frame >= up.getAnimationLength()-1)
+        {
+            frame = 0;
+            inAttack = false;
+            up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
+            left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 9, 1, 9, 64, 64);
+            down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 10, 1, 9, 64, 64);
+            right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 11, 1, 9, 64, 64, 10);
+            return;
+        }
+        switch(this.getFacing())
+        {
+            case "up":
+                setImage(up.getFrame(frame));
+                break;
+            case "down":
+                setImage(down.getFrame(frame));
+                break;
+            case "right":
+                setImage(right.getFrame(frame));
+                break;
+            case "left":
+                setImage(left.getFrame(frame));
+                break;
+        }
+        if(acts % 15 == 0)
+        {
+            frame = (frame+1)%(up.getAnimationLength());
+        }
+    }
+    public void setDirection()
+    {
+        int x = Player.returnX(), y = Player.returnY();
+        //Change in Y and X
+        x = x - this.getX();
+        y = y - this.getY();
+        
+        double angle = Math.atan2(y, x);
+        //Calculate angle:
+        
+        //Set Facing based off angle:
+        if (angle > -Math.PI / 4 && angle <= Math.PI / 4) {
+            setFacing("right");
+        } else if (angle > Math.PI / 4 && angle <= 3 * Math.PI / 4) {
+            setFacing("down");
+        } else if (angle > -3 * Math.PI / 4 && angle <= -Math.PI / 4) {
+            setFacing("up");
+        } else {
+            setFacing("left");
+        }
+        
     }
 }

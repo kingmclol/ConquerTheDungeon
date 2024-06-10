@@ -15,6 +15,7 @@ public class GameWorld extends World
      */
     public static final boolean SHOW_LOGS = true;    
     protected Board board;
+    protected SuperStatBar playerBar;
     public GameWorld()
     { 
         super(1200, 768, 1, false); 

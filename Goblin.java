@@ -11,7 +11,7 @@ import java.util.List;
 public class Goblin extends Enemy
 {
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
-    
+    private List<Player> target;
     /**
      * Act - do whatever the Goblin wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -36,9 +36,10 @@ public class Goblin extends Enemy
 
     public void act()
     {
+        target = getObjectsInRange(30, Player.class);
         if(!death)
         {
-           super.act(); 
+            super.act(); 
         }
         // Add your action code here.
         acts++;
@@ -72,7 +73,7 @@ public class Goblin extends Enemy
 
     public void attack()
     {
-        List<Player> target = getObjectsInRange(30, Player.class);
+
         if(!target.isEmpty())
         {
             inAttack = true;
@@ -81,9 +82,8 @@ public class Goblin extends Enemy
             up = Animation.createAnimation(new GreenfootImage("attack.png"), 2, 1, 4, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("attack.png"), 3, 1, 4, 64, 64);
             frame = 0;
-            target.get(0).damage(5);
         }
-        
+
     }
 
     /**
@@ -141,6 +141,19 @@ public class Goblin extends Enemy
             right = Animation.createAnimation(new GreenfootImage("goblin.png"), 1, 1, 7, 64, 64);
             up = Animation.createAnimation(new GreenfootImage("goblin.png"), 2, 1, 7, 64, 64);
             left = Animation.createAnimation(new GreenfootImage("goblin.png"), 3, 1, 7, 64, 64);
+            List<Player> players = getWorld().getObjects(Player.class);
+            for(Player p : players)
+            {
+                p.setDamagedState(false);
+            }
+        }
+        if(frame == 2 && !target.isEmpty())
+        {
+            if(target.get(0).damaged() == false)
+            {
+                target.get(0).damage(5);
+                target.get(0).setDamagedState(true);
+            }
         }
         switch(this.getFacing())
         {
