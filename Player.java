@@ -73,6 +73,10 @@ public class Player extends Entity
             swingingDown[i] = new GreenfootImage("sword/down" + (i+1) + ".png");
             swingingRight[i] = new GreenfootImage("sword/right" + (i+1) + ".png");
         }
+        staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
+        staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
+        staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
+        staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64,7);
         //Start at frame 0
         setImage(up.getFrame(0));
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
@@ -81,8 +85,7 @@ public class Player extends Entity
     public void act() {
         x = getX();
         y = getY();
-        
-        
+
 
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
@@ -147,7 +150,7 @@ public class Player extends Entity
         if(timeForStaff < 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
-            remainingCds = 3600; // restart Cooldown once staff is expired.
+            remainingCds = 900; // restart Cooldown once staff is expired.
             timeForStaff = 600; // reset Timer
         }
         acts++;
@@ -165,7 +168,6 @@ public class Player extends Entity
         if(isPoweredUp)
         {
             speed = powerUpSpeed;
-
         }
         else
         {
@@ -212,7 +214,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(right.getAnimationLength());
         }
-        
+
         if (isDashing) {
             dashFrames++;
             displace(dashVelocity);
@@ -252,7 +254,7 @@ public class Player extends Entity
 
         double dashSpeed = 10.0; 
         dashVelocity.scaleTo(dashSpeed);
-        
+
     }
 
     private void handleShooting(){
@@ -361,7 +363,7 @@ public class Player extends Entity
     public int getHp() {
         return hp;
     }
-    
+
     public void setHp(int health){
         hp = health;
     }
@@ -382,7 +384,7 @@ public class Player extends Entity
     }
 
     public void useStaffUltimate() {
-        String key = Greenfoot.getKey();
+        String key = Keyboard.getCurrentKey();
         if("q".equals(key)){
             for (int i = 0; i < 15; i++) {
                 Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
@@ -447,10 +449,6 @@ public class Player extends Entity
                     setImage(left.getFrame(frame));
                     break;
             }
-            staffUp = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 4, 1, 8, 64, 64);
-            staffLeft = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 5, 1, 8, 64, 64);
-            staffDown = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 6, 1, 8, 64, 64);
-            staffRight = Animation.createAnimation(new GreenfootImage("PlayerStaff.png"), 7, 1, 8, 64, 64,7);
         }
     }
 
@@ -551,7 +549,5 @@ public class Player extends Entity
                 break;
         }
     }
-    
-    
-}
 
+}
