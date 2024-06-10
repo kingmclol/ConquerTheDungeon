@@ -1,13 +1,18 @@
-/**
- * Write a description of class GameData here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
+
 public class GameData  
 {
 
     private static int level;
+    private static Scanner scan;
+    private static StringTokenizer tokenizer;
     private static Player player = new Player();
     /**
      * Constructor for objects of class GameData
@@ -33,13 +38,13 @@ public class GameData
      */
     public static String exportData() {
         // tba
-        return "banana";
+        return player.exportPlayer();
     }
     /**
-     * Given the string representation of a game, load the game data from there.
+     * Given the string representation of a player, load the game data from there.
      */
-    public static void loadData() {
-        // tba
+    public static void loadData(String data) {
+        tokenizer = new StringTokenizer(data, ",");
     }
     /**
      * Gets the main Player object of the game.

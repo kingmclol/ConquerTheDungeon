@@ -16,7 +16,8 @@ public class Player extends Entity
     private int normalShootingInterval;
     private int powerUpShootingInterval;
     private int shootingTimer;
-    private static int attackDmg = 10;
+    private int attackDmg = 25;
+    
     private double speed;
     private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
@@ -43,15 +44,15 @@ public class Player extends Entity
     private int dashFrames = 0;
     //private double dashDx = 0, dashDy = 0;
     private Vector dashVelocity;
-    private static int maxHp = 100;
+    
     public Player() {
-        super(Team.ALLY, maxHp);
+        super(100);
         normalSpeed = 5;
-        powerUpSpeed = 8;
-        normalShootingInterval = 50;
-        powerUpShootingInterval = 30;
-        shootingTimer = 0;
-        hp = maxHp;
+        powerUpSpeed = normalSpeed + (int)(normalSpeed * 0.3);
+        normalShootingInterval = 25;
+        powerUpShootingInterval = 10;
+        shootingTimer = 30;
+        
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
         up = Animation.createAnimation(new GreenfootImage("Player.png"), 8, 1, 9, 64, 64);
@@ -111,7 +112,7 @@ public class Player extends Entity
         }
         else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
         {
-            timeForStaff = timeForStaff+(600.0/3600.0); 
+            timeForStaff = timeForStaff+(1.0); 
             StatsUI.updateCd1((timeForStaff/600.0)*100.0);
             // for every second spent in sword, regenerate 1/6th of the timer second for staff.
         }
@@ -131,6 +132,7 @@ public class Player extends Entity
             }
             else
             {
+
                 attackAnimation();
                 if(this.getCurrentWeapon().equals("staff"))
                 {
@@ -150,7 +152,7 @@ public class Player extends Entity
         if(timeForStaff <= 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
-            remainingCds = 3600; // restart Cooldown once staff is expired.
+            remainingCds = 600; // restart Cooldown once staff is expired.
             timeForStaff = 0;
             //timeForStaff = 600; // reset Timer
         }
@@ -341,12 +343,12 @@ public class Player extends Entity
     public static String getFacing (){
         return facing;
     }
-    public static int getAttackDmg(){
+    public int getAttackDmg(){
         return attackDmg;
     }
 
     private void shoot(int targetX, int targetY) {
-        Bullet bullet = new Bullet(2, 20, this,targetX, targetY);
+        Bullet bullet = new Bullet(4, 20, this,targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
     }
 
@@ -572,7 +574,7 @@ public class Player extends Entity
                         setImage(staffRight.getFrame(frame));
                         break;
                 }
-                if(acts % atkSpd == 0)
+                if(acts % (atkSpd/4) == 0)
                 {
                     frame = (frame+1)%(staffUp.getAnimationLength());
                 }
@@ -581,7 +583,9 @@ public class Player extends Entity
                 break;
         }
     }
-    
+    public String exportPlayer(){
+        return attackDmg +"," + normalSpeed  + "," + maxHp + "," + hp;
+    }
     
 }
 

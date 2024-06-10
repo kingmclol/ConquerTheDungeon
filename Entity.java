@@ -15,10 +15,7 @@ import java.util.HashMap;
 public abstract class Entity extends SuperActor implements Damageable
 {
     // The enum Team stores whether the Entity is on your same team or not (Ally vs hostile)
-    public enum Team {
-        ALLY,
-        ENEMY
-    }
+
     // public static final int MAX_SKILL_POINTS = 5;
     // protected HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>> statusModifiers; // Stores modifiers of each trigger type.
     //protected HealthBar healthBar;
@@ -37,7 +34,7 @@ public abstract class Entity extends SuperActor implements Damageable
 
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
-    public Entity(Team team, int maxHp) {
+    public Entity(int maxHp) {
         // this.team = team;
         this.maxHp = maxHp;
         hp = maxHp;
