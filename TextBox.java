@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Freeman Wang
  * @version 2024-0-04-24
  */
-public class TextBox extends SuperActor
+public class TextBox extends UI
 {
     private int initialTransparency;
     protected GreenfootImage img;

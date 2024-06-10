@@ -38,7 +38,6 @@ public class PopUpBox extends UI
             }
             else if(Mouse.getPosition() != null && savedMousePos.getX() == Mouse.getPosition().getX() && savedMousePos.getY() == Mouse.getPosition().getY()){
                 timer--;
-                System.out.println("test");
             
             }
             else if(Mouse.getHoveredActor(PopUpBox.class) == this){
@@ -47,7 +46,7 @@ public class PopUpBox extends UI
                 
             }
             else{
-                System.out.println("test2");
+                
                 fadeOut();
             }
         

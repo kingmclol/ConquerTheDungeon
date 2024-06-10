@@ -39,7 +39,7 @@ public class Player extends Entity
     private int cooldownTimer = 0;
 
     private boolean isDashing = false;
-    private long dashCooldownTime = 0;
+    private long dashCooldownTime = System.currentTimeMillis();
     private int dashFrames = 0;
     //private double dashDx = 0, dashDy = 0;
     private Vector dashVelocity;
@@ -229,6 +229,8 @@ public class Player extends Entity
                 dashCooldownTime = System.currentTimeMillis();
             }
         } else {
+            StatsUI.updateCd2(((double) (System.currentTimeMillis() - dashCooldownTime)/ 1000.0)*100.0);
+            
             if (System.currentTimeMillis() - dashCooldownTime >= 1000) {
                 String key = Keyboard.getCurrentKey();
                 if ("shift".equals(key) && (dx != 0 || dy != 0)){

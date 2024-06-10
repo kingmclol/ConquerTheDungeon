@@ -1,22 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.ArrayList;
 
 /**
- * Write a description of class Coin here.
+ * Write a description of class CoinAnim here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Coin extends Drop
+public class CoinAnim extends UI
 {
     private GreenfootImage[] animate = new GreenfootImage[6];
     private int frame = 0, acts = 0;
-    public Coin(){
+    public CoinAnim(){
         for(int i = 0; i<animate.length; i++)
         {
             //animate[i] = new GreenfootImage("Star/star" + (i+1) + ".png");
             animate[i] = new GreenfootImage("Coin/coin" + (i + 1) + ".png");
-            animate[i].scale(35, 35);
+            animate[i].scale(25, 25);
         }
         setImage(animate[0]);
     }
@@ -26,7 +25,6 @@ public class Coin extends Drop
     {
         
         animate();
-        checkCollisionWithPlayer();
         acts++;
     }
     public void animate()
@@ -37,16 +35,5 @@ public class Coin extends Drop
             frame = (frame+1) % (animate.length);
         }
         setImage(animate[frame]);
-    }
-    public void checkCollisionWithPlayer() {
-        ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
-        for(Box box : boxes){
-            Actor owner = box.getOwner();
-            if(owner instanceof Player){
-                
-                StatsUI.updateCoin();
-                getWorld().removeObject(this);
-            }
-        }
     }
 }
