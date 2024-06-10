@@ -158,7 +158,7 @@ public class Skeleton extends Enemy
     public void setDirection()
     {
         int x = Player.returnX(), y = Player.returnY();
-        //Change in Y and X
+        //Change in Y and X, vectors.
         x = x - this.getX();
         y = y - this.getY();
         
@@ -166,7 +166,7 @@ public class Skeleton extends Enemy
         //Calculate angle:
         
         //Set Facing based off angle:
-        if (angle > -Math.PI / 4 && angle <= Math.PI / 4) {
+        if (angle > -Math.PI / 4 && angle <= Math.PI / 4) { // Q4 and Q1, 45 degree cutoff
             setFacing("right");
         } else if (angle > Math.PI / 4 && angle <= 3 * Math.PI / 4) {
             setFacing("down");
