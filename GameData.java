@@ -61,7 +61,7 @@ public class GameData
             System.out.println("err: something went wrong when writing save to file...");
         }
     }
-    public static void importData() {
+    public static boolean importData() {
         try {
             Scanner scan = new Scanner(new File(SAVE_FILE));
             String save = null;
@@ -70,17 +70,18 @@ public class GameData
                 System.out.println("warn: save file has no save, starting with new save");
                 resetData();
             }
-            loadData(save);
+            return loadData(save);
         }
         catch (FileNotFoundException e) {
             System.out.println("warn: save file not found, starting with new save");
             resetData(); // Use defaults
+            return false;
         }
     }
     /**
      * Given the string representation of a player, load the game data from there.
      */
-    public static void loadData(String data) {
+    public static boolean loadData(String data) {
         // Split to level data at index 0, and player data at index 1.
         String[] params = data.split("~");
         try {
@@ -88,11 +89,11 @@ public class GameData
         } catch (NumberFormatException e) {
             if (GameWorld.SHOW_LOGS) System.out.println("err: unexpected level when loading game data");
             resetData();
-            return;
+            return false;
         }
         player.loadPlayerData(params);
         StatsUI.loadStatsData(params);
-        //player = Player.getPlayerInstance(params[1]);
+        return true;
     }
     /**
      * Gets the main Player object of the game.

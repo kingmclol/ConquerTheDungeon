@@ -26,33 +26,45 @@ public class Room extends GameWorld
     private int currentWave;
     private static final int ENEMY_ALIVE_CHECK_PERIOD = 60; // Will check if all enemies are dead every this amount of acts.
     private boolean portalSpawned;
+    private boolean specialRoom;
     private static final String fallbackBuildString = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/w/w/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
     private static final String shopBuild = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/ptl/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
     public Room(int level)
     {    
         super();
-        
         timer = new Timer();
-        board = getRandomBoard();
         currentLevel = level;
+        if (level % 5 == 0 ) { // This is a shop room.
+            board = new Board(shopBuild);
+            portalSpawned = true;
+            specialRoom = true;
+            alert("Saving game...", new Color(40, 230, 70));
+            GameData.exportData();
+        }
+        else { // This is a combat room.
+            board = getRandomBoard();
+            spawnWaves = generateSpawnWaves(currentLevel);
+            currentWave = 1;
+            specialRoom = false;
+            portalSpawned = false;
+        }
         addObject(board, 0, 0);
         board.addEntity(GameData.getPlayer(), board.getRandomSpawnableCell());
-        spawnWaves = generateSpawnWaves(currentLevel);
-        currentWave = 1;
-        portalSpawned = false;
         alert("LEVEL " + currentLevel, Color.WHITE, getHeight()-100);
         addBorderBoxes();
     }
 
     public void act() {
         super.act();
-        // Give the player a bit of time to get their bearings first before spawning the first wave.
-        if (currentWave == 1 && timer.actsPassed() >= FIRST_WAVE_WAIT) { 
-            spawnNextWave();
-        }
-        // After, just spawn in a new wave once all enemies are dead.
-        else if (currentWave > 1 && timer.actsPassed() % ENEMY_ALIVE_CHECK_PERIOD == 0 && getObjects(Enemy.class).size() == 0) {
-            spawnNextWave();
+        if (!specialRoom) { // A combat room needs to have spawning of enemy waves.
+            // Give the player a bit of time to get their bearings first before spawning the first wave.
+            if (currentWave == 1 && timer.actsPassed() >= FIRST_WAVE_WAIT) { 
+                spawnNextWave();
+            }
+            // After, just spawn in a new wave once all enemies are dead.
+            else if (currentWave > 1 && timer.actsPassed() % ENEMY_ALIVE_CHECK_PERIOD == 0 && getObjects(Enemy.class).size() == 0) {
+                spawnNextWave();
+            }
         }
     }
     private void spawnNextWave() {
