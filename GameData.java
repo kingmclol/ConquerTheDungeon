@@ -56,6 +56,7 @@ public class GameData
             PrintWriter output = new PrintWriter(out);
             output.println(data);
             output.close();
+            out.close();
         } catch (IOException e) {
             System.out.println("err: something went wrong when writing save to file...");
         }
@@ -89,12 +90,15 @@ public class GameData
             resetData();
             return;
         }
+        player.loadPlayerData(params);
+        StatsUI.loadStatsData(params);
         //player = Player.getPlayerInstance(params[1]);
     }
     /**
      * Gets the main Player object of the game.
      */
     public static Player getPlayer() {
+        
         return player;
     }
     /**

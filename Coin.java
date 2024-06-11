@@ -44,7 +44,8 @@ public class Coin extends Drop
             Actor owner = box.getOwner();
             if(owner instanceof Player){
                 
-                StatsUI.updateCoin();
+                
+                GameData.getPlayer().addCoin();
                 getWorld().removeObject(this);
             }
         }

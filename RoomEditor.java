@@ -16,6 +16,7 @@ public class RoomEditor extends GameWorld
      * Constructor for objects of class RoomEditor.
      * 
      */
+    // 16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/
     //private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
     //private String buildString = "16~12~w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/";
     private String buildString = "16~12~w/f/f/f/f/f/w/f/f/f/f/f/f/f/f/w/f/f/f/f/f/w/f/f/f/f/w/f/w/f/f/f/f/f/f/w/f/w/f/w/f/f/f/f/w/w/f/f/f/f/f/w/f/f/f/f/f/w/f/f/w/w/f/f/f/w/f/w/w/w/f/w/f/w/w/w/f/f/f/f/f/f/f/w/w/f/f/w/f/f/f/w/f/f/w/f/f/w/f/w/f/w/w/w/w/w/f/w/w/f/f/w/f/f/w/f/w/f/w/w/w/w/w/w/f/f/f/w/f/f/f/f/f/f/f/w/w/w/w/w/f/f/w/w/w/w/f/f/f/w/w/w/w/w/w/w/w/w/w/w/f/f/f/w/f/f/w/w/w/f/w/f/w/w/w/w/w/f/w/f/w/f/f/w/w/w/f/w/w/w/w/w/";
@@ -29,8 +30,8 @@ public class RoomEditor extends GameWorld
         //board = new Board(buildString);
         addObject(board, 0,0);
         drawID = "f";
-        //SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
-        //addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
+        SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
+        addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
         addObject(new Player(), 30, 30);
 
         addBorderBoxes();

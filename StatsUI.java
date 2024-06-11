@@ -25,25 +25,27 @@ public  class StatsUI extends UI
     private PopUpBox spdStatInfo = new PopUpBox(new SuperTextBox(new String []{"- Speed Stat -", "Determines how ",  "fast you move."}, new Font(13), 120), 55, 75);
     
     private PopUpBox staffInfo = new PopUpBox(new SuperTextBox(new String []{"- Staff Meter -", "This meter determines",  "how long you can"," use the staff."}, new Font(13), 135), 70, 35);
-    
-    private TextBox atkText = new TextBox(Integer.toString(attackDmg), 24, Color.WHITE, null, 0, 255);
-    private TextBox heartText = new TextBox(Integer.toString(maxHp), 24, Color.WHITE, null, 0, 255);
-    private TextBox spdText = new TextBox(Integer.toString(spd), 24, Color.WHITE, null, 0, 255);
-    private static TextBox coinText = new TextBox(Integer.toString(0), 24, Color.YELLOW, null, 0, 255);
-    
-    private CoinAnim coinAnim = new CoinAnim();
-    //private TextBox atkText = new TextBox(Integer.toString(attackDmg), 24, Color.WHITE, null, 0, 100);
     private static int attackDmg = 10;
     private static int maxHp = 100;
     private static int spd = 5;
     private static int coin = 0;
+    private static TextBox atkText = new TextBox(Integer.toString(attackDmg), 24, Color.WHITE, null, 0, 255);
+    private static TextBox heartText = new TextBox(Integer.toString(maxHp), 24, Color.WHITE, null, 0, 255);
+    private static TextBox spdText = new TextBox(Integer.toString(spd), 24, Color.WHITE, null, 0, 255);
+    private static TextBox coinText = new TextBox(Integer.toString(0), 24, Color.YELLOW, null, 0, 255);
+    
+    private CoinAnim coinAnim = new CoinAnim();
+    //private TextBox atkText = new TextBox(Integer.toString(attackDmg), 24, Color.WHITE, null, 0, 100);
+
     public StatsUI() {
         img = new GreenfootImage("blankui.png");
         setImage(img);
-        coinText.display("0");
-        hpBar.setTargetPercent(100.0);
+    }
+    public static void loadStatsData(String [] data){
+        hpBar.setTargetPercent(((double)Integer.valueOf(data[4])/ Integer.valueOf(data[3]))*100.0);
         cdBar1.setTargetPercent(100.0);
         cdBar2.setTargetPercent(100.0);
+        coinText.display(data[5]);
     }
     public void addedToWorld(World w){
         w.addObject(hpBar, getX(), 130);
@@ -68,16 +70,18 @@ public  class StatsUI extends UI
     {
         // Add your action code here.
     }
-    public static void updateCoin(){
-        coin++;
+    public static void updateCoin(int coin){
         coinText.display(Integer.toString(coin));
     }
     public static void updateAtkDmg(int dmg){
-        attackDmg = dmg;
-        
+        atkText.display(Integer.toString(dmg));       
     }
     public static void updateMaxHp(int hp){
-        maxHp = hp;
+        heartText.display(Integer.toString(hp));    
+        
+    }
+    public static void updateSpd(int spd){
+        spdText.display(Integer.toString(spd));    
         
     }
     public static void updateHP(double percent){
