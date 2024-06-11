@@ -106,16 +106,16 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     public void heal(int heal) {
         TextBox dmgBox = new TextBox("+" + heal, Utility.randomIntInRange(20, 36), Color.GREEN, null, 3, 255);
-        //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
+        getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
         hp+=heal;
         if(hp > maxHp){
             hp = maxHp;
         }
         if(this instanceof Player){
-            if(this instanceof Player){
-                StatsUI.updateHP(((double) hp / maxHp )* 100.0);
-            }
+            
+            StatsUI.updateHP(((double) hp / maxHp )* 100.0);
+           
         }
         hpBar.update(hp);
     }

@@ -9,7 +9,7 @@ import java.util.List;
 public class Skeleton extends Enemy
 {
     private int frame = 0, acts = -1;
-    private int arrowCooldown;
+    private boolean hasShot;
 
     public Skeleton(){
         up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
@@ -22,7 +22,7 @@ public class Skeleton extends Enemy
         death = false;
         dealtDamage = false;
         inAttack = false;
-        arrowCooldown = 60;
+        hasShot = false;
         setImage(right.getFrame(0));
     }
 
@@ -63,8 +63,7 @@ public class Skeleton extends Enemy
     }
 
     public void attack() {
-        arrowCooldown++;
-        if (arrowCooldown >= 60 && player != null) {
+        if (!hasShot && frame == 5 && player != null) {
             // Check if there's a wall between the skeleton and the player
             Vector skeletonPos = new Vector(getX(), getY());
             Vector playerPos = new Vector(player.getX(), player.getY());
@@ -85,7 +84,7 @@ public class Skeleton extends Enemy
                 left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 5, 1, 8, 64, 64);
                 Arrow arrow = new Arrow(4, 10, this, player);
                 getWorld().addObject(arrow, getX(), getY());
-                arrowCooldown = 0;
+                hasShot = true;
                 attackAnimation();
             }
             getWorld().removeObject(lineOfSight);
@@ -152,6 +151,9 @@ public class Skeleton extends Enemy
         if(acts % 15 == 0)
         {
             frame = (frame+1)%(up.getAnimationLength());
+        }
+        if(frame == 6){
+            hasShot = false;
         }
     }
     public void setDirection()

@@ -54,7 +54,7 @@ public class Player extends Entity
         critRate = 0.3;
         critDamage = 1.6;
 
-        normalSpeed = 5;
+        normalSpeed = 4;
         powerUpSpeed = normalSpeed + (int)(normalSpeed * 0.3);
         normalShootingInterval = 25;
         powerUpShootingInterval = 10;
@@ -147,7 +147,9 @@ public class Player extends Entity
             else
             {
                 attackAnimation();
-                if(Math.random() > critRate){
+                if(Math.random() < critRate){
+
+
                     if(this.getCurrentWeapon().equals("staff"))
                     {
                         handleShooting((int)((double)attackDmg * critDamage));
@@ -620,6 +622,7 @@ public class Player extends Entity
     }
     public void addSpeed(int spd){
         normalSpeed += spd;
+        powerUpSpeed = normalSpeed + (int)(normalSpeed * 0.3);
         StatsUI.updateSpd(normalSpeed);
         
     }

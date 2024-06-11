@@ -43,7 +43,10 @@ public abstract class Enemy extends Entity {
         player = (Player)getClosestInRange(Player.class, 1000);
         manageCollision();
     }
-    
+    public void die(){
+        getWorld().addObject(new Coin(), getX(), getY());
+        getWorld().removeObject(this);
+    }
     public void takeDamage(int damage)
     {
         hp -= damage;
