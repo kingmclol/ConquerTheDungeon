@@ -26,7 +26,7 @@ public class ShopRoom extends GameWorld
         super();
         
         timer = new Timer();
-        board = new Board("16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/ptl/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/");
+        //board = new Board();
         addObject(board, 0, 0);
 
 

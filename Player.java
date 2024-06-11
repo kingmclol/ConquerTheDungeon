@@ -100,9 +100,12 @@ public class Player extends Entity
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
-
+        /*
         if (weapon.equals("staff") && cooldownTimer <= 0) {
-            useStaffUltimate();
+            useUltimate();
+        }*/
+        if (cooldownTimer <= 0) {
+            useUltimate();
         }
 
         if(remainingCds > 0) // 1 minute
@@ -145,6 +148,7 @@ public class Player extends Entity
             {
                 attackAnimation();
                 if(Math.random() < critRate){
+
 
                     if(this.getCurrentWeapon().equals("staff"))
                     {
@@ -434,15 +438,22 @@ public class Player extends Entity
         }
     }
 
-    public void useStaffUltimate() {
+    public void useUltimate() {
         String key = Keyboard.getCurrentKey();
         if("q".equals(key)){
-            for (int i = 0; i < 15; i++) {
-                Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
-                getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
-                bullet.setRotation(Greenfoot.getRandomNumber(360)); // Set the direction
+            switch(weapon)
+            {
+                case "staff":
+                    for (int i = 0; i < 15; i++) {
+                        Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
+                        getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
+                        bullet.setRotation(Greenfoot.getRandomNumber(360)); // Set the direction
+                    }
+                    cooldownTimer = ultimateCooldown;
+                    break;
+                case "sword":
+                    break;
             }
-            cooldownTimer = ultimateCooldown;
         }
     }
 

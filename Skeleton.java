@@ -29,7 +29,7 @@ public class Skeleton extends Enemy
     public void act()
     {
         acts++;
-        if(player != null && getDistance(player) <= 300){
+        if(player != null && player.getWorld() != null && getDistance(player) <= 300){
             inAttack = true;
         }else{
             inAttack = false;
@@ -57,7 +57,7 @@ public class Skeleton extends Enemy
 
     public void findTarget(){
 
-        if(player != null && getDistance(player) >= 300){
+        if(player != null && player.getWorld() != null && getDistance(player) >= 300){
             pathToEntity(player);
         }
     }
