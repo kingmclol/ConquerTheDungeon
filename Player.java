@@ -144,7 +144,7 @@ public class Player extends Entity
             else
             {
                 attackAnimation();
-                if(Math.random() > critRate){
+                if(Math.random() < critRate){
 
                     if(this.getCurrentWeapon().equals("staff"))
                     {

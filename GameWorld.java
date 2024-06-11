@@ -86,13 +86,15 @@ public class GameWorld extends World
     public static void goToNextLevel() {
          // going to next level now
         //GameData.exportData();
-        if(GameData.getLevel() == 1){
+        GameData.incrementLevel();
+        //if(GameData.getLevel() == 1){
+            
             Greenfoot.setWorld(new ShopRoom());
-        }
-        else {
-            GameData.incrementLevel();
+        //}
+        //else {
+
             Greenfoot.setWorld(new Room(GameData.getLevel()));
-        }
+        //}
          // new room
     }
 }

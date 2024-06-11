@@ -22,7 +22,7 @@ public class Skeleton extends Enemy
         death = false;
         dealtDamage = false;
         inAttack = false;
-        arrowCooldown = 60;
+        arrowCooldown = 120;
         setImage(right.getFrame(0));
     }
 
@@ -149,7 +149,7 @@ public class Skeleton extends Enemy
                 setImage(left.getFrame(frame));
                 break;
         }
-        if(acts % 15 == 0)
+        if(acts % 30 == 0)
         {
             frame = (frame+1)%(up.getAnimationLength());
         }
