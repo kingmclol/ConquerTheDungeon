@@ -20,9 +20,10 @@ public class GameWorld extends World
     { 
         super(1200, 768, 1, false); 
 
-        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, ShopItem.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
         StatsUI ui = new StatsUI();
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
+        //GameData.importData();
         Mouse.setWorld(this);
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
@@ -83,7 +84,15 @@ public class GameWorld extends World
      * 
      */
     public static void goToNextLevel() {
-        GameData.incrementLevel(); // going to next level now
-        Greenfoot.setWorld(new Room(GameData.getLevel())); // new room
+         // going to next level now
+        //GameData.exportData();
+        if(GameData.getLevel() == 1){
+            Greenfoot.setWorld(new ShopRoom());
+        }
+        else {
+            GameData.incrementLevel();
+            Greenfoot.setWorld(new Room(GameData.getLevel()));
+        }
+         // new room
     }
 }

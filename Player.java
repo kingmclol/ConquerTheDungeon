@@ -17,7 +17,7 @@ public class Player extends Entity
     private int powerUpShootingInterval;
     private int shootingTimer;
     private int attackDmg = 20;
-
+    private int coin = 0;
     private double speed;
     private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
     private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
@@ -50,7 +50,7 @@ public class Player extends Entity
 
     public Player() {
         super(100);
-
+        System.out.println(this);
         critRate = 0.3;
         critDamage = 1.6;
 
@@ -92,9 +92,11 @@ public class Player extends Entity
     }
 
     public void act() {
+        
         x = getX();
         y = getY();
         moving = false;
+        
         if (cooldownTimer > 0) {
             cooldownTimer--; // Decrement cooldown timer for ult
         }
@@ -190,12 +192,13 @@ public class Player extends Entity
 
     private void movePlayer() {
 
-        if(speedBoost > 0){
-            speed = speed * speedMod;
-        }
+
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
         speed = isPoweredUp ? powerUpSpeed : normalSpeed;
+        if(speedBoost > 0){
+            speed = speed * speedMod;
+        }
         x = (int)speed;
         if(acts % 10 == 0)
         {
@@ -387,7 +390,11 @@ public class Player extends Entity
     }
 
     public void die() {
-        getWorld().removeObject(this);
+        // hp = maxHp;
+        // GameData.exportData();
+        
+        // System.exit(1);
+        
     }
 
     public int getHp() {
@@ -594,9 +601,39 @@ public class Player extends Entity
                 break;
         }
     }
-
-    public String exportPlayer(){
-        return attackDmg +"," + normalSpeed  + "," + maxHp + "," + hp;
+    public void addMaxHp(int hp){
+        maxHp += hp;
+        StatsUI.updateMaxHp(maxHp);
+    }
+    public void addAttackDamage(int dmg){
+        attackDmg += dmg;
+        StatsUI.updateAtkDmg(attackDmg);
+    }
+    public void addSpeed(int spd){
+        normalSpeed += spd;
+        StatsUI.updateSpd(normalSpeed);
+        
+    }
+    public void loadPlayerData(String [] data){
+        attackDmg = Integer.valueOf(data[1]);
+        speed = Integer.valueOf(data[2]);
+        maxHp = Integer.valueOf(data[3]);
+        hp = Integer.valueOf(data[4]);
+        coin = Integer.valueOf(data[5]);
+    }
+    public int getCoin(){
+         return coin;
+    }
+    public void addCoin(){
+        coin++;
+        StatsUI.updateCoin(coin);
+    }
+    public void removeCoin(int num){
+        coin-= num;
+        StatsUI.updateCoin(coin);
+    }
+    public String toString(){
+        return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
     }
 
 }

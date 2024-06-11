@@ -52,6 +52,10 @@ public class PopUpBox extends UI
         
 
     }
+    public void removeObject(){
+        getWorld().removeObject(text);
+        getWorld().removeObject(this);
+    }
     private void fadeIn(){
         GreenfootImage img = text.getImage();
         img.setTransparency(Utility.clamp(img.getTransparency() +  25, 0, 255));

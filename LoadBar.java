@@ -54,7 +54,7 @@ public class LoadBar extends UI
             double diff = barPercent - targetPercent;
 
             barPercent -= Math.signum(diff) * Math.max(Math.abs(diff) / interpolationTime, 0.75);
-            System.out.println(barPercent);
+            //System.out.println(barPercent);
             
             if(Math.signum(diff) == -1 && barPercent >= targetPercent){
                 barPercent = targetPercent;
