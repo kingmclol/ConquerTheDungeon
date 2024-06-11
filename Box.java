@@ -156,8 +156,8 @@ public abstract class Box extends SuperActor
         }
     }
     public void forcePositionUpdate() {
-        if (owner == null) {
-            if (GameWorld.SHOW_LOGS) System.out.println("warn: box " + this + " attempted to update position when owner is null");
+        if (owner == null || owner.getWorld() == null) {
+            if (GameWorld.SHOW_LOGS) System.out.println("warn: box " + this + " attempted to update position when cannot");
             return;
         }
         setLocation(owner.getX()+xOffset, owner.getY()+yOffset); // Match with the owner, factoring in the yOffset.
