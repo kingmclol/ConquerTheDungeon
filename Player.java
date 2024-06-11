@@ -392,7 +392,7 @@ public class Player extends Entity
     public void die() {
         // hp = maxHp;
         // GameData.exportData();
-        
+        getWorld().removeObject(this);
         // System.exit(1);
         
     }

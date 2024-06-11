@@ -87,6 +87,7 @@ public class GameWorld extends World
          // going to next level now
         //GameData.exportData();
         if(GameData.getLevel() == 1){
+            GameData.incrementLevel();
             Greenfoot.setWorld(new ShopRoom());
         }
         else {
