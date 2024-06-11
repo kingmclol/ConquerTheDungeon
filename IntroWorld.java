@@ -40,6 +40,9 @@ public class IntroWorld extends SuperWorld
         //titleAnchor = new Vector(getWidth()/2, 80);
         addObject(title, getWidth()/2, 80);
         
+        // This is a temporary prompt.)
+        addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, Color.BLACK, null, 60), getWidth()/2, 300);
+        
         
         // introWorldMusic = new GreenfootSound("Introworld.mp3");
         // introWorldMusic.setVolume(30);
