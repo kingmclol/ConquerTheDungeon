@@ -18,7 +18,7 @@ public abstract class Projectile extends SuperSmoothMover {
 
     public void act() {
         move(speed);
-        checkEdge();
+        checkEdgeOrWall();
         if (!hasHit && getWorld() != null) { // Only do damage if the projectile has not yet hit something
             doDamage();
         }
@@ -36,8 +36,11 @@ public abstract class Projectile extends SuperSmoothMover {
         getWorld().removeObject(this); // Remove the projectile from the world
     }
 
-    private void checkEdge() {
-        if (isAtEdge()) {
+    private void checkEdgeOrWall() {
+        if(isAtEdge()) {
+            getWorld().removeObject(this);
+        }
+        if((Wall)getOneIntersectingObject(Wall.class) != null){
             getWorld().removeObject(this);
         }
     }
