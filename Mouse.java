@@ -19,7 +19,7 @@ public class Mouse
     private static World w;
     private static int x, y;
     private static boolean mouseDown;
-    private static final boolean SHOW_INFO = false;
+    private static final boolean SHOW_INFO = true;
     private static Timer mouseDownTimer = new Timer(false);
     private Mouse()
     {
@@ -112,5 +112,13 @@ public class Mouse
         List<A> objects = w.getObjectsAt(x, y, c);
         if (objects.isEmpty()) return null;
         return objects.get(0);
+    }
+    /**
+     * Returns whether the mouse is hovering over the given object
+     */
+    public static boolean hoveringOver(Actor a) {
+        if (!mouseExists) return false;
+        List<Actor> objects = w.getObjectsAt(x, y, Actor.class);
+        return objects.contains(a);
     }
 }

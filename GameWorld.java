@@ -99,16 +99,16 @@ public class GameWorld extends SuperWorld
         else if (level % 5 == 0) Greenfoot.setWorld(new ShopRoom(level));
         else Greenfoot.setWorld(new CombatRoom(level));
     }
-    /**
-     * Starts the game, depending on whether it is from a new game or not
-     * @param savedGame Whether the game is running from a previous save or not.
-     */
-    public static void startGame(boolean savedGame) {
-        if (!savedGame) { // Playing from a new game.
-            GameData.resetData(); // Start from clean slate.
-            Greenfoot.setWorld(new TutorialRoom());
-            return;
-        }
-        goToLevel(GameData.getLevel());
-    }
+    // /**
+     // * Starts the game, depending on whether it is from a new game or not
+     // * @param savedGame Whether the game is running from a previous save or not.
+     // */
+    // public static void startGame(boolean savedGame) {
+        // if (!savedGame) { // Playing from a new game.
+            // GameData.resetData(); // Start from clean slate.
+            // Greenfoot.setWorld(new TutorialRoom());
+            // return;
+        // }
+        // goToLevel(GameData.getLevel());
+    // }
 }
