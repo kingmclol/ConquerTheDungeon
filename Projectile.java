@@ -8,7 +8,7 @@ public abstract class Projectile extends SuperSmoothMover {
     protected int speed;
     protected int damage;
     protected Actor owner;
-    private boolean hasHit = false; // Flag to track if the projectile has already hit something
+    protected boolean hasHit = false; // Flag to track if the projectile has already hit something
 
     public Projectile(int spd, int dmg, Actor own) {
         speed = spd;

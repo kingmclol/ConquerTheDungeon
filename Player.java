@@ -26,7 +26,8 @@ public class Player extends Entity
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
-    private boolean lockStaff = false;
+    private boolean lockStaff = false, enhancedSwings = false;
+    private int hitCount = 0;
     //Moving
     private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
@@ -299,27 +300,44 @@ public class Player extends Entity
         if(frame ==5)
         {
             List<Damageable> targets;
+            int dmg = (1+(Greenfoot.getRandomNumber(10)/10))*10;
             switch(facing)
             {
                 case "right":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()+20, this.getY());
                     targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
+                    if(enhancedSwings)
+                    {
+                        getWorld().addObject(new Slash(2, dmg, this, true), getX(), getY());
+                    }
                     break;
                 case "left":
                     //Xhitbox.makeVisible();
                     getWorld().addObject(Xhitbox, this.getX()-20, this.getY());
                     targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
+                    if(enhancedSwings)
+                    {
+                        getWorld().addObject(new Slash(-2, dmg, this, true), getX(), getY());
+                    }
                     break;
                 case "up":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()-30);
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
+                    if(enhancedSwings)
+                    {
+                        getWorld().addObject(new Slash(-2, dmg, this, false), getX(), getY());
+                    }
                     break;
                 case "down":
                     //Yhitbox.makeVisible();
                     getWorld().addObject(Yhitbox, this.getX()+13, this.getY()+30);
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
+                    if(enhancedSwings)
+                    {
+                        getWorld().addObject(new Slash(2, dmg, this, false), getX(), getY());
+                    }
                     break;
                 default:
                     targets = null;
@@ -342,16 +360,16 @@ public class Player extends Entity
                     //e.setDamagedState(true);
                 }
             }
+            if(enhancedSwings)
+            {
+                hitCount++;
+                if(hitCount >= 15)
+                {
+                    hitCount = 0;
+                    enhancedSwings = false;
+                }
+            }
         }
-
-        /** OLD CODE
-        for (Enemy enemy : slashableEnemies) {
-        if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
-        {   
-        enemy.damage(damage);
-        enemy.setDamagedState(true);
-        }
-        }*/
     }
 
     public static String getFacing (){
@@ -359,7 +377,6 @@ public class Player extends Entity
     }
 
     public int getAttackDmg(){
-
         return attackDmg;
     }
 
@@ -443,6 +460,9 @@ public class Player extends Entity
                     cooldownTimer = ultimateCooldown;
                     break;
                 case "sword":
+                    cooldownTimer = ultimateCooldown;
+                    enhancedSwings = true;
+                    hitCount = 0;
                     break;
             }
         }
