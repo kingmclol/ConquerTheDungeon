@@ -7,7 +7,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Freeman Wang
  * @version 2024-04-20
  */
-public class IntroWorld extends World
+public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
     BreathingTextBox promptBox;
@@ -22,6 +22,7 @@ public class IntroWorld extends World
     private Picture currentImage;
     private Picture nextImage;
     private int index;
+    private boolean loadingFromSave;
     //private Vector titleAnchor, promptAnchor, worldCenter;
     //private static final double DELTA_FACTOR = 0.1; // Scrapped, for making textboxs move with cursor.
     /**
@@ -29,7 +30,7 @@ public class IntroWorld extends World
      */
     public IntroWorld()
     {
-        super(1200, 768, 1, false);
+        super();
         setPaintOrder(TextBox.class, Picture.class);
         promptBox = new BreathingTextBox("PRESS [L] TO START", 52, Color.RED, null, 120);
         //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
@@ -39,12 +40,16 @@ public class IntroWorld extends World
         //titleAnchor = new Vector(getWidth()/2, 80);
         addObject(title, getWidth()/2, 80);
         
+        // This is a temporary prompt.)
+        addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, Color.BLACK, null, 60), getWidth()/2, 300);
+        
         
         // introWorldMusic = new GreenfootSound("Introworld.mp3");
         // introWorldMusic.setVolume(30);
         
         actCount = 0;
         index = 0;
+        loadingFromSave = false;
         //worldCenter = new Vector(getWidth()/2, getHeight()/2);
         
         currentImage = new Picture(backgroundImages[index]);
@@ -75,6 +80,7 @@ public class IntroWorld extends World
         introWorldMusic.playLoop(); // Run this one (1) line of code.
     }
     public void act() {
+        super.act();
         // parallax effect for text boxes, unused.
         // if (getMousePos() != null) { // if the mouse is null, do not update their positions.
             // promptBox.setLocation(promptAnchor.add(getMouseDelta().scale(DELTA_FACTOR)));
@@ -84,9 +90,18 @@ public class IntroWorld extends World
             switchBackgroundImage();
             actCount = 0;
         }
-        if ("l".equals(Greenfoot.getKey())) { // once L is pressed, move to the next world.
+        String key = Keyboard.getCurrentKey();
+        if ("l".equals(key)) { // once L is pressed, move to the next world.
             //introWorldMusic.stop(); 
-            GameWorld.goToNextLevel();
+            GameWorld.startGame(loadingFromSave);
+        }
+        else if ("i".equals(key)) {
+            if (GameData.importData()) {
+                alert("Loaded from save...", new Color(40, 230, 70), getHeight()/2);
+                loadingFromSave = true;
+            } else {
+                alert("Cannot load save data..", new Color(230, 70, 70), getHeight()/2);
+            }
         }
     }
     /**

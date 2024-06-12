@@ -13,8 +13,9 @@ public class SlowTrap extends Floor
      * Act - do whatever the SlowTrap wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    private static GreenfootImage img = new GreenfootImage("slowtrap.png");
     public SlowTrap() {
-        super(new Color(98, 255, 0));
+        super(img);
     }
     public void act()
     {

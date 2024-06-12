@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class GameWorld extends World
+public class GameWorld extends SuperWorld
 {
 
     /**
@@ -18,13 +18,13 @@ public class GameWorld extends World
     protected SuperStatBar playerBar;
     public GameWorld()
     { 
-        super(1200, 768, 1, false); 
+        super(); 
 
         setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, ShopItem.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
         StatsUI ui = new StatsUI();
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
         //GameData.importData();
-        Mouse.setWorld(this);
+
         Tile.initializeTileDatabase();
         Room.initializeRoomDatabase();
         Enemy.initializeEnemyDatabase();
@@ -32,9 +32,7 @@ public class GameWorld extends World
         addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
     public void act() {
-        Timer.tick();
-        Mouse.getMouse();
-        Keyboard.update();
+        super.act();
     }
     public Board getBoard() {
         return board;
@@ -48,7 +46,7 @@ public class GameWorld extends World
         alert(str, c, 100);
     }
     /**
-     * Displays some text alert on the screen at your chosen y-level.
+     * Displays some text alert on the screen at your chosen y-level, centered at the board.
      * @param str The text to display
      * @param c the text color.
      * @param yLevel the y position in pixels it should appear.
@@ -81,20 +79,19 @@ public class GameWorld extends World
     }
     
     /**
-     * 
+     * Goes to the next level, incrementing the level by 1.
      */
     public static void goToNextLevel() {
          // going to next level now
         //GameData.exportData();
         GameData.incrementLevel();
-        if(GameData.getLevel() == 1){
-            
-            Greenfoot.setWorld(new ShopRoom());
-        }
-        else {
-
-            Greenfoot.setWorld(new Room(GameData.getLevel()));
-        }
-         // new room
+        Greenfoot.setWorld(new Room(GameData.getLevel()));
+    }
+    /**
+     * Starts the game, depending on whether it is from a new game or not
+     */
+    public static void startGame(boolean savedGame) {
+        if (!savedGame) GameData.incrementLevel();
+        Greenfoot.setWorld(new Room(GameData.getLevel()));
     }
 }
