@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Zombie extends Enemy
 {
+    private GreenfootSound zombieDeathSound = new GreenfootSound("zombieSound.mp3"); 
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
 
     public Zombie()
@@ -43,6 +44,7 @@ public class Zombie extends Enemy
         }
         if(this.getHp() <= 0) // trigger death animation.
         {
+            zombieDeathSound.play();
             deathAnimation();
         }
         super.act();

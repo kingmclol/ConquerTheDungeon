@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class Goblin extends Enemy
 {
+    private GreenfootSound goblinDeathSound = new GreenfootSound("goblinSound.mp3");
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
     private List<Player> target;
     /**
@@ -56,6 +57,7 @@ public class Goblin extends Enemy
         }
         if(this.getHp() <= 0) // trigger death animation.
         {
+            goblinDeathSound.play();
             deathAnimation();
         }
         if(!death)

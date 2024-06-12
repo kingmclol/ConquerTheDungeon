@@ -18,7 +18,6 @@ public abstract class Enemy extends Entity {
     public Enemy() {
         super(100);
         this.hp = 100;  
-        SoundManager.addSound(50, "damageSound.mp3", 50); 
     }
     /**
      * THIS IS TEMPORARY IMPLEMENTATION. I NEED A PLAYER REFERENCE SOMEWHERE
@@ -50,7 +49,6 @@ public abstract class Enemy extends Entity {
     }
     public void takeDamage(int damage)
     {
-        SoundManager.playSound("damageSound.mp3"); 
         hp -= damage;
     }
     public void manageRotation()

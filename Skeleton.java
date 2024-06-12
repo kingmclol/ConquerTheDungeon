@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class Skeleton extends Enemy
 {
+    private GreenfootSound skeletonDeathSound = new GreenfootSound("skeletonSound.mp3"); 
+    private GreenfootSound skeletonBowSound = new GreenfootSound("bowSound.mp3"); 
     private int frame = 0, acts = -1;
     private boolean hasShot;
 
@@ -55,6 +57,7 @@ public class Skeleton extends Enemy
         }
         if(this.getHp() <= 0) // trigger death animation.
         {
+            skeletonDeathSound.play(); 
             deathAnimation();
         }
         if(!death){
@@ -90,6 +93,7 @@ public class Skeleton extends Enemy
                 right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 7, 1, 8, 64, 64, 10);
                 up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 4, 1, 8, 64, 64);
                 left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 5, 1, 8, 64, 64);
+                skeletonBowSound.play();
                 Arrow arrow = new Arrow(4, 10, this, player);
                 getWorld().addObject(arrow, getX(), getY());
                 hasShot = true;
