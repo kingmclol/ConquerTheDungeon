@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class SpikeTrap extends Floor
 {
+    private GreenfootSound spikeTrapSound = new GreenfootSound("spikeTrapSound.mp3");
     private static GreenfootImage img = new GreenfootImage("spiketrap1.png");
     private static GreenfootImage img2 = new GreenfootImage("spiketrap2.png");
     private int activeCounter; 
@@ -19,6 +20,7 @@ public class SpikeTrap extends Floor
         activeCounter = 0;
         period = Utility.randomIntInRange(120, 240);
         acts = Greenfoot.getRandomNumber(period);
+        spikeTrapSound.setVolume(50);
     }
     public void act()
     {
@@ -41,6 +43,7 @@ public class SpikeTrap extends Floor
             for(Box box : boxes){
                 Actor owner = box.getOwner();
                 if(owner instanceof Entity){
+                    spikeTrapSound.play();
                     ((Entity) owner).damage(Utility.randomIntInRange(2, 10));
                 }
             }

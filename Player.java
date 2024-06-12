@@ -23,7 +23,7 @@ import java.util.List;
  * @version 2024-06-12
  */
 public class Player extends Entity
-{
+{    
     private boolean isPoweredUp = false;
     private long powerUpStartTime = 0;
     private int normalSpeed;
@@ -89,7 +89,7 @@ public class Player extends Entity
 
         Xhitbox = new HiddenBox(40, 60);
         Yhitbox = new HiddenBox(62, 40);
-
+        
         //weapon:
         for(int i = 0; i<swingingUp.length; i++)
         {
@@ -105,6 +105,9 @@ public class Player extends Entity
         //Start at frame 0
         setImage(up.getFrame(0));
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
+        
+        SoundManager.addSound(50, "swordSound.mp3", 50);
+        SoundManager.addSound(50, "staffSound.mp3", 40); 
     }
 
     public void act() {
@@ -561,6 +564,7 @@ public class Player extends Entity
             case "sword": // if holding sword
                 if(frame == (swingingUp.length-1)) // if animation reaches the end.
                 {
+                    SoundManager.playSound("swordSound.mp3");
                     inAttack = false;
                     frame = 0;
                     switch(facing)
@@ -604,6 +608,7 @@ public class Player extends Entity
             case "staff":
                 if(frame == (staffUp.getAnimationLength()-1)) // if animation reaches the end.
                 {
+                    SoundManager.playSound("staffSound.mp3");
                     inAttack = false;
                     frame = 0;
                     switch(facing)
