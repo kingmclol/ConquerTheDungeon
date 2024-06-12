@@ -16,7 +16,7 @@ public abstract class Enemy extends Entity {
     private static HashMap<String, Class> enemyDatabase;
     private static ArrayList<String> enemyIDs;
     public Enemy() {
-        super(Team.ENEMY, 100);
+        super(100);
         this.hp = 100;  
     }
     /**
@@ -141,6 +141,10 @@ public abstract class Enemy extends Entity {
         enemyDatabase.put("ske", Skeleton.class);
         enemyDatabase.put("zom", Zombie.class);
         if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in enemy database");
+    }
+    public void setFacing(String facing)
+    {
+        this.facing = facing;
     }
 }
 

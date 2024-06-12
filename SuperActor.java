@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 
 public abstract class SuperActor extends SuperSmoothMover
 {
-    private Node targetNodePrev;
+    protected Node targetNodePrev;
     private double rotation;
     /*
     Not to be added during the vehicle simulator, but here so I won't forget. May or may not be neglected later on.
@@ -42,8 +42,6 @@ public abstract class SuperActor extends SuperSmoothMover
     // protected void createEvent(Event e){
     // getWorld().addObject(e, 0 ,0 );
     // 
-    private ArrayList<Vector> path = new ArrayList<Vector>();
-    private static final boolean SHOW_PATHFINDING_DEBUG = false;
     
     public double getDistance(Actor other) {
         int x1 = getX();
@@ -69,75 +67,7 @@ public abstract class SuperActor extends SuperSmoothMover
         displace(getDisplacement(target, distance));
     }
 
-    protected void pathTowards(Vector target, double distance) {
-        Board board = ((GameWorld)getWorld()).getBoard();
-        if (target == null) {
-            return; // Can't do anything about this.
-        }
-
-        // Get nodes from the nodeGrid for comparison
-        Node targetNode = board.getNode(board.getCellWithRealPosition((int)target.getX(), (int)target.getY()));
-        Node currentNode = board.getNode(board.getCellWithRealPosition(this.getX(), this.getY()));
-        if (targetNode == null || currentNode == null || !targetNode.isWalkable() || !currentNode.isWalkable()) { // A node does not exist or is not walk to able.
-            if (SHOW_PATHFINDING_DEBUG) System.out.println("warn: one node was not found or not walkable when pathfinding.");
-        }
-        else { // Do pathfdingin depending on the nodes given.
-            if (targetNode == currentNode) { // Same node as target!!!
-                moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
-                return; // nothing else to do.
-            }
-            else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
-                if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
-                targetNodePrev = targetNode; // store the target's node for comparison later on.
-                
-                // Create a new path to the new target node.
-                ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
-                if (nodes != null) {
-                    path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
-                    path.remove(0); // This is the node I am currently in.
-                }
-                // if (board.findPath(currentNode, targetNode) != null)path = null; // need new path to the target.
-            }
-        }
     
-        // The actual moving part.
-        if (path == null) { // no path, or target node changed (target moving), or target changed
-            // Pathfind to target.
-            ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
-            if (nodes != null) {
-                path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
-                path.remove(0); // This is the node I am currently in.
-            }
-        }
-
-        if (path != null) {
-            if (path.size() > 0) { // If there is still a positino to go to,
-                Vector nextPos = path.get(0); // get that position
-                if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
-                moveTowards(nextPos, distance); // Move towards the next positino.
-
-                if (displacementFrom(nextPos) < 5) { // If close to the target position
-                    if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
-                    path.remove(0); // remove from list of positions to move to.
-                }
-            }
-            else { // There are no more positinos to move to (At destination)
-                path = null; // set path as null. No more to move.
-                if (SHOW_PATHFINDING_DEBUG) {
-                    System.out.println(this + " has completed pathfinding.");
-                }
-                return;
-            }
-        }
-    }
-    /** 
-     * Move towards a SuperActor. This time, with pathfinding involved.
-     * @param target The SuperActor to move towards.
-     * @param The distance the SuperActor should travel. Also can be seen as the "speed."
-     */
-    protected void pathTowards(SuperActor target, double distance) {
-        pathTowards(target.getPosition(), distance);
-    }
 
     /**
      * Moves towards towards a position.

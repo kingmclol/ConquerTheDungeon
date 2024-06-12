@@ -24,4 +24,5 @@ public abstract class Obstruction extends Tile
     public void addedToWorld(World w) {
         w.addObject(AABB, 0, 0);
     }
+    
 }

@@ -1,12 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 
-
 public class Zombie extends Enemy
 {
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
-    
-    
+
     public Zombie()
     {
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
@@ -16,10 +14,10 @@ public class Zombie extends Enemy
         dealtDamage = false;
         inAttack = false;
         //Using Mr Cohen's animation class: 
-        down = Animation.createAnimation(new GreenfootImage("goblin.png"), 0, 1, 7, 64, 64);
-        right = Animation.createAnimation(new GreenfootImage("goblin.png"), 1, 1, 7, 64, 64);
-        up = Animation.createAnimation(new GreenfootImage("goblin.png"), 2, 1, 7, 64, 64);
-        left = Animation.createAnimation(new GreenfootImage("goblin.png"), 3, 1, 7, 64, 64);
+        down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 10, 1, 9, 64, 64);
+        right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 11, 1, 9, 64, 64, 10);
+        up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
+        left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
 
         dying = Animation.createAnimation(new GreenfootImage("goblinsword.png"), 4, 1, 5, 64, 64);
         setImage(right.getFrame(0));
@@ -27,7 +25,6 @@ public class Zombie extends Enemy
 
     public void act()
     {
-        super.act();
         // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
@@ -48,6 +45,7 @@ public class Zombie extends Enemy
         {
             deathAnimation();
         }
+        super.act();
     }
 
     public void findTarget(){
@@ -63,14 +61,14 @@ public class Zombie extends Enemy
         if(!target.isEmpty())
         {
             inAttack = true;
-            down = Animation.createAnimation(new GreenfootImage("attack.png"), 0, 1, 4, 64, 64);
-            right = Animation.createAnimation(new GreenfootImage("attack.png"), 1, 1, 4, 64, 64, 10);
-            up = Animation.createAnimation(new GreenfootImage("attack.png"), 2, 1, 4, 64, 64);
-            left = Animation.createAnimation(new GreenfootImage("attack.png"), 3, 1, 4, 64, 64);
+            down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 6, 1, 8, 64, 64);
+            right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 7, 1, 8, 64, 64, 10);
+            up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 4, 1, 8, 64, 64);
+            left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 5, 1, 7, 64, 64);
             frame = 0;
             target.get(0).damage(5);
         }
-        
+
     }
 
     /**
@@ -124,10 +122,10 @@ public class Zombie extends Enemy
         {
             frame = 0;
             inAttack = false;
-            down = Animation.createAnimation(new GreenfootImage("goblin.png"), 0, 1, 7, 64, 64);
-            right = Animation.createAnimation(new GreenfootImage("goblin.png"), 1, 1, 7, 64, 64);
-            up = Animation.createAnimation(new GreenfootImage("goblin.png"), 2, 1, 7, 64, 64);
-            left = Animation.createAnimation(new GreenfootImage("goblin.png"), 3, 1, 7, 64, 64);
+            down = Animation.createAnimation(new GreenfootImage("Zombie.png"), 10, 1, 9, 64, 64);
+            right = Animation.createAnimation(new GreenfootImage("Zombie.png"), 11, 1, 9, 64, 64, 10);
+            up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
+            left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
         }
         switch(this.getFacing())
         {
@@ -144,7 +142,7 @@ public class Zombie extends Enemy
                 setImage(left.getFrame(frame));
                 break;
         }
-        if(acts % 15 == 0)
+        if(acts % 3 == 0)
         {
             frame = (frame+1)%(up.getAnimationLength());
         }

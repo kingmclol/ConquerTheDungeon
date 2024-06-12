@@ -29,7 +29,7 @@ public class SpeedBoost extends Floor
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
-                ((Entity) owner).setSpeed(120);
+                ((Entity) owner).setSpeed(1.4);
             }
         }
     }

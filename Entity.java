@@ -15,27 +15,29 @@ import java.util.HashMap;
 public abstract class Entity extends SuperActor implements Damageable
 {
     // The enum Team stores whether the Entity is on your same team or not (Ally vs hostile)
-    public enum Team {
-        ALLY,
-        ENEMY
-    }
+
     // public static final int MAX_SKILL_POINTS = 5;
     // protected HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>> statusModifiers; // Stores modifiers of each trigger type.
     //protected HealthBar healthBar;
     // protected Team team;
     protected int hp;
+    protected int maxHp;
     protected double speedBoost = 0 ;
-    protected ArrayList<Cell> path;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
 
-    protected boolean inAttack, death, dealtDamage, recievedDamage, flung = false;
-    protected ParabolicProjectile projPath;
+    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    protected double speedMod = 1.0;
+    protected ParabolicProjectile projPath; 
+    protected String flung = "none";
 
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
-    public Entity(Team team, int maxHp) {
+    private ArrayList<Vector> path = new ArrayList<Vector>();
+    private static final boolean SHOW_PATHFINDING_DEBUG = true;
+    public Entity(int maxHp) {
         // this.team = team;
+        this.maxHp = maxHp;
         hp = maxHp;
         // // healthBar = new HealthBar(maxHp);
         // skillPoints = MAX_SKILL_POINTS/2;
@@ -56,13 +58,15 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     
     public void act() {
-        if (getWorld() == null) return; // No need for these shenanigans now.
-        if(flung){
+        if(!flung.equals("none")){
+
             fling();
         }
         if(speedBoost > 0){
             speedBoost--;
         }
+    
+        
 
         manageCollision();
         //animate();
@@ -92,6 +96,9 @@ public abstract class Entity extends SuperActor implements Damageable
         if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
         dmgTaken = dmg;
+        if(this instanceof Player){
+            StatsUI.updateHP(((double) hp / maxHp )* 100.0);
+        }
         hpBar.update(hp);
         if(hp <= 0) die();
         iFrameTimer.mark(); // reset iframes
@@ -102,13 +109,19 @@ public abstract class Entity extends SuperActor implements Damageable
         //getWorld().addObject(dmgBox, getX()-Tile.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize), getY()-GameWorld.tileSize/2+Greenfoot.getRandomNumber(GameWorld.tileSize));
         dmgBox.fadeOut();
         hp+=heal;
-        if(hp > 100){
-            hp = 100;
+        if(hp > maxHp){
+            hp = maxHp;
+        }
+        if(this instanceof Player){
+            if(this instanceof Player){
+                StatsUI.updateHP(((double) hp / maxHp )* 100.0);
+            }
         }
         hpBar.update(hp);
     }
     //protected abstract void animate();
     public void die() {
+        
         getWorld().removeObject(this);
     }
     public boolean isAlive() {
@@ -141,7 +154,20 @@ public abstract class Entity extends SuperActor implements Damageable
         // }
     }
     public void setFlungState(boolean state){
-        flung = state;
+        if(state){
+            if(Player.getFacing().equals("right") ){
+                flung = "left";
+            }
+            else if (Player.getFacing().equals("left")){
+                flung = "right";
+            }
+            else if (Utility.randomIntInRange(0, 1) == 0){
+                flung = "right";
+            }
+            else{
+                flung = "left";
+            }
+        }
     }
     public void fling(){
         if(projPath != null && !projPath.pathDone()){
@@ -150,22 +176,104 @@ public abstract class Entity extends SuperActor implements Damageable
             //Turns the actor as it moves through the projectile path
             turn(8);
             Vector pos = projPath.nextCoord();
-            if(Player.getFacing().equals("right")){
+            if(flung.equals("left") ){
                 setLocation(getX() - pos.getX(), getY() - pos.getY());
             }
-            else{
+            else if (flung.equals("right")){
                 setLocation(getX() + pos.getX(), getY() - pos.getY());
             }
             if(projPath.pathDone()){
             
                 setRotation(0);
-                flung = false;
+                flung = "none";
             }
         }
         else {
             projPath = new ParabolicProjectile(40, Greenfoot.getRandomNumber(40) + 10, Greenfoot.getRandomNumber(20) + 10);
         }
     }
+    /**
+     * Pathfind to a specific positino, moving distance units at a time.
+     * @param target The place to pathfind to.
+     * @param distance the distance to travel.
+     */
+    protected void pathTowards(Vector target, double distance) {
+        Board board = ((GameWorld)getWorld()).getBoard();
+        if (target == null) {
+            return; // Can't do anything about this.
+        }
+
+        // Get nodes from the nodeGrid for comparison
+        Vector myPosition = getPosition();
+        Node targetNode = board.getNode(board.getCellWithRealPosition((int)target.getX(), (int)target.getY()));
+        Node currentNode = board.getNode(board.getCellWithRealPosition((int)myPosition.getX(), (int)myPosition.getY()));
+        if (targetNode == null || currentNode == null || !targetNode.isWalkable() || !currentNode.isWalkable()) { // A node does not exist or is not walk to able.
+            if (SHOW_PATHFINDING_DEBUG) {
+                if (targetNode == null) System.out.println("targetNode is null");
+                if (currentNode == null) System.out.println("currentNode is null");
+                if (!targetNode.isWalkable()) System.out.println("targetNode not walkable");
+                if (!currentNode.isWalkable()) System.out.println("currentNode not walkable");
+            }
+            
+        }
+        else { // Do pathfdingin depending on the nodes given.
+            if (targetNode == currentNode) { // Same node as target!!!
+                moveTowards(target, distance); // Within same node (no need to pathfind), so just move towards the target directly.
+                return; // nothing else to do.
+            }
+            else if (targetNode != targetNodePrev) { // target position is different from what was originally. Either new target, or the target moved somewhere else.
+                if(SHOW_PATHFINDING_DEBUG) System.out.println("target:" + target + " | " + " new target node! new: " + targetNode + " vs. prev: " + targetNodePrev);
+                targetNodePrev = targetNode; // store the target's node for comparison later on.
+                
+                // Create a new path to the new target node.
+                ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
+                if (nodes != null) {
+                    path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
+                    path.remove(0); // This is the node I am currently in.
+                }
+                // if (board.findPath(currentNode, targetNode) != null)path = null; // need new path to the target.
+            }
+        }
+    
+        // The actual moving part.
+        if (path == null) { // no path, or target node changed (target moving), or target changed
+            // Pathfind to target.
+            ArrayList<Node> nodes = board.findPath(currentNode, targetNode);
+            if (nodes != null) {
+                path = (ArrayList<Vector>)((GameWorld)getWorld()).getBoard().convertPathToPositions(nodes);
+                path.remove(0); // This is the node I am currently in.
+            }
+        }
+
+        if (path != null) {
+            if (path.size() > 0) { // If there is still a positino to go to,
+                Vector nextPos = path.get(0); // get that position
+                if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " moving to " + nextPos);
+                moveTowards(nextPos, distance); // Move towards the next positino.
+
+                if (displacementFrom(nextPos) < 5) { // If close to the target position
+                    if (SHOW_PATHFINDING_DEBUG) System.out.println(this + " removed " + nextPos);
+                    path.remove(0); // remove from list of positions to move to.
+                }
+            }
+            else { // There are no more positinos to move to (At destination)
+                path = null; // set path as null. No more to move.
+                if (SHOW_PATHFINDING_DEBUG) {
+                    System.out.println(this + " has completed pathfinding.");
+                }
+                return;
+            }
+        }
+    }
+    /** 
+     * Move towards another Entity. This time, with pathfinding involved.
+     * @param target The Entitty to move towards.
+     * @param The distance the Entity should travel. Also can be seen as the "speed."
+     */
+    protected void pathTowards(Entity target, double distance) {
+        pathTowards(target.getPosition(), distance);
+    }
+    
     public boolean damaged()
     {
         return recievedDamage;
@@ -175,12 +283,16 @@ public abstract class Entity extends SuperActor implements Damageable
         recievedDamage = x;
     }
     /**
-     * Returns the position of this Entity AT ITS ACTUAL COLLISIONBOX (at its feet)
+     * Returns the position of this Entity AT ITS ACTUAL COLLISIONBOX (at its feet), overriding the getPosition()
+     * in SuperActor
+     * @return The Vector representing my position at my FEET
      */
+    @Override
     public Vector getPosition(){
         return collisionBox.getPosition();
     }
-    public void setSpeed(double speedTime){
-        this.speedBoost = speedTime;
+    public void setSpeed(double speedMod){
+        this.speedMod = speedMod;
+        this.speedBoost = 50;
     }
 }

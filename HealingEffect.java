@@ -43,7 +43,7 @@ public class HealingEffect extends Heal
             updatePositionFirst = true;
         }
         acts++;
-        if(acts % 90 == 0)
+        if(acts % 30 == 0)
         {
             player.heal(1);
         }

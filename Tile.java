@@ -78,6 +78,7 @@ public abstract class Tile extends SuperActor
         tileDatabase.put("lv", Lava.class);
         tileDatabase.put("slw", SlowTrap.class);
         tileDatabase.put("ptl", PortalTile.class);
+        tileDatabase.put("shp", ShopTile.class);
         if (GameWorld.SHOW_LOGS) System.out.println("info: loaded in tile database");
     }
     public static String[] getLegend() {

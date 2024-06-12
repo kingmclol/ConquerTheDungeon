@@ -5,9 +5,9 @@ import java.util.List;
 public abstract class Projectile extends SuperSmoothMover {
     private int spawnOffset = 10;
     private int rotation;
-    private int speed;
-    private int damage;
-    private Actor owner;
+    protected int speed;
+    protected int damage;
+    protected Actor owner;
     private boolean hasHit = false; // Flag to track if the projectile has already hit something
 
     public Projectile(int spd, int dmg, Actor own) {
