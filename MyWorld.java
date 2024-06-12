@@ -22,4 +22,5 @@ public class MyWorld extends World
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
         addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
+    // Bleh just a random change to make project.greenfoot recover ig
 }

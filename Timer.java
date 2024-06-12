@@ -12,12 +12,16 @@ public class Timer
     private long save;
     private boolean running;
     /**
-     * Constructor for objects of class Timer
+     * Create a timer that starts instantly
      */
     public Timer()
     {
         mark();
     }
+    /**
+     * Creates a timer that may or may not run on creation
+     * @param startRunning whether to start the timer instantly
+     */
     public Timer(boolean startRunning) {
         if (running) {
             mark();
@@ -25,30 +29,53 @@ public class Timer
             fullStop();
         }
     }
+    /**
+     * Resets the timer to 0, but continues to tick
+     */
     public void reset() {
         mark = count;
         running = true;
     }
+    /**
+     * Resets the timer to 0, but continues to tick
+     */
     public void mark() {
         mark = count;
         running = true;
     }
+    /**
+     * Stops the timer completely, keeping the value it has last
+     */
     public void stop() {
         save = actsPassed();
         running = false;
     }
+    /**
+     * Stops the timer completely, resetting it to 0.
+     */
     public void fullStop() {
         save = 0;
         running = false;
     }
+    /**
+     * Return the read of this timer.
+     * @return the read of this timer (acts passed)
+     */
     public long actsPassed() {
         if (running) return count - mark;
         else return save;
     }
+    /**
+     * Return the read of this timer.
+     * @return the read of this timer (acts passed)
+     */
     public long acts() {
         if (running) return count - mark;
         else return save;
     }
+    /**
+     * This method should be run once every act. Preferably in the World's act. Otherwise, timer's won't work.
+     */
     public static void tick() {
         count++;
     }

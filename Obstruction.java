@@ -1,10 +1,12 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Obstruction here.
+ * <p>An obstruction is a type of Tile in that it is generally an obstruction (lol) such as a wall.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>The main thing about an obstruction is that it has a collisionbox to push entities away.
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public abstract class Obstruction extends Tile
 {
@@ -13,10 +15,18 @@ public abstract class Obstruction extends Tile
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     protected CollisionBox AABB;
+    /**
+     * Creates an obstruction of the given color
+     * @param c The color to use
+     */
     public Obstruction(Color c){
         super(false ,c);
         AABB = new CollisionBox(Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES, this);
     }
+    /**
+     * Creates an obstruction of the given image
+     * @param img the image to use
+     */
     public Obstruction(GreenfootImage img) {
         super(false, img);
         AABB = new CollisionBox(Cell.SIZE, Cell.SIZE, Box.SHOW_BOXES, this);

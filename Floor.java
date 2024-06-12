@@ -1,25 +1,28 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Floor here.
+ * <p>Floors are Tiles that are well, floors.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>Generally walkable.</p>
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public abstract class Floor extends Tile
 {
     /**
-     * Act - do whatever the Floor wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
+     * Creates a floor of the given img
+     * @param img the img to use
      */
     public Floor(GreenfootImage img) {
         super(true, img);
     }
+    /**
+     * Creates a floor from the given color
+     * @param c the color to use
+     */
     public Floor(Color c) {
         super(true, c);
-    }
-    public Floor(Animation a) {
-        super(true, a);
     }
     public void act(){
         checkTouchTile();

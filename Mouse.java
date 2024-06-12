@@ -10,7 +10,7 @@ import java.util.List;
  * so be sure to have proper null pointer handling lest you get the dreaded NullPointerException.
  * 
  * @author Freeman Wang
- * @version (a version number or a date)
+ * @version 2024-06-12
  */
 public class Mouse  
 {
@@ -19,19 +19,11 @@ public class Mouse
     private static World w;
     private static int x, y;
     private static boolean mouseDown;
-    private static final boolean SHOW_INFO = false;
+    private static final boolean SHOW_INFO = true;
     private static Timer mouseDownTimer = new Timer(false);
     private Mouse()
     {
     }
-    // public static <T extends Actor> T getClickedActor(T actor) {
-        // getMouse();
-        // if (mouse == null) return null;
-        // else if (Greenfoot.mouseClicked(null)) {
-            // return (T) mouse.getActor();
-        // }
-        // else return null;
-    // }
     /**
      * Returns whether the mouse cliked on the given Actor.
      * @param a The actor to see if was clicked on.
@@ -120,5 +112,13 @@ public class Mouse
         List<A> objects = w.getObjectsAt(x, y, c);
         if (objects.isEmpty()) return null;
         return objects.get(0);
+    }
+    /**
+     * Returns whether the mouse is hovering over the given object
+     */
+    public static boolean hoveringOver(Actor a) {
+        if (!mouseExists) return false;
+        List<Actor> objects = w.getObjectsAt(x, y, Actor.class);
+        return objects.contains(a);
     }
 }

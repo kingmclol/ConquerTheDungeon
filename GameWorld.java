@@ -1,17 +1,20 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SuperWorld here.
+ * <p>The GameWorld holds code that is integral for making sure Worlds that the player plays in work. Most notably, it is this
+ * class that holds the board instance of the game.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>Additionally, the alert() method is now modified so the text appears in the center of the board, rather than the World.</p>
+ * 
+ * @author Freeman Wang
+ * @author Unknown Person
+ * @version 2024-06-12
  */
 public class GameWorld extends SuperWorld
 {
 
     /**
-     * Constructor for objects of class SuperWorld.
-     * 
+     * Controls whether logs should be shown.
      */
     public static final boolean SHOW_LOGS = true;    
     protected Board board;
@@ -23,22 +26,22 @@ public class GameWorld extends SuperWorld
         setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, ShopItem.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
         StatsUI ui = new StatsUI(GameData.getPlayer());
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
-        //GameData.importData();
 
-        Tile.initializeTileDatabase();
-        Room.initializeRoomDatabase();
-        Enemy.initializeEnemyDatabase();
         Cursor cursor = new Cursor();
         addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
     public void act() {
         super.act();
     }
+    /**
+     * Returns the Board instance.
+     * @return board instance of this GameWorld
+     */
     public Board getBoard() {
         return board;
     }
     /**
-     * Displays some text alert on the screen.
+     * Displays some text alert on the screen, <i>centered at the board.</i>
      * @param str The text to display
      * @param c the color of the text.
      */
@@ -46,7 +49,7 @@ public class GameWorld extends SuperWorld
         alert(str, c, 100);
     }
     /**
-     * Displays some text alert on the screen at your chosen y-level, centered at the board.
+     * Displays some text alert on the screen at your chosen y-level, <i>centered at the board</i>.
      * @param str The text to display
      * @param c the text color.
      * @param yLevel the y position in pixels it should appear.
@@ -84,14 +87,28 @@ public class GameWorld extends SuperWorld
     public static void goToNextLevel() {
          // going to next level now
         //GameData.exportData();
-        GameData.incrementLevel();
-        Greenfoot.setWorld(new Room(GameData.getLevel()));
+        int level = GameData.incrementLevel();
+        goToLevel(level);
     }
     /**
-     * Starts the game, depending on whether it is from a new game or not
+     * Goes to the specific level given.
+     * @param level The level to go to.
      */
-    public static void startGame(boolean savedGame) {
-        if (!savedGame) GameData.incrementLevel();
-        Greenfoot.setWorld(new Room(GameData.getLevel()));
+    public static void goToLevel(int level) {
+        if (level == 0) Greenfoot.setWorld(new TutorialRoom());
+        else if (level % 5 == 0) Greenfoot.setWorld(new ShopRoom(level));
+        else Greenfoot.setWorld(new CombatRoom(level));
     }
+    // /**
+     // * Starts the game, depending on whether it is from a new game or not
+     // * @param savedGame Whether the game is running from a previous save or not.
+     // */
+    // public static void startGame(boolean savedGame) {
+        // if (!savedGame) { // Playing from a new game.
+            // GameData.resetData(); // Start from clean slate.
+            // Greenfoot.setWorld(new TutorialRoom());
+            // return;
+        // }
+        // goToLevel(GameData.getLevel());
+    // }
 }

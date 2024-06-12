@@ -7,10 +7,12 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 /**
- * Write a description of class GameData here.
+ * <p>This class holds the main Game Data, and has the ability to do "saving" and "loading saves".</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>It contains important things like the player instance, and the level.</p>
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public class GameData  
 {
@@ -19,18 +21,22 @@ public class GameData
     private static Scanner scan;
     private static StringTokenizer tokenizer;
     private static Player player = new Player();
+    /**
+     * Save file name to use
+     */
     public static final String SAVE_FILE = "saves.txt";
     /**
-     * Constructor for objects of class GameData
+     * private constructor to prevent instantiation
      */
     private GameData()
     {
     }
     /**
      * Increments the level by 1.
+     * @return The level after the increment
      */
-    public static void incrementLevel() {
-        level++;
+    public static int incrementLevel() {
+        return ++level;
     }
     /**
      * Resets the game related data to default states.
@@ -61,12 +67,15 @@ public class GameData
             System.out.println("err: something went wrong when writing save to file...");
         }
     }
+    /**
+     * Attempts to look for the save file and load a game save from what it finds.
+     */
     public static boolean importData() {
         try {
             Scanner scan = new Scanner(new File(SAVE_FILE));
             String save = null;
             if (scan.hasNextLine()) save = scan.nextLine();
-            if (null == save) {
+            if (save == null) {
                 System.out.println("warn: save file has no save, starting with new save");
                 resetData();
             }
@@ -80,6 +89,7 @@ public class GameData
     }
     /**
      * Given the string representation of a player, load the game data from there.
+     * @return whether it was successful or not
      */
     public static boolean loadData(String data) {
         // Split to level data at index 0, and player data at index 1.
@@ -92,11 +102,12 @@ public class GameData
             return false;
         }
         player.loadPlayerData(params);
-        StatsUI.loadStatsData(params);
+        //StatsUI.loadStatsData(params);
         return true;
     }
     /**
      * Gets the main Player object of the game.
+     * @return The player object
      */
     public static Player getPlayer() {
         
@@ -104,6 +115,7 @@ public class GameData
     }
     /**
      * Gets the current level of the game.
+     * @return the level currently
      */
     public static int getLevel() {
         return level;

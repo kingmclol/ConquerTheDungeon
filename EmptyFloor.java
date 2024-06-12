@@ -1,29 +1,23 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Empty here.
+ * <p>A generic floor tile that is meant to be stepped on.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public class EmptyFloor extends Floor
 {
-    /**
-     * Act - do whatever the Empty wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public static GreenfootImage img = new GreenfootImage("floor.png");
+    private static GreenfootImage img = new GreenfootImage("floor.png");
     public EmptyFloor(){
         super(img);
     }
     public void act()
     {
-        // Add your action code here.
     }
     protected void checkTouchTile(){
     }
     public String getID() {
         return "f";
     }
-    
 }

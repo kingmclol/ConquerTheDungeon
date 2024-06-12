@@ -1,13 +1,11 @@
 import java.util.ArrayList;
 import greenfoot.*;
 /**
- * The Cell is the manager of everything that can happen within one unit of the Board. It manages the addition of CellEffects,
- * Enemies.
+ * </p>The Cell is the manager of everything that can happen within one unit of the Board. It manages the addition of CellEffects.</p>
  * 
- * Cells can contain variuos CellEffects that are overlayed onto the Cell, along with Entities occupying the same Cell.
+ * <p>Cells can contain variuos CellEffects that are overlayed onto the Cell which are basically temporary tiles</p>
  * 
- * <p>They also hold essentially all the information that you would see in the World regarding the Board, such as
- * the Entities that reside within this Cell, the Tile associated with this Cell, and all of the CellEffects that exist.</p>
+ * <p>Other than basically being a container for the tile, node, and cellEffects, there isn't much other stuff</p>
  * 
  * @author Freeman Wang
  * @version 0.1
@@ -65,20 +63,6 @@ public class Cell extends SuperActor
         w.removeObject(this);
     }
     public void act() {
-        // if (Greenfoot.mouseClicked(this)) {
-            // System.out.printf("(%d, %d)%n", boardX, boardY);
-            // // Player player = GameWorld.getPlayer();
-            // // System.out.println(Board.distanceFrom(this, player.getCell()));
-            // // if (entities.contains(player)) {
-                // // player.setIntent(Player.Intent.MOVEMENT); // useless for now.
-                // // for (Cell c : board.getCellsInRadius(this, player.getMoveDistance())) {
-                    // // if (!c.isWalkable()) continue;
-                    // // c.applyEffect(new HighlightEffect(Color.CYAN));
-                // // }
-            // // } else if (player.getIntent() == Player.Intent.MOVEMENT && Board.distanceFrom(this, player.getCell()) <= player.getMoveDistance() && this.isWalkable()) {
-                // // player.moveTo(this);
-            // // }
-        // }
     }
     /**
      * Given an CellEffect, apply that effect onto this Cell and add it to the World.
@@ -99,11 +83,6 @@ public class Cell extends SuperActor
         //e.removeEffect();
         if (e.getWorld() != null) getWorld().removeObject(e); // Check if the effect is in the world first
     }
-    // public void addEntity(Entity e) {
-        // // if (entities.contains(e)) return;
-        // System.out.println("added " + e);
-        // if (getWorld() != null) getWorld().addObject(e, getX(), getY());
-    // }
     /**
      * Returns the Y coordinate of this Cell on the Board.
      */
@@ -141,9 +120,16 @@ public class Cell extends SuperActor
     public boolean isWalkable() {
         return node.isWalkable();
     }
+    /**
+     * Returns the tile of this cell
+     */
     public Tile getTile(){
         return tile;
     }
+    /**
+     * Sets the tile in this cell to the given tile
+     * @param t the new tile to use
+     */
     public void setTile(Tile t) {
         setWalkable(t.isWalkable());
         getWorld().removeObject(tile);
@@ -156,6 +142,9 @@ public class Cell extends SuperActor
         }
         getWorld().addObject(t, getX(), getY());
     }
+    /**
+     * Returns whether this contains a cell effect
+     */
     public boolean containsCellEffect() {
         return (!cellEffects.isEmpty());
     }

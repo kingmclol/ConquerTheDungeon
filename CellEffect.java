@@ -1,20 +1,17 @@
 import greenfoot.*;
 /**
- * <p>A CellEffect is something that is applied onto a singular Cell, and does something.</p>
+ * <p>A CellEffect is something that is applied onto a singular Cell TEMPORARILY, and does something.</p>
  * 
  * </p>For example, "Fire" is an example of a CellEffect-- it changes the appearance of the cell into something firey
- * and has an effect on the Cell itself-- any Entities within would take damage!</p>
+ * and has an effect on the Cell itself-- any Entities within would take damage! We never added this though...</p>
  * 
- * <p>There is an important distinction between <code>applyEffect()</code> and <code>act()</code>:</p>
  * 
- * <p>CellEffects should set their own image. In their act() methods, they should do things like their own animations. On the other
- * had, applyEffect() should do things related to its effect, such as making the Cell deemed as inaccessible, or applying a debuff
- * onto any Entities within that Cell, and of course, decreasing its lifespan by one turn.</p>
+ * <p>CellEffects should set their own image. In their act() methods, they should do things like their own animations.</p>
  * 
- * <p> wait this doesn't seem right. I'll have to look over this later.</p>
+ * <p>This is basically unused at this point after a change of plans...</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public abstract class CellEffect extends Actor
 {
@@ -24,9 +21,10 @@ public abstract class CellEffect extends Actor
     {
         
     }
-    // public abstract void applyEffect();
-    // public abstract void removeEffect();
-    // public abstract CellEffect clone();
+    /**
+     * Sets the cell this effect is active on to the given cell
+     * @param c The cell to be on.
+     */
     public void setCell(Cell c) {
         this.cell = c;
     }
