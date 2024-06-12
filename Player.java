@@ -447,7 +447,7 @@ public class Player extends Entity
                     for (int i = 0; i < 15; i++) {
                         Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
                         getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
-                        bullet.setRotation(Greenfoot.getRandomNumber(360)); // Set the direction
+                        bullet.setRotation(24*i); // Set the direction
                     }
                     cooldownTimer = ultimateCooldown;
                     break;
@@ -632,6 +632,13 @@ public class Player extends Entity
         maxHp = Integer.valueOf(data[3]);
         hp = Integer.valueOf(data[4]);
         coin = Integer.valueOf(data[5]);
+    }
+
+    public int getMaxHp(){
+         return maxHp;
+    }
+    public int getSpeed(){
+         return normalSpeed;
     }
     public int getCoin(){
          return coin;
