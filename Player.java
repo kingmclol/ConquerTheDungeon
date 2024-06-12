@@ -318,7 +318,7 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        damage = Utility.randomIntInRange((int)0.9*damage, (int)1.1*damage);
+        damage = Utility.randomIntInRange((int)(0.9*damage), (int)(1.1*damage));
         if(frame == 5)
         {
             List<Damageable> targets;
