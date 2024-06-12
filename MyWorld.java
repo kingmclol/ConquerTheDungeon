@@ -18,7 +18,7 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1200, 768, 1, false); 
         Cursor cursor = new Cursor();
-        StatsUI ui = new StatsUI();
+        StatsUI ui = new StatsUI(GameData.getPlayer());
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
         addObject(cursor, getWidth() / 2, getHeight() / 2);
     }
