@@ -93,7 +93,7 @@ public class IntroWorld extends SuperWorld
         String key = Keyboard.getCurrentKey();
         if ("l".equals(key)) { // once L is pressed, move to the next world.
             //introWorldMusic.stop(); 
-            GameWorld.startGame(loadingFromSave);
+            Greenfoot.setWorld(new StoryWorld());
         }
         else if ("i".equals(key)) {
             if (GameData.importData()) {
