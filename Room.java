@@ -6,49 +6,34 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Write a description of class Room here.
+ * <p>The Room superclass is for rooms that the player is neat to be playing in. It holds the roomTemplates, which contains
+ * all of the possible random rooms to load from, along with other specific rooms like the shop room.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>This class manages the addition of the player onto the board, along with announcing the current level and addition of the
+ * bounding boxes of the World.</p>
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
-public class Room extends GameWorld
+public abstract class Room extends GameWorld
 {
-
-    /**
-     * Constructor for objects of class Room.
-     * 
-     */
     private static ArrayList<String> roomTemplates;
-    private List<List<String>> spawnWaves;
-    private int currentLevel;
-    private Timer timer;
-    private static final int FIRST_WAVE_WAIT = 180;
-    private int currentWave;
-    private static final int ENEMY_ALIVE_CHECK_PERIOD = 60; // Will check if all enemies are dead every this amount of acts.
-    private boolean portalSpawned;
-    private boolean specialRoom;
-    private static final String fallbackBuildString = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/w/w/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
-    private static final String shopBuild = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/ptl/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
-    public Room(int level)
+    protected int currentLevel;
+    protected Timer timer;
+    
+    protected static final String fallbackBuildString = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/w/w/w/w/w/f/f/f/f/f/f/f/f/f/f/w/w/f/f/f/w/w/f/f/f/f/f/f/f/f/w/w/f/f/f/f/f/w/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/w/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
+    protected static final String shopBuild = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/shp/f/f/f/f/shp/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/ptl/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
+    /**
+     * Createss a room of a given level and board.
+     */
+    public Room(int level, Board b)
     {    
         super();
+        board = b;
+        addObject(board, 0, 0);
         timer = new Timer();
         currentLevel = level;
-        if (level % 5 == 0 ) { // This is a shop room.
-            board = new Board(shopBuild);
-            portalSpawned = true;
-            specialRoom = true;
-            alert("Saving game...", new Color(40, 230, 70));
-            GameData.exportData();
-        }
-        else { // This is a combat room.
-            board = getRandomBoard();
-            spawnWaves = generateSpawnWaves(currentLevel);
-            currentWave = 1;
-            specialRoom = false;
-            portalSpawned = false;
-        }
-        addObject(board, 0, 0);
+        
         board.addEntity(GameData.getPlayer(), board.getRandomSpawnableCell());
         alert("LEVEL " + currentLevel, Color.WHITE, getHeight()-100);
         addBorderBoxes();
@@ -56,57 +41,11 @@ public class Room extends GameWorld
 
     public void act() {
         super.act();
-        if (!specialRoom) { // A combat room needs to have spawning of enemy waves.
-            // Give the player a bit of time to get their bearings first before spawning the first wave.
-            if (currentWave == 1 && timer.actsPassed() >= FIRST_WAVE_WAIT) { 
-                spawnNextWave();
-            }
-            // After, just spawn in a new wave once all enemies are dead.
-            else if (currentWave > 1 && timer.actsPassed() % ENEMY_ALIVE_CHECK_PERIOD == 0 && getObjects(Enemy.class).size() == 0) {
-                spawnNextWave();
-            }
-        }
     }
-    private void spawnNextWave() {
-        if (currentWave-1 >= spawnWaves.size()) { // The player has beat all of the enemy waves, and should move to the next room.
-            if (!portalSpawned) { // If a portal tile did not exist yet, spawn one in.
-                Cell randomCell = board.getRandomSpawnableCell();
-                randomCell.setTile(new PortalTile());
-                portalSpawned = true;
-            }
-            return;
-        }
-        // Spawn the next wave, since we haven't finished all the enemy waves.
-        alert("SPAWNING WAVE " + currentWave, Color.RED);
-        List<String> nextWave = spawnWaves.get(currentWave-1);
-        for (String id : nextWave) { // Add all the enemies from that wave into the world.
-            board.addEntity(Enemy.getInstanceFromID(id), board.getRandomSpawnableCell());
-        }
-        currentWave++;
-    }
-    private List<List<String>> generateSpawnWaves(int level) {
-        List<List<String>> temp = new ArrayList<List<String>>();
-        
-        // Caclculate the number of waves I want to spawn in.
-        int numWaves = level/3 + 1;
-        // And the max and min levels.
-        int minEnemies = 3 + Greenfoot.getRandomNumber(level/2 + 1);
-        int maxEnemies = minEnemies + Greenfoot.getRandomNumber(level/3 + 2);
-        
-        for (int wave = 0; wave < numWaves; wave++) { // For each wave in this level...
-            int waveEnemies = Utility.randomIntInRange(minEnemies, maxEnemies); // randomly choose the num of enemies in this wave.
-            List<String> thisWave = new ArrayList<String>();
-            for (int enemy = 0; enemy < waveEnemies; enemy++) { // Populate the wave.
-                thisWave.add(Enemy.getRandomEnemyID());
-            }
-            temp.add(thisWave); // Add this wave to the spawnWaves.
-        }
-        
-        
-        return temp;
-    }
+    
     /**
-     * Initializes the arraylist that holds all the possible room types that can exist
+     * Initializes the arraylist that holds all the possible room types that can exist. Must be run
+     * VERY early on.
      */
     public static void initializeRoomDatabase() {
         if (roomTemplates != null) return;
@@ -125,7 +64,8 @@ public class Room extends GameWorld
         if (GameWorld.SHOW_LOGS) System.out.println("info: successfuly loaded in room database");
     }
     /**
-     * Returns a random board from the room types that exissts
+     * Returns a random board from the room types that exissts. The Room databse must be initialized first.
+     * @return A random board from the RoomDatabase.
      */
     public static Board getRandomBoard() {
         if (roomTemplates == null) {

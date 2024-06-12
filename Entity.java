@@ -8,18 +8,13 @@ import java.util.HashMap;
  * <p>The constructor for any Entity subclass MUST create their own collisionBox based on their image size.
  * Also, you MUST run super.addedToWorld(World w) in its addedToWorld().</p>
  * 
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Freeman Wang
+ * @author Osmond Lin
+ * @author Tony Lin
+ * @version 2024-06-12
  */
 public abstract class Entity extends SuperActor implements Damageable
 {
-    // The enum Team stores whether the Entity is on your same team or not (Ally vs hostile)
-
-    // public static final int MAX_SKILL_POINTS = 5;
-    // protected HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>> statusModifiers; // Stores modifiers of each trigger type.
-    //protected HealthBar healthBar;
-    // protected Team team;
     protected int hp;
     protected int maxHp;
     protected double speedBoost = 0 ;
@@ -34,29 +29,23 @@ public abstract class Entity extends SuperActor implements Damageable
     protected Timer iFrameTimer;
     protected static final int IFRAMES = 10;
     private ArrayList<Vector> path = new ArrayList<Vector>();
-    private static final boolean SHOW_PATHFINDING_DEBUG = true;
+    /**
+     * Determines whether to show pathfinding related logs.
+     */
+    private static final boolean SHOW_PATHFINDING_DEBUG = false;
+    /**
+     * Creates an entity with the given max hp.
+     * @param maxHp The max health of the entity.
+     */
     public Entity(int maxHp) {
-        // this.team = team;
         this.maxHp = maxHp;
         hp = maxHp;
-        // // healthBar = new HealthBar(maxHp);
-        // skillPoints = MAX_SKILL_POINTS/2;
-        // //Deck = new Deck(Deck.Preset.A);
-        // // Initializing the HashMap.
-        // intent = Intent.NONE;
-        // path = null;
-        // moveTimer = new Timer();
-        // statusModifiers = new HashMap<StatusModifier.Trigger, ArrayList<StatusModifier>>();
-        // for (StatusModifier.Trigger t : StatusModifier.Trigger.values()) { // For types of status trigger times,
-            // statusModifiers.put(t, new ArrayList<StatusModifier>()); // Greate an arraylist to keep track of them.
-        // }
         iFrameTimer = new Timer();
     }
     public void addedToWorld(World w) {
         w.addObject(collisionBox, getX(), getY());
         w.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
     }
-    
     public void act() {
         if(!flung.equals("none")){
 
@@ -71,27 +60,20 @@ public abstract class Entity extends SuperActor implements Damageable
         manageCollision();
         //animate();
     }
-    // /**
-     // * Given a StatusModifier m, apply it onto this Entity.
-     // */
-    // public void applyModifier(StatusModifier m) {
-        // // Get the ARrayList that holds the modifier of same trigger type as m , and add it there.
-        // statusModifiers.get(m.trigger).add(m); 
-        // m.setOwner(this);
-    // }
-    // /**
-     // * Given a StatusModifier m, remove it from this Entity, if it exists.
-     // */
-    // public void removeModifier(StatusModifier m) {
-        // // Get the ArrayList that holds the modifiers of same trigger type as m, then remove from the arraylist.
-        // statusModifiers.get(m.trigger).remove(m);
-    // }
     protected abstract void deathAnimation();
+    /**
+     * Makes this Entity take damage.
+     * @param dmg The damage to take
+     * @return The amount of damage recieved.
+     */
     public int damage(int dmg) {
-        if (iFrameTimer.acts() <= IFRAMES) return 0;
+        if (iFrameTimer.acts() <= IFRAMES) return 0; // immune.
+        // Add some damage box.
         TextBox dmgBox = new TextBox("-" + dmg, Utility.randomIntInRange(20, 36), Color.ORANGE, null, 3, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
+        
+        // Calcuate damage taken and update
         int dmgTaken;
         if (hp <= dmg)dmgTaken = hp;
         hp -= dmg;
@@ -101,13 +83,20 @@ public abstract class Entity extends SuperActor implements Damageable
         }
         hpBar.update(hp);
         if(hp <= 0) die();
+        
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }
+    /**
+     * Heal this Entity.
+     * @param heal How much hp to heal
+     */
     public void heal(int heal) {
+        // Create a heal text box
         TextBox dmgBox = new TextBox("+" + heal, Utility.randomIntInRange(20, 36), Color.GREEN, null, 3, 255);
         getWorld().addObject(dmgBox, getX()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE), getY()-Cell.SIZE/2+Greenfoot.getRandomNumber(Cell.SIZE));
         dmgBox.fadeOut();
+        // Calculate heal
         hp+=heal;
         if(hp > maxHp){
             hp = maxHp;
@@ -121,13 +110,12 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     //protected abstract void animate();
     public void die() {
-        
         getWorld().removeObject(this);
     }
-    public boolean isAlive() {
-        //return hp >= 0;
-        return false;
-    }
+    /**
+     * Manages collision detection of this Entity, keeping it from intersecting with other obstructions (such as
+     * another entity, or a wall.
+     */
     protected void manageCollision() {
         collisionBox.forcePositionUpdate(); // match collision box position with the entity position
         ArrayList<CollisionBox> collisionBoxes = (ArrayList<CollisionBox>)collisionBox.getIntersectingBoxes(CollisionBox.class);
@@ -139,19 +127,6 @@ public abstract class Entity extends SuperActor implements Damageable
                 this.displace(delta);
             }
         }
-        
-        // if(getX() <= 10){
-            // setLocation(11, getY());
-        // }
-        // if(getX() >= 1015){
-            // setLocation(1014, getY());
-        // }
-        // if(getY() <= 20){
-            // setLocation(getX(), 21);
-        // }
-        // if(getY() >= 740){
-            // setLocation(getX(), 739);
-        // }
     }
     public void setFlungState(boolean state){
         if(state){

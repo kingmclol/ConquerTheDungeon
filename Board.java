@@ -24,7 +24,9 @@ public class Board extends Actor
     private static Picture tempCanvas;
     private static Picture cast;
     /**
-     * Constructor for objects of class Board
+     * Creates a board of the given height and width
+     * @param lengthX the width of the board.
+     * @param lengthY the height of the board.
      */
     public Board(int lengthX, int lengthY)
     {
@@ -35,6 +37,10 @@ public class Board extends Actor
         validSpawnTiles = new ArrayList<Cell>();
         populate();
     }
+    /**
+     * Creates a board from given buildString.
+     * @param buildString the string to load the board from.
+     */
     public Board(String buildString) {
         // Structure of 
         // "width~height~datad/d/d/d/d/d"
@@ -405,7 +411,7 @@ public class Board extends Actor
     // ========poor attempt at shadowcasting, so please ignore. I gave up so its dead now.
     // So that's why the code is not the greatest + no comment, but I don't want to remove it.
     /**
-     * Stolen code. Unused method. Do not use.
+     * <strong>Do not use.</strong> Stolen code. Unused method.
      */
     public void convertTileMapToEdges() {
         edgePool.clear();
@@ -533,7 +539,7 @@ public class Board extends Actor
         }
     }
     /**
-     * Only used for debuggin (scuffed). Do not use.
+     * <strong>Do not use.</strong> Only used for debuggin (scuffed).
      */
     public void drawEdges() {
         GreenfootImage img = tempCanvas.getImage();
@@ -546,7 +552,7 @@ public class Board extends Actor
         }
     }
     /**
-     * Do not use.
+     * <strong>Do not use.</strong> Doesn't even raycast.
      */
     public void rayCastToEdges(int originX, int originY){
         GreenfootImage img = cast.getImage();

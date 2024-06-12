@@ -10,7 +10,7 @@ import java.util.List;
  * so be sure to have proper null pointer handling lest you get the dreaded NullPointerException.
  * 
  * @author Freeman Wang
- * @version (a version number or a date)
+ * @version 2024-06-12
  */
 public class Mouse  
 {
@@ -24,14 +24,6 @@ public class Mouse
     private Mouse()
     {
     }
-    // public static <T extends Actor> T getClickedActor(T actor) {
-        // getMouse();
-        // if (mouse == null) return null;
-        // else if (Greenfoot.mouseClicked(null)) {
-            // return (T) mouse.getActor();
-        // }
-        // else return null;
-    // }
     /**
      * Returns whether the mouse cliked on the given Actor.
      * @param a The actor to see if was clicked on.

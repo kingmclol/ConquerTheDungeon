@@ -4,10 +4,16 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 /**
- * Write a description of class RoomEditor here.
+ * <p>The RoomEditor is a World that is meant for the sole use of making rooms easier.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>Draw some rooms, and copy their buildStrings onto your clipboard using [p].</p>
+ * 
+ * <p>To swap tiles being drawn, press [e] and enter in the tile ID.</p>
+ * 
+ * <p>As this is not meant to be visible to the player, I didn't focus on having it very human-readable</p>
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public class RoomEditor extends GameWorld
 {

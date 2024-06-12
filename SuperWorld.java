@@ -1,22 +1,28 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SuperWorld here.
+ * <p>The SuperWorld is simply the world that all worlds should extend from. It has important methods to ensure the
+ * functionality of some other utility classes, such as Timer, Mouse, and Keyboard.</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>It is highly important that the act() of this is run for the same reason as above.</p>
+ * 
+ * @author Freeman Wang
+ * @version 2024-06-12
  */
 public class SuperWorld extends World
 {
-
     /**
      * Constructor for objects of class SuperWorld.
-     * 
      */
     public SuperWorld()
     {    
         super(1200, 768, 1, false);  
         Mouse.setWorld(this);
+        
+        // Initialize the maps for getting instances
+        Tile.initializeTileDatabase();
+        Room.initializeRoomDatabase();
+        Enemy.initializeEnemyDatabase();
     }
     public void act() {
         Timer.tick();
