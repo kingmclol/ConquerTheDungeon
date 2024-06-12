@@ -19,7 +19,7 @@ public class Zombie extends Enemy
         up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
 
-        dying = Animation.createAnimation(new GreenfootImage("goblinsword.png"), 4, 1, 5, 64, 64);
+        dying = Animation.createAnimation(new GreenfootImage("Zombie.png"), 20, 1, 6, 64, 64);
         setImage(right.getFrame(0));
     }
 
@@ -45,7 +45,10 @@ public class Zombie extends Enemy
         {
             deathAnimation();
         }
-        super.act();
+        if(!death)
+        {
+            super.act();
+        }
     }
 
     public void findTarget(){

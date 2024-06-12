@@ -167,8 +167,6 @@ public class Player extends Entity
             {
                 attackAnimation();
                 if(Math.random() < critRate){
-
-
                     if(this.getCurrentWeapon().equals("staff"))
                     {
                         handleShooting((int)((double)attackDmg * critDamage));
@@ -228,7 +226,6 @@ public class Player extends Entity
             frame = (frame+1)%(up.getAnimationLength());
         }
         acts++;
-
         if (Greenfoot.isKeyDown("w")) {
             dy -= speed;
             setImage(up.getFrame(frame));
