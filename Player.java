@@ -2,10 +2,25 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Write a description of class Player here.
+ * Player class that manages everything the player does, including the controls, stats, and
+ * actions.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p> Players use the controls WASD to move around. They can move freely around the world,
+ * but cannot walk through certain objects, and can be affected when in contact with other objects.
+ * For example, players cannot walk through barrels and walls. Additionally, they will take damage in lava
+ * and spike traps. When they walk on a mine, they will take damage and be launched away.
+ * 
+ * <p> Player has two weapons, a sword and a staff. By pressing the key "R", they can switch their weapon.
+ * Staff can be used for 10 seconds, before having a cooldown of 10 seconds. Both weapons also have ultimate abilities,
+ * which can be triggered by pressing the button "Q".
+ * 
+ * <p> Player has a dash ability, where they will dash in the direction they are moving by pressing "shift".
+ * 
+ * <p> Players can pick up coins, heal, and powerups that will each provide a benefit to them.
+ * 
+ * @author Osmond Lin
+ * @author Tony Lin
+ * @version 2024-06-12
  */
 public class Player extends Entity
 {
@@ -287,6 +302,7 @@ public class Player extends Entity
     }
 
     private void handleShooting(int dmg){
+        dmg = Utility.randomIntInRange((int)(0.9*dmg), (int)(1.1*dmg));
         shootingTimer++;
         int shootingInterval = isPoweredUp ? powerUpShootingInterval : normalShootingInterval;
         if (Greenfoot.mouseClicked(null) && shootingTimer >= shootingInterval) {
@@ -301,7 +317,8 @@ public class Player extends Entity
     }
 
     private void attack(int damage) {
-        if(frame ==5)
+        damage = Utility.randomIntInRange((int)0.9*damage, (int)1.1*damage);
+        if(frame == 5)
         {
             List<Damageable> targets;
             switch(facing)
@@ -348,15 +365,6 @@ public class Player extends Entity
                 }
             }
         }
-
-        /** OLD CODE
-        for (Enemy enemy : slashableEnemies) {
-        if(frame == 5 && enemy.damaged() == false) // So it doesn't appear like it died before sword hits.
-        {   
-        enemy.damage(damage);
-        enemy.setDamagedState(true);
-        }
-        }*/
     }
 
     public static String getFacing (){

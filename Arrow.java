@@ -1,15 +1,16 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Arrow here.
+ * Arrow is a type of projectile that extends the Projectile superclass
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Arrow
+ * @version 2024-06-12
  */
 public class Arrow extends Projectile
 {
     private GreenfootImage arrowImage;
     private Actor target;
+    
     public Arrow(int spd, int dmg, Actor own, Actor targ){
         super(spd, dmg, own);
         target = targ;
