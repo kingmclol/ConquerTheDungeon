@@ -11,6 +11,11 @@ public class Arrow extends Projectile
     private GreenfootImage arrowImage;
     private Actor target;
     
+    /**
+     * Arrow constructor that calls superclass constructor and adds additional parameters.
+     * 
+     * @param targ    The target of the arrow
+     */
     public Arrow(int spd, int dmg, Actor own, Actor targ){
         super(spd, dmg, own);
         target = targ;

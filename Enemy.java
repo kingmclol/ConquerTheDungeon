@@ -1,7 +1,18 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.ArrayList;
-
+/**
+ * Subclass of Entity, and superclass of all enemies that manages their traits and behaviours
+ * 
+ * <p> Enemies will target the player when player comes within a certain range.
+ * 
+ * <p> Enemies can damage each other if they are close enough to each other.
+ * 
+ * @author Osmond Lin
+ * @author Tony Lin
+ * 
+ * @version 2024-06-12
+ */
 public abstract class Enemy extends Entity {
     //Animations for Moving as well as other object behaviour: 
     protected Animation up,down,left,right, dying;
@@ -15,57 +26,68 @@ public abstract class Enemy extends Entity {
     
     private static HashMap<String, Class> enemyDatabase;
     private static ArrayList<String> enemyIDs;
+    
+    /**
+     * Constructor of Enemy that calls the entity superclass
+     */
     public Enemy() {
         super(100);
         this.hp = 100;  
         SoundManager.addSound(50, "damageSound.mp3", 50); 
     }
+    
+    public void act() {
+        super.act();
+        player = (Player)getClosestInRange(Player.class, 1000);
+        manageCollision();
+    }
+    
     /**
-     * THIS IS TEMPORARY IMPLEMENTATION. I NEED A PLAYER REFERENCE SOMEWHERE
+     * Method that allows enemies to path towards player
      */
     public void pathToEntity(Entity e) {
         // weird way to get player position, but ok i guess i just want to test 
         pathTowards(e, mvtSpd);
         manageRotation();
     }
+    
     public void addedToWorld(World w) {
         super.addedToWorld(w);
     }
     
+    /**
+     * Abstract method that allows all enemies to have the attack method
+     */
     protected abstract void attack();
 
     /**
-     * Act - do whatever the Enemy wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
+     * Abstract method that allows all enemies to have the ability to track a target
      */
-
-    public void act() {
-        super.act();
-        player = (Player)getClosestInRange(Player.class, 1000);
-        manageCollision();
-    }
+    protected abstract void findTarget();
+    /**
+     * Method that removes enemy when it dies and in place of it spawns a coin
+     */
     public void die(){
         getWorld().addObject(new Coin(), getX(), getY());
         getWorld().removeObject(this);
     }
+    
+    /**
+     * Method that damages enemies
+     * 
+     * @param damage  The amount of damage to be taken
+     */
     public void takeDamage(int damage)
     {
         SoundManager.playSound("damageSound.mp3"); 
         hp -= damage;
     }
+    
+    /**
+     * Method that manages the rotation of enemies
+     */
     public void manageRotation()
     {
-        /*x = getX();
-        y = getY();
-        //Find change in X and Y with respect to Player Position:
-        int deltaX = Player.returnX() - x;
-        int deltaY = Player.returnY() - y;
-        rotation = (int) Math.toDegrees(Math.atan2(deltaX,deltaY));*/
-        // Normalize the angle to be within the range [0, 360)
-        // if (rotation < 0) {
-            // rotation += 360;
-        // }
-        // rotation = rotation%360 - 90;
         int rotation = getRotation();
         if((rotation >= 0 && rotation <= 45) || (rotation > 315 && rotation < 360))
         {
@@ -85,19 +107,41 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    /**
+     * Method that returns the direction that the enemy is facing
+     * 
+     * @return facing  The direction that the enemy is facing
+     */
     public String getFacing()
     {
         return facing;
     }
 
+    /**
+     * Method that returns the enemy's health
+     * 
+     * @return hp   The enemy's current hp
+     */
     public int getHp()
     {
         return hp;
     }
+    
+    /**
+     * Method that returns if the enemy is attacking
+     * 
+     * @return inAttack   boolean that determines if the enemy is current attacking
+     */
     public boolean whetherAttacking()
     {
         return inAttack;
     }
+    
+    /**
+     * Method that returns if the enemy is alive or not
+     * 
+     * @return death   boolean that determines if the enemy is dead
+     */
     public boolean getDeath()
     {
         return death;
