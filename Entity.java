@@ -21,7 +21,7 @@ public abstract class Entity extends SuperActor implements Damageable
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
 
-    protected boolean inAttack, death, dealtDamage, recievedDamage = false;
+    protected boolean inAttack, death = false, dealtDamage, recievedDamage = false;
     protected double speedMod = 1.0;
     protected ParabolicProjectile projPath; 
     protected String flung = "none";
@@ -82,7 +82,7 @@ public abstract class Entity extends SuperActor implements Damageable
             StatsUI.updateHP(((double) hp / maxHp )* 100.0);
         }
         hpBar.update(hp);
-        if(hp <= 0) die();
+        if(hp <= 0) deathAnimation();
         
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;

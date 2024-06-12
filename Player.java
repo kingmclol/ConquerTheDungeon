@@ -322,7 +322,7 @@ public class Player extends Entity
         if(frame == 5)
         {
             List<Damageable> targets;
-            int dmg = (1+(Greenfoot.getRandomNumber(10)/10))*10;
+            int spd = 6;
             switch(facing)
             {
                 case "right":
@@ -331,7 +331,7 @@ public class Player extends Entity
                     targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
-                        getWorld().addObject(new Slash(2, dmg, this, true), getX(), getY());
+                        getWorld().addObject(new Slash(spd, damage, this, true), getX(), getY());
                     }
                     break;
                 case "left":
@@ -340,7 +340,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
-                        getWorld().addObject(new Slash(-2, dmg, this, true), getX(), getY());
+                        getWorld().addObject(new Slash(-1*spd, damage, this, true), getX(), getY());
                     }
                     break;
                 case "up":
@@ -349,7 +349,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
-                        getWorld().addObject(new Slash(-2, dmg, this, false), getX(), getY());
+                        getWorld().addObject(new Slash(-1*spd, damage, this, false), getX(), getY());
                     }
                     break;
                 case "down":
@@ -358,7 +358,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
-                        getWorld().addObject(new Slash(2, dmg, this, false), getX(), getY());
+                        getWorld().addObject(new Slash(spd, damage, this, false), getX(), getY());
                     }
                     break;
                 default:
@@ -372,14 +372,6 @@ public class Player extends Entity
                         Enemy e = (Enemy)a;
                         e.setDamagedState(true);
                     }
-                    /*
-                    if(e.damaged() == false)
-                    {
-                    e.damage(damage);
-                    e.setDamagedState(true);
-                    }*/
-
-                    //e.setDamagedState(true);
                 }
             }
             if(enhancedSwings)
@@ -389,6 +381,7 @@ public class Player extends Entity
                 {
                     hitCount = 0;
                     enhancedSwings = false;
+                    cooldownTimer = ultimateCooldown;
                 }
             }
         }
@@ -415,7 +408,7 @@ public class Player extends Entity
 
     public void deathAnimation()
     {
-        getWorld().removeObject(this);
+        die();
     }
 
     private void checkPowerUpStatus() {
@@ -486,7 +479,6 @@ public class Player extends Entity
                     cooldownTimer = ultimateCooldown;
                     break;
                 case "sword":
-                    cooldownTimer = ultimateCooldown;
                     enhancedSwings = true;
                     hitCount = 0;
                     break;

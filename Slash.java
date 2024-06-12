@@ -1,16 +1,17 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 /**
- * Write a description of class Slash here.
+ * Player's Sword Ultimate ability: Crescent strikes that are ranged 
+ * and can block projectiles, namely Arrows.
  * 
- * @author (your name) 
+ * @Tony Lin
  * @version (a version number or a date)
+ * Image Credits: https://www.google.com/search?q=sword+slash+png&client=opera-gx&hs=15o&sca_esv=b1c93a90692d9bce&udm=2&biw=1233&bih=785&sxsrf=ADLYWIJ1K9vrP-dKEoyDZw0dlo18m8sizQ%3A1718206225186&ei=Eb9pZqLzCtrI0PEPl5Kx-As&ved=0ahUKEwjiv8_9sNaGAxVaJDQIHRdJDL8Q4dUDCBA&uact=5&oq=sword+slash+png&gs_lp=Egxnd3Mtd2l6LXNlcnAiD3N3b3JkIHNsYXNoIHBuZzIFEAAYgAQyBRAAGIAEMgYQABgHGB4yBhAAGAcYHjIIEAAYBRgHGB4yBhAAGAUYHjIGEAAYBRgeSIgUUNIOWIQScAR4AJABAZgB8gGgAYoEqgEFNC4wLjG4AQPIAQD4AQGYAgOgAuYBmAMAiAYBkgcBM6AHkRs&sclient=gws-wiz-serp#vhid=Qh2ToWbfex3NfM&vssid=mosaic
  */
 public class Slash extends Projectile
 {
+    //Instance Variables: 
     private GreenfootImage image = new GreenfootImage("slashing.png");
-    //https://www.google.com/search?q=vector+sword+slash+png&udm=2&client=opera-gx&sa=X&ved=2ahUKEwjzs_7--tGGAxUG5MkDHdddCDAQrNwCegQIbhAA&biw=1233&bih=785&dpr=2#imgrc=SO3HXq7GoXOBBM&imgdii=57YLbjVYe0OjwM
-    //https://www.google.com/search?q=sword+slash+png&client=opera-gx&hs=15o&sca_esv=b1c93a90692d9bce&udm=2&biw=1233&bih=785&sxsrf=ADLYWIJ1K9vrP-dKEoyDZw0dlo18m8sizQ%3A1718206225186&ei=Eb9pZqLzCtrI0PEPl5Kx-As&ved=0ahUKEwjiv8_9sNaGAxVaJDQIHRdJDL8Q4dUDCBA&uact=5&oq=sword+slash+png&gs_lp=Egxnd3Mtd2l6LXNlcnAiD3N3b3JkIHNsYXNoIHBuZzIFEAAYgAQyBRAAGIAEMgYQABgHGB4yBhAAGAcYHjIIEAAYBRgHGB4yBhAAGAUYHjIGEAAYBRgeSIgUUNIOWIQScAR4AJABAZgB8gGgAYoEqgEFNC4wLjG4AQPIAQD4AQGYAgOgAuYBmAMAiAYBkgcBM6AHkRs&sclient=gws-wiz-serp#vhid=Qh2ToWbfex3NfM&vssid=mosaic
     private int angleCorrection = 15;
     private int firstX, firstY;
     private boolean movingHorizontal, initPosition = false;
@@ -82,7 +83,7 @@ public class Slash extends Projectile
         }
         double changeInPosition = Math.sqrt(Math.pow(this.getX() - firstX, 2) + Math.pow(this.getY() - firstY, 2));
         System.out.println(changeInPosition);
-        if(changeInPosition < 100)
+        if(changeInPosition < 150)
         {
             if (a.size() == 0) {
                 return;

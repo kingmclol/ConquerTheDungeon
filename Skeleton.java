@@ -12,10 +12,14 @@ public class Skeleton extends Enemy
     private boolean hasShot;
 
     public Skeleton(){
+        //Animations: 
         up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 10, 1, 9, 64, 64);
         right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 11, 1, 9, 64, 64, 10);
+        dying = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 20, 1, 6, 64, 64); 
+        
+        //
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
@@ -24,6 +28,7 @@ public class Skeleton extends Enemy
         inAttack = false;
         hasShot = false;
         setImage(right.getFrame(0));
+        
     }
 
     public void act()
@@ -52,7 +57,10 @@ public class Skeleton extends Enemy
         {
             deathAnimation();
         }
-        super.act();
+        if(!death){
+            super.act();
+        }
+
     }
 
     public void findTarget(){
@@ -117,7 +125,21 @@ public class Skeleton extends Enemy
 
     public void deathAnimation()
     {
-        die();
+        if(!death)
+        {
+            frame = 0;
+            spd = 0;
+            death = true;
+        }
+        if(acts % 10 == 0)
+        {
+            frame = (frame+1)%(dying.getAnimationLength());
+        }
+        setImage(dying.getFrame(frame));
+        if(frame == (dying.getAnimationLength()-1))
+        {
+            die();
+        }
     }
 
     public void attackAnimation()
@@ -156,16 +178,17 @@ public class Skeleton extends Enemy
             hasShot = false;
         }
     }
+
     public void setDirection()
     {
         int x = Player.returnX(), y = Player.returnY();
         //Change in Y and X, vectors.
         x = x - this.getX();
         y = y - this.getY();
-        
+
         double angle = Math.atan2(y, x);
         //Calculate angle:
-        
+
         //Set Facing based off angle:
         if (angle > -Math.PI / 4 && angle <= Math.PI / 4) { // Q4 and Q1, 45 degree cutoff
             setFacing("right");
@@ -176,6 +199,6 @@ public class Skeleton extends Enemy
         } else {
             setFacing("left");
         }
-        
+
     }
 }

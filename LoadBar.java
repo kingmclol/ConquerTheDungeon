@@ -106,7 +106,6 @@ public class LoadBar extends UI
         }
         if(border){
             img.setColor (new Color(188, 138, 1));
-
             for (int i = 0; i < 2; i++){
                 img.drawRect (i, i, width - 1 - (i * 2), height - 1 - (i * 2));
             }  
