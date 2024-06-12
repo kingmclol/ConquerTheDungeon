@@ -1,11 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
-
+/**
+ * Zombie subclass that extends from Enemy.
+ * 
+ * @author Osmond Lin
+ * @author Tony Lin
+ * 
+ * @version 2024-06-12
+ */
 public class Zombie extends Enemy
 {
     private GreenfootSound zombieDeathSound = new GreenfootSound("zombieSound.mp3"); 
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
 
+    /**
+     * Constructor for zombie that sets its initial stats and animation
+     */
     public Zombie()
     {
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
@@ -20,13 +30,12 @@ public class Zombie extends Enemy
         up = Animation.createAnimation(new GreenfootImage("Zombie.png"), 8, 1, 9, 64, 64);
         left = Animation.createAnimation(new GreenfootImage("Zombie.png"), 9, 1, 9, 64, 64);
 
-        dying = Animation.createAnimation(new GreenfootImage("goblinsword.png"), 4, 1, 5, 64, 64);
+        dying = Animation.createAnimation(new GreenfootImage("Zombie.png"), 20, 1, 6, 64, 64);
         setImage(right.getFrame(0));
     }
 
     public void act()
     {
-        // Add your action code here.
         acts++;
         if(this.getHp() <= 0)
         {
@@ -47,9 +56,15 @@ public class Zombie extends Enemy
             zombieDeathSound.play();
             deathAnimation();
         }
-        super.act();
+        if(!death)
+        {
+            super.act();
+        }
     }
 
+    /**
+     * Method that allows zombies to find a player to target
+     */
     public void findTarget(){
         Player player = (Player)getClosestInRange(Player.class, 500);
         if(player != null){
@@ -57,6 +72,9 @@ public class Zombie extends Enemy
         }
     }
 
+    /**
+     * Method that manages the zombie's attack
+     */
     public void attack()
     {
         List<Player> target = getObjectsInRange(30, Player.class);
@@ -74,7 +92,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     * manages Animation.
+     * Method that manages animation.
      */
     public void manageAnimation()
     {
@@ -99,6 +117,9 @@ public class Zombie extends Enemy
         }
     }
 
+    /**
+     * Method that manages death animation.
+     */
     public void deathAnimation()
     {
         if(!death)
@@ -118,6 +139,9 @@ public class Zombie extends Enemy
         }
     }
 
+    /**
+     * Method that manages attack animation.
+     */
     public void attackAnimation()
     {
         if(frame == up.getAnimationLength()-1)

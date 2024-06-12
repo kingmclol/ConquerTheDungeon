@@ -4,8 +4,11 @@ import java.util.List;
 /**
  * The Green looking Goblin in the game.
  * 
- * @Tony Lin
- * @version (a version number or a date)
+ * @author Tony Lin
+ * @author Osmond Lin
+ * 
+ * @version 2024-06-12
+ * 
  * Art Credits: https://opengameart.org/content/lpc-goblin
  */
 public class Goblin extends Enemy
@@ -13,9 +16,9 @@ public class Goblin extends Enemy
     private GreenfootSound goblinDeathSound = new GreenfootSound("goblinSound.mp3");
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
     private List<Player> target;
+    
     /**
-     * Act - do whatever the Goblin wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
+     * Constructor for goblin that sets its initial stats and animation
      */
     public Goblin()
     {
@@ -66,6 +69,9 @@ public class Goblin extends Enemy
         }
     }
 
+    /**
+     * Method that allows goblins to find a player to target
+     */
     public void findTarget(){
         Player player = (Player)getClosestInRange(Player.class, 500);
         if(player != null){
@@ -73,9 +79,11 @@ public class Goblin extends Enemy
         }
     }
 
+    /**
+     * Method that manages the goblin's attack
+     */
     public void attack()
     {
-
         if(!target.isEmpty())
         {
             inAttack = true;
@@ -85,11 +93,10 @@ public class Goblin extends Enemy
             left = Animation.createAnimation(new GreenfootImage("attack.png"), 3, 1, 4, 64, 64);
             frame = 0;
         }
-
     }
 
     /**
-     * manages Animation.
+     * Method that manages Animation.
      */
     public void manageAnimation()
     {
@@ -114,6 +121,9 @@ public class Goblin extends Enemy
         }
     }
 
+    /**
+     * Method that manages the goblin's death animation
+     */
     public void deathAnimation()
     {
         if(!death)
@@ -133,6 +143,9 @@ public class Goblin extends Enemy
         }
     }
 
+    /**
+     * Method that manages the goblin's attack animation
+     */
     public void attackAnimation()
     {
         if(frame == up.getAnimationLength()-1)
