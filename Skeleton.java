@@ -1,16 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 /**
- * Write a description of class Skeleton here.
+ * Skeleton subclass that extends from Enemy. Skeletons can shoot arrows, making them the only ranged enemy in the game
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Osmond Lin
+ * @author Tony Lin
+ * 
+ * @version 2024-06-12
  */
 public class Skeleton extends Enemy
 {
     private int frame = 0, acts = -1;
     private boolean hasShot;
 
+    /**
+     * Constructor for skeleton that sets its initial stats and animation
+     */
     public Skeleton(){
         //Animations: 
         up = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 8, 1, 9, 64, 64);
@@ -19,7 +24,6 @@ public class Skeleton extends Enemy
         right = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 11, 1, 9, 64, 64, 10);
         dying = Animation.createAnimation(new GreenfootImage("Skeleton.png"), 20, 1, 6, 64, 64); 
         
-        //
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20);
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -33, Color.RED, Color.BLACK, false, Color.YELLOW, 1);
         spd = 2;
@@ -63,13 +67,18 @@ public class Skeleton extends Enemy
 
     }
 
+    /**
+     * Method that allows skeletons to find a player to target
+     */
     public void findTarget(){
-
         if(player != null && player.getWorld() != null && getDistance(player) >= 300){
             pathToEntity(player);
         }
     }
 
+    /**
+     * Method that manages the skeleton's attack, which is shooting arrows
+     */
     public void attack() {
         if (!hasShot && frame == 5 && player != null) {
             // Check if there's a wall between the skeleton and the player
@@ -99,9 +108,11 @@ public class Skeleton extends Enemy
         }
     }
 
+    /**
+     * Method that manages animation
+     */
     public void manageAnimation()
     {
-
         if(acts % 10 == 0)
         {
             frame = (frame + 1) % (up.getAnimationLength());
@@ -123,6 +134,9 @@ public class Skeleton extends Enemy
         }
     }
 
+    /**
+     * Method that manages death animation
+     */
     public void deathAnimation()
     {
         if(!death)
@@ -142,6 +156,9 @@ public class Skeleton extends Enemy
         }
     }
 
+    /**
+     * Method that manages attack animation
+     */
     public void attackAnimation()
     {
         setDirection();
@@ -179,6 +196,9 @@ public class Skeleton extends Enemy
         }
     }
 
+    /**
+     * Method that calculates the direction the skeleton is facing
+     */
     public void setDirection()
     {
         int x = Player.returnX(), y = Player.returnY();
