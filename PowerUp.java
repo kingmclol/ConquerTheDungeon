@@ -2,6 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class PowerUp extends Drop
 {
+    private GreenfootSound powerUpSound = new GreenfootSound("powerUpSound.mp3");
     private GreenfootImage[] animate = new GreenfootImage[3];
     private int frame = 0, acts = 0;
     
@@ -24,6 +25,7 @@ public class PowerUp extends Drop
     public void checkCollisionWithPlayer() {
         Player player = (Player) getOneIntersectingObject(Player.class);
         if (player != null) {
+            powerUpSound.play(); 
             player.activatePowerUp();
             getWorld().removeObject(this);
         }

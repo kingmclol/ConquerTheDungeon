@@ -33,6 +33,7 @@ public abstract class Enemy extends Entity {
     public Enemy() {
         super(100);
         this.hp = 100;  
+        SoundManager.addSound(50, "damageSound.mp3", 50); 
     }
     
     public void act() {
@@ -78,6 +79,7 @@ public abstract class Enemy extends Entity {
      */
     public void takeDamage(int damage)
     {
+        SoundManager.playSound("damageSound.mp3"); 
         hp -= damage;
     }
     

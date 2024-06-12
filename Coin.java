@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Coin extends Drop
 {
+    private GreenfootSound getCoinSound = new GreenfootSound("coinSound.mp3");
     private GreenfootImage[] animate = new GreenfootImage[6];
     private int frame = 0, acts = 0;
     public Coin(){
@@ -43,8 +44,7 @@ public class Coin extends Drop
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Player){
-                
-                
+                getCoinSound.play(); 
                 GameData.getPlayer().addCoin();
                 getWorld().removeObject(this);
             }
