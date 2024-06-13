@@ -4,24 +4,27 @@ import java.util.List;
 /**
  * This is where you learn the controls for the game and how the game works.
  * 
- * @author (your name) 
+ * @Tony Lin
  * @version (a version number or a date)
  */
 public class TutorialRoom extends Room
 {
+    //Instance Variables: 
     private String[] tutorialDialogue;
+    private static final String buildString = "16~12~f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/spb/f/f/f/f/f/f/f/f/f/f/f/f/spb/f/f/f/wd/wd/f/f/spb/slw/slw/spb/f/f/wd/wd/f/f/f/f/wd/b/f/f/f/f/f/f/f/f/b/wd/f/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/slw/f/f/f/f/b/ptl/ptl/b/f/f/f/f/slw/f/f/slw/f/f/f/f/b/ptl/ptl/b/f/f/f/f/slw/f/f/f/f/f/f/f/w/w/w/w/f/f/f/f/f/f/f/f/wd/b/f/f/f/f/f/f/f/f/b/wd/f/f/f/f/wd/wd/f/f/spb/slw/slw/spb/f/f/wd/wd/f/f/f/spb/f/f/f/f/f/f/f/f/f/f/f/f/spb/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/f/";
     private TextBox dialogueBox;
+    private List<Barrel> b;
     private int line, acts = 0;
     private String currentDialogue, key;
     private boolean userPrompt = false, resetPlayerCds = false;
-    private static final int numOfBarrels = 7;
+    private static int numOfBarrels;
     /**
      * Constructor for objects of class TutorialRoom.
      * 
      */
     public TutorialRoom()
     {
-        super(0, new Board(fallbackBuildString));
+        super(0, new Board(buildString));
         line = 0;
         tutorialDialogue = new String[]
         {"WASD to move:", "Left Click to attack", 
@@ -32,6 +35,8 @@ public class TutorialRoom extends Room
         dialogueBox = new TextBox(tutorialDialogue[line], 24, Color.WHITE, null, 1, 100);
         addObject(dialogueBox, getWidth()/2, getHeight()/2-100);
         currentDialogue = tutorialDialogue[line];
+        b = getObjects(Barrel.class);
+        numOfBarrels = b.size();
     }
 
     public void act()
@@ -44,17 +49,22 @@ public class TutorialRoom extends Room
         }
         acts++;
     }
-
+    /**
+     * Returns whether there is more dialogue for the tutorial.
+     * 
+     * @return     Returns True if there is more tutorial dialogue that hasn't been shown yet.
+     */
     public boolean checkNextDialogue()
     {
         int nextLine = line + 1;
         return nextLine < tutorialDialogue.length;
     }
-
+    /**
+     * 
+     */
     private void nextLine()
     {
         List<Player> p = getObjects(Player.class);
-        List<Barrel> b = getObjects(Barrel.class);
         switch(currentDialogue)
         {
             case "WASD to move:":
@@ -78,6 +88,7 @@ public class TutorialRoom extends Room
                 }
                 break;
             case "Break Barrels for a chance to recieve powerups, \n heals and coins.":
+                b = getObjects(Barrel.class);
                 if(b.size() < numOfBarrels)
                 {
                     userPrompt = true;

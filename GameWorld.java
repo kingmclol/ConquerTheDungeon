@@ -23,7 +23,7 @@ public class GameWorld extends SuperWorld
     { 
         super(); 
 
-        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, ShopItem.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Aura.class, Entity.class, ShopItem.class, Drop.class, CellEffect.class, Tile.class);
         StatsUI ui = new StatsUI(GameData.getPlayer());
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
 
