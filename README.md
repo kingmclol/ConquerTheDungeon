@@ -57,6 +57,11 @@ How far can you get before you need to be reincarnated once again?
 - **Different enemy types:** Melee (zombie, goblin) vs. ranged (skeleton)
 - **Thoroughly animated:** Animations for entities are animated for almost every action they take.
 
+## Known Bugs
+- When loading from a save file, the health bar for the player does not reflect the actual health of the player.
+  - The health bar in the side panel is correct, however.
+
+
 ## Credits
 This game was created using some existing assets sourced from others.
 
