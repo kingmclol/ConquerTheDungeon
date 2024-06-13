@@ -65,6 +65,7 @@ This game was created using some existing assets sourced from others.
 - [Regeneration Effect(Yellow)from Picking up Heals, and Power up Drops Graphics (Purple)](https://www.vecteezy.com/vector-art/25442353-8-bit-sparkling-sparkle-star-pixel-art)
 - [Coins Animation/Graphics by Nastya Prokopchuk](https://www.istockphoto.com/vector/set-of-8-bit-pixel-graphics-icons-isolated-vector-illustration-game-art-coins-of-gm1787801854-547490383)
 - [Portal Graphics and Animation](https://www.cleanpng.com/png-portal-video-game-film-column-sprite-5506003/)
+- [Status Effect Animation and Graphics from Power Ups by MyPicts](https://www.deviantart.com/mypicts/art/Aura-412012866)
 
 ### Sounds & Music
 - Lava sound: https://www.youtube.com/watch?v=_pvn1O0H1ok 
