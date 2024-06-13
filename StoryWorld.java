@@ -19,9 +19,9 @@ public class StoryWorld extends SuperWorld
     private Button skipButton;
     /**
      * Constructor for objects of class StoryWorld.
-     * 
+     * @param loadingFromSave whether this is from a new save.
      */
-    public StoryWorld()
+    public StoryWorld(boolean loadingFromSave)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(); 
@@ -34,15 +34,28 @@ public class StoryWorld extends SuperWorld
         // storyWorldMusic = new GreenfootSound("Storyworld.mp3");
         // storyWorldMusic.playLoop();
         
-        
-        dialogue = new String[]{
-            "Hello.",
-            "There is dialogue here.",
-            "So, you should add lines I guess.",
-            "For you know, story.",
-            "Add some background images to use please, as",
-            "that would be pretty cool."
-        };
+        if (!loadingFromSave) { // New game!
+            dialogue = new String[]{
+                "Hello.",
+                "I am very sorry. Very sorry indeed.",
+                "You are dead. Hit by a runaway truck.",
+                "Thankfully, I am a forgiving god.",
+                "You are given another chance. Reincarnation.",
+                "Let's see. . .",
+                "Ah. This world seems fine.",
+                "A dungeon crawler. Endless combat.",
+                "I think you'll do just fine.",
+                "Don't ask why. Gods are an enigma, forever unsolved.",
+                "Good luck, and goodbye."
+            };
+        } else { // Loading from save.
+            dialogue = new String[]{
+                "Welcome back.",
+                "Did you have a good break?",
+                "The fighting never ends.",
+                "Don't tarry too long, now."
+            };
+        }
         line = 0;
         
         dialogueBox = new TextBox(dialogue[line], 24, Color.WHITE, null, 1, 100);
