@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class HeartUpgrade extends ShopItem
 {
-    private static String[] info = {"- UPGRADE - ", "Gain +10 max hit points permanantly", "Cost: 10 coins"};
+    private static String[] info = {"- UPGRADE - ", "Gain +10 max hit points permanantly", "Restore HP to max", "Cost: 10 coins"};
     private GreenfootImage img = new GreenfootImage("hearticon.png");
     private int tier;
     private int price = 10;
@@ -37,6 +37,7 @@ public class HeartUpgrade extends ShopItem
                 
                 player.addMaxHp(15);
             }
+            player.heal(player.getMaxHp());
             player.removeCoin(price);
             return true;
         }

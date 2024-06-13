@@ -6,21 +6,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * <p><strong>For the block comment, go to <code>README.md</code>.</strong>
  * 
- * @author Freeman Wang, Neelan
+ * @author Freeman Wang, Neelan Thurairajah
  * @version 2024-04-20
  */
 public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
 
-    TextBox title;
-
+    private Picture title;
+    
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
-        "landscape1.png",
-        "landscape2.png",
-        "landscape3.png"
+        "title1.jpg",
+        "title2.jpg",
+        "title3.jpg"
     };
     //private TextBox buttonText2;
     private Picture currentImage;
@@ -40,12 +40,12 @@ public class IntroWorld extends SuperWorld
         
         setPaintOrder( TextBox.class, Button.class, Picture.class);
         
-        title = new TextBox("Conquer The Dungeon", 86, Color.BLACK, null, 2, 0);
-        Button button = new Button(this::startGame, 200, 80);
-        Button button2 = new Button(this::loadGame, 200, 80);
-        Button deleteDataButton = new Button(this::deleteGame, 200, 80);
+        title = new Picture("titletext.png");
+        Button button = new Button(this::startGame, 200, 80, new GreenfootImage("button.png"), new GreenfootImage("button2.png"), new GreenfootImage("button3.png"));
+        Button button2 = new Button(this::loadGame, 200, 80, new GreenfootImage("button.png"), new GreenfootImage("button2.png"), new GreenfootImage("button3.png"));
+        Button deleteDataButton = new Button(this::deleteGame, 200, 80, new GreenfootImage("button.png"), new GreenfootImage("button2.png"), new GreenfootImage("button3.png"));
         TextBox buttonText1 = new TextBox("START", 32, Color.BLACK, null, 0, 255);
-        TextBox buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
+        buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
         TextBox deleteDataText = new TextBox("DELETE DATA", 32, Color.BLACK, null, 0, 255);
 
         
@@ -67,10 +67,10 @@ public class IntroWorld extends SuperWorld
         Greenfoot.setSpeed(50); // Control speed to 50.
         addObject(button, getWidth()/2, getHeight()/2);
         addObject(button2, getWidth()/2, getHeight()/2 + 100);
-        addObject(buttonText1, getWidth()/2, getHeight()/2);
-        addObject(buttonText2, getWidth()/2, getHeight()/2 + 100);
+        addObject(buttonText1, getWidth()/2, getHeight()/2 - 6);
+        addObject(buttonText2, getWidth()/2, getHeight()/2 + 94);
         addObject(deleteDataButton, getWidth()/2, getHeight()/2+200);
-        addObject(deleteDataText, getWidth()/2, getHeight()/2+200);
+        addObject(deleteDataText, getWidth()/2, getHeight()/2+194);
         
         GameData.resetData();
     }
@@ -125,13 +125,15 @@ public class IntroWorld extends SuperWorld
     private void switchBackgroundImage() {
         currentImage.fadeOut(1); // make the current image begin to disappear.
         addObject(nextImage,getWidth()/2, getHeight()/2); // add the next image.
+        removeObject(title); // remove title
+        addObject(title, getWidth()/2, 80); // add it back to make it paint over background
         nextImage.fadeIn(1);
         // update reference of current image to the next image, as the current image will remove itself fro the world
         // by itself, so need to keep it anymore.
         currentImage = nextImage;
         nextImage = new Picture(backgroundImages[nextIndex()]); // have next image prepared.
         nextImage.setTransparency(0); // set its transparency to 0 so it can fade in.
-        nextImage.setTranslation(Utility.randomVector(0.5, 1, 0.2, 0.5));
+        nextImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
     }
     /**
      * Returns the next index for the next picture to use.

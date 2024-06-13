@@ -32,6 +32,7 @@ public class PortalTile extends Floor
                 count = 0;
             }
         }
+        super.act();
     }
     protected void checkTouchTile(){
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);

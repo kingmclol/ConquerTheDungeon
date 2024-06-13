@@ -40,7 +40,7 @@ public class Player extends Entity
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
-    private int ultimateCooldown = 300;
+    private int ultimateCooldown = 540;
     private int cooldownTimer = 0;
     private boolean lockStaff = false, enhancedSwings = false;
     private int hitCount = 0;
@@ -334,13 +334,14 @@ public class Player extends Entity
      * @param dmg    The damage that the staff does per bullet
      */
     private void handleShooting(int dmg){
-        dmg = Utility.randomIntInRange((int)(0.9*dmg), (int)(1.1*dmg));
+        int staffdmg = (int)(dmg * 0.75);
+        staffdmg = Utility.randomIntInRange((int)(0.9*staffdmg), (int)(1.1*staffdmg));
         if (Greenfoot.mouseClicked(null)) { //Bullet moves in the direction of the mouse click
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
                 int mouseX = mouse.getX();
                 int mouseY = mouse.getY();
-                shoot(mouseX, mouseY, dmg);
+                shoot(mouseX, mouseY, staffdmg);
             }
         }
     }
