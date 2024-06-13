@@ -1,10 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SpeedUpgrade here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Speed upgrade that has 3 tiers (unimplemented, 1 tier currently).
+ * <p>When the player has enough coins, they can gain +1 movement speed at a cost of 20 coins.
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class SpeedUpgrade extends ShopItem
 {

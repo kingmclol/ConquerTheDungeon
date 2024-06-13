@@ -831,12 +831,15 @@ public class Player extends Entity
 
     /**
      * Method that removes coins from player when they purchase from shop
+     * @param num   Number of coins to be removed.
      */
     public void removeCoin(int num){
         coin-= num;
         StatsUI.updateCoin(coin);
     }
-
+    /**
+     *  Represents player as a string using its stats.
+     */
     public String toString(){
         return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
     }
