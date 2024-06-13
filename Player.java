@@ -107,6 +107,7 @@ public class Player extends Entity
 
         SoundManager.addSound(50, "swordSound.mp3", 50);
         SoundManager.addSound(50, "staffSound.mp3", 40); 
+        SoundManager.addSound(50, "swordUltimateSound.mp3", 50);
     }
 
     public void act() {
@@ -363,6 +364,7 @@ public class Player extends Entity
                     targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(spd, damage, this, true), getX(), getY());
                     }
                     break;
@@ -372,6 +374,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(-1*spd, damage, this, true), getX(), getY());
                     }
                     break;
@@ -381,6 +384,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(-1*spd, damage, this, false), getX(), getY());
                     }
                     break;
@@ -390,6 +394,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(spd, damage, this, false), getX(), getY());
                     }
                     break;
@@ -561,6 +566,7 @@ public class Player extends Entity
             switch(weapon)
             {
                 case "staff":
+                    SoundManager.playSound("staffSound.mp3");
                     for (int i = 0; i < 15; i++) {
                         Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
                         getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
