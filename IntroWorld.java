@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * <p><strong>For the block comment, go to <code>README.md</code>.</strong>
  * 
- * @author Freeman Wang, Neelan
+ * @author Freeman Wang, Neelan Thurairajah
  * @version 2024-04-20
  */
 public class IntroWorld extends SuperWorld

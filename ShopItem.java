@@ -29,7 +29,7 @@ public abstract class ShopItem extends SuperSmoothMover
         }
         if(canInteract){
             String key = Keyboard.getCurrentKey();
-            if("e".equals(key)){
+            if("e".equals(key) || (Greenfoot.mousePressed(null) && Mouse.hoveringOver(this))){
                 if(addUpgrade())removeObject();
                 
             }
