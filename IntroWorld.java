@@ -6,13 +6,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * <p><strong>For the block comment, go to <code>README.md</code>.</strong>
  * 
- * @author Freeman Wang
+ * @author Freeman Wang, Neelan
  * @version 2024-04-20
  */
 public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
-    BreathingTextBox promptBox;
 
     TextBox title;
 
@@ -23,11 +22,12 @@ public class IntroWorld extends SuperWorld
         "landscape2.png",
         "landscape3.png"
     };
-    private TextBox buttonText2;
+    //private TextBox buttonText2;
     private Picture currentImage;
     private Picture nextImage;
     private int index;
     private boolean loadingFromSave;
+    private TextBox buttonText2;
     /**
      * Create an intro world where the music <strong>will not</strong> start automatically
      */
@@ -36,19 +36,14 @@ public class IntroWorld extends SuperWorld
         super();
 
         setPaintOrder( TextBox.class, Button.class, Picture.class);
-        promptBox = new BreathingTextBox("PRESS [L] TO START", 52, new Color(188, 138, 1), null, 120);
-        //title = new Picture("titletext.png");
-        //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
-        addObject(promptBox, getWidth()/2, getHeight()/2+300);
         
-        title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
-        //titleAnchor = new Vector(getWidth()/2, 80);
+        title = new TextBox("Conquer The Dungeon", 86, Color.BLACK, null, 2, 0);
         Button button = new Button(this::startGame, 200, 80);
         Button button2 = new Button(this::loadGame, 200, 80);
+        Button deleteDataButton = new Button(this::deleteGame, 200, 80);
         TextBox buttonText1 = new TextBox("START", 32, Color.BLACK, null, 0, 255);
-        buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
-        addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, new Color(188, 138, 1), null, 60), getWidth()/2, 300);
-        
+        TextBox buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
+        TextBox deleteDataText = new TextBox("DELETE DATA", 32, Color.BLACK, null, 0, 255);
 
         
         // introWorldMusic = new GreenfootSound("Introworld.mp3");
@@ -68,9 +63,12 @@ public class IntroWorld extends SuperWorld
         addObject(title, getWidth()/2, 80);
         Greenfoot.setSpeed(50); // Control speed to 50.
         addObject(button, getWidth()/2, getHeight()/2);
-        addObject(button2, getWidth()/2, getHeight()/2 + 200);
+        addObject(button2, getWidth()/2, getHeight()/2 + 100);
         addObject(buttonText1, getWidth()/2, getHeight()/2);
-        addObject(buttonText2, getWidth()/2, getHeight()/2 + 200);
+        addObject(buttonText2, getWidth()/2, getHeight()/2 + 100);
+        addObject(deleteDataButton, getWidth()/2, getHeight()/2+200);
+        addObject(deleteDataText, getWidth()/2, getHeight()/2+200);
+        
         GameData.resetData();
     }
     /**
@@ -109,13 +107,7 @@ public class IntroWorld extends SuperWorld
             }
         }
         else if ("p".equals(key)) {
-            if (GameData.deleteData()) { // delete the save file.
-                alert("Deleted previous save.", new Color(230, 70, 70), getHeight()/2+100);
-            }
-            else { // Could not delete (most likely already deleted)
-                alert("Already deleted.", new Color(230, 70, 70), getHeight()/2+100);
-            }
-            loadingFromSave = false; // reset this flag
+            
         }
     }
     /**
@@ -139,17 +131,36 @@ public class IntroWorld extends SuperWorld
         index = (index + 1)%backgroundImages.length;
         return index;
     }
+    /**
+     * Starts the game
+     */
     private void startGame(){
         Greenfoot.setWorld(new StoryWorld(loadingFromSave));
     }
+    /**
+     * Attempts to load previous save.
+     */
     private void loadGame(){
         if (GameData.importData()) {
             buttonText2.display("DATA LOADED!");
-            alert("Loaded from save...", new Color(40, 230, 70), getHeight()/2);
+            alert("Loaded from save...", new Color(40, 230, 70), getHeight()-50);
             loadingFromSave = true;
         } else {
-            alert("Cannot load save data..", new Color(230, 70, 70), getHeight()/2);
+            alert("Cannot load save data..", new Color(230, 70, 70), getHeight()-50);
         }
+    }
+    /**
+     * Deletes previous save.
+     */
+    private void deleteGame() {
+        if (GameData.deleteData()) { // delete the save file.
+            alert("Deleted previous save.", new Color(230, 70, 70), getHeight()-50);
+            buttonText2.display("LOAD DATA"); // doens't really matter eh.
+        }
+        else { // Could not delete (most likely already deleted)
+            alert("Already deleted.", new Color(230, 70, 70), getHeight()-50);
+        }
+        loadingFromSave = false; // reset this flag
     }
     // public void started() {
         // introWorldMusic.playLoop();
