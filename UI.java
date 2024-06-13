@@ -1,17 +1,11 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class GUI here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * <p>An abstract holder class to group up all the UI elements, mainly for paint order
  */
 public abstract class UI extends Actor
 {
-    /**
-     * Act - do whatever the GUI wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
     public void act()
     {
         // Add your action code here.

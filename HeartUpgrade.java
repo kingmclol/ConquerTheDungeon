@@ -1,10 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class HeartUpgrade here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Health upgrade that has 3 tiers (unimplemented, 1 tier currently).
+ * <p>When the player has enough coins, they can gain +10 max HP at a cost of 10 coins.
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class HeartUpgrade extends ShopItem
 {

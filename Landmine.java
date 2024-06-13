@@ -2,10 +2,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class Landmine here.
+ * A landmine that explodes when an entity walks on it, dealing damage in an area of effect.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah
+ * @version June 2024
  */
 public class Landmine extends Floor
 {
@@ -13,6 +13,9 @@ public class Landmine extends Floor
     public static GreenfootImage img = new GreenfootImage("landmine.png");
     private HiddenBox hiddenBox;
     private boolean exploded;
+    /**
+     * Creates landmine with a hidden box that is used for collision detection for entities
+     */
     public Landmine() {
         super(img);  
         hiddenBox = new HiddenBox(40, 40, Box.SHOW_BOXES, this);
@@ -22,6 +25,9 @@ public class Landmine extends Floor
         w.addObject(hiddenBox, getX(), getY());
 
     }
+    /**
+     * Adds an explosion object and replaces the landmine with a regular floor tile
+     */
     private void explode(){
         explosion.play();
         getWorld().addObject(new Explosion(1.0), getX(), getY());
@@ -31,13 +37,15 @@ public class Landmine extends Floor
     {
         checkTouchTile();
     }
-
+    
     protected void checkTouchTile(){
         if(!exploded){
+            // gather all collidable objects in contact with the landmine
             ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) hiddenBox.getIntersectingBoxes(CollisionBox.class);
-            //System.out.println(boxes);
             for(Box box : boxes){
+                //gets the owner of the collision box
                 Actor owner = box.getOwner();
+                // Checks if it is an entity
                 if(owner instanceof Entity){
                     exploded = true;
                     explode();

@@ -23,7 +23,6 @@ public class StoryWorld extends SuperWorld
      */
     public StoryWorld(boolean loadingFromSave)
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(); 
         visibleActCount = 0;
         GreenfootImage backgroundImage = new GreenfootImage(1024, 768);

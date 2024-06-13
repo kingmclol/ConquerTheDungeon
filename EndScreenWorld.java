@@ -1,5 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+/**
+ * <p>The End screen World that shows the level that the player got to before dying.</p>
+ * 
+ * @author Osmond Lin
+ * @version
+ */
 public class EndScreenWorld extends SuperWorld
 {
     private GreenfootSound endScreenMusic = new GreenfootSound("endscreen.mp3");
@@ -14,7 +19,6 @@ public class EndScreenWorld extends SuperWorld
         background.fill();
         setBackground(background);
         TextBox title= new TextBox("GAME OVER", 86, Color.RED, null, 2, 0);
-        //titleAnchor = new Vector(getWidth()/2, 80);
         addObject(title, getWidth()/2, 280);
         TextBox title2 = new TextBox("LEVEL: " + GameData.getLevel(), 86, Color.RED, null, 2, 0); 
         addObject(title2, getWidth()/2, 380);

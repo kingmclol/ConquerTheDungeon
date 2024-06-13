@@ -38,6 +38,7 @@ public class RoomEditor extends GameWorld
         drawID = "f";
         SuperTextBox legend = new SuperTextBox(Tile.getLegend(), Color.GRAY, Color.WHITE, new Font("Calibri", 14), false, 176, 0, new Color(0,0,0,0));
         addObject(legend, 1024+(1200-1024)/2, getHeight()/2);
+        
         addBorderBoxes();
     }
 
@@ -82,11 +83,11 @@ public class RoomEditor extends GameWorld
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getBuildString()), null);
             alert("Copied build string to clipboard.", Color.WHITE);
-        } else if ("/".equals(key)) {
+        } else if ("=".equals(key)) {
             board.removeFromWorld();
             board = Room.getRandomBoard();
             addObject(board, 0,0);
-        } else if ("e".equals(key)) {
+        } else if ("/".equals(key) || "e".equals(key)) {
             drawID = Greenfoot.ask("Give an ID of a tile to use.");
             if (Tile.verifyID(drawID)) {
                 alert("Now drawing with " + Tile.getClassName(drawID) + " tiles", Color.WHITE);

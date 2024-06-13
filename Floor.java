@@ -27,5 +27,8 @@ public abstract class Floor extends Tile
     public void act(){
         checkTouchTile();
     }
+    /**
+     * Abstract method for checking collision when entities walk on tiles and doing an appropiate effect
+     */
     protected abstract void checkTouchTile();
 }

@@ -1,17 +1,14 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class DestroyableWall here.
+ * A wall that can be destroyed.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class DestroyableWall extends Destroyable
 {
-    /**
-     * Act - do whatever the DestroyableWall wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
     private GreenfootSound breakWallSound = new GreenfootSound("wallSound.mp3"); 
     private static GreenfootImage img = new GreenfootImage("destroyablewall.jpg");
     public DestroyableWall() {
