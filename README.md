@@ -58,7 +58,7 @@ This game was created using some existing assets sourced from others.
 - SuperSmoothMover, SuperTextBox, SuperStatBar written by Jordan Cohen
 
 ### Art & Animation
-- See the file `filenamehere.txt` for full LPC spritesheet credits.
+- See the `Credits` directory for attribution for LPC spritesheets.
 - [Enhanced Sword Slash Effect Art](https://spikerman.itch.io/sword-slashes)
 - [Goblin Animation/Graphics](https://opengameart.org/content/lpc-goblin)
 - [Heal Animation/Graphics by Serbhii](https://stock.adobe.com/images/heart-pixel-art-animation-isolated-vector-illustration-of-mobile-or-pc-game-sprites-design-for-stickers-logo-mobile-app-game-assets-8-bit-sprite-sheet-contains-flip-appear-disappear/433551947)
