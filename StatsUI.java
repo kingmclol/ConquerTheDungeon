@@ -28,6 +28,7 @@ public  class StatsUI extends UI
     private PopUpBox spdStatInfo = new PopUpBox(new SuperTextBox(new String []{"- Speed Stat -", "Determines how ",  "fast you move."}, new Font(13), 120), 55, 75);
     
     private PopUpBox staffInfo = new PopUpBox(new SuperTextBox(new String []{"- Staff Meter -", "This meter determines",  "how long you can"," use the staff."}, new Font(13), 135), 70, 35);
+    private PopUpBox ultInfo = new PopUpBox(new SuperTextBox(new String []{"- Ultimate Ability -", "Activate by pressing Q",  "to use the special ability","of the current weapon."}, new Font(13), 160), 65, 65);
 
     private static TextBox atkText;
     private static TextBox heartText; 
@@ -77,6 +78,7 @@ public  class StatsUI extends UI
         w.addObject(cdBar2, getX(), 625);
         w.addObject(ult1, getX(), 540);
         w.addObject(ult2, getX(), 540);
+        w.addObject(ultInfo, getX(), 540);
         w.addObject(ultBar, getX(), 540);
         w.addObject(staffImg, getX() - 50, 680);
         w.addObject(staffInfo, getX() - 50, 680);
