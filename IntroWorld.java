@@ -74,21 +74,6 @@ public class IntroWorld extends SuperWorld
         
         GameData.resetData();
     }
-    /**
-     * <p>Create an Introworld where music <strong>will</strong> start automatically.</p>
-     * <p>The boolean passed has no effect. Do whatever you want.</p>
-     * <p>Basically, the normal constructor without any parameters will not play the music first, so Greenfoot can
-     * construct the World normally with the music starting only when the player presses the Run button. However,
-     * when returning to the intro world from another world, the Run button is never pressed (since it's already running),
-     * thus the started() would never run, leading to a music-less Intro world.</p>
-     * <p>So, I simply made another constructor to overload it and then simply use that constructor instead, which would run the music
-     * automatically<p>
-     * @param overloadingConstructorSinceNoTimeForBetterSolution This is one of the parameters of all time.
-     */
-    public IntroWorld(boolean overloadingConstructorSinceNoTimeForBetterSolution) {
-        this(); // Run the real constructor.
-        introWorldMusic.playLoop(); // Run this one (1) line of code.
-    }
     public void started() {
         introWorldMusic.playLoop();
     }
@@ -102,6 +87,8 @@ public class IntroWorld extends SuperWorld
             switchBackgroundImage();
             actCount = 0;
         }
+        
+        // For quick use.
         String key = Keyboard.getCurrentKey();
         if ("l".equals(key)) { // once L is pressed, move to the next world.
             introWorldMusic.stop(); 
@@ -116,7 +103,7 @@ public class IntroWorld extends SuperWorld
             }
         }
         else if ("p".equals(key)) {
-            
+            deleteGame();
         }
     }
     /**
@@ -134,6 +121,10 @@ public class IntroWorld extends SuperWorld
         nextImage = new Picture(backgroundImages[nextIndex()]); // have next image prepared.
         nextImage.setTransparency(0); // set its transparency to 0 so it can fade in.
         nextImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
+        
+        // Re-add the title picture to make it appear on top.
+        removeObject(title);
+        addObject(title,getWidth()/2, 80);
     }
     /**
      * Returns the next index for the next picture to use.

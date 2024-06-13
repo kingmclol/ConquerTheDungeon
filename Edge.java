@@ -1,14 +1,16 @@
 /**
- * Write a description of class Edge here.
+ * <p>An unused class that was meant for trying to shadowcast/FOV</p>
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Frreman Wang
+ * @version 2024-06-12
  */
 public class Edge  
 {
     private int startX, startY, endX, endY;
     /**
-     * Constructor for objects of class Edge
+     * Creates an edge with the starting position
+     * @param sx start x
+     * @param sy start y
      */
     public Edge(int sx, int sy)
     {
@@ -19,25 +21,40 @@ public class Edge
     }
 
     /**
-     * Extends this edge either south (dir 0) or east (dir 1) by a given delta.
-     * @param direction The direction to extend by. 0 for south, 1 for east.
-     * @param delta How much to extend by.
+     * Extends this edge south by a given amount
+     * @param delta the amount to extend by
      */
     public void extendSouth(int delta) {
         endY+= delta;
     }
+    /**
+     * Extends this edge east by a given amount
+     * @param delta the amount to extend by
+     */
     public void extendEast(int delta) {
         endX+= delta;
     }
+    /**
+     * Returns start x
+     */
     public int getStartX() {
         return startX;
     }
+    /**
+     * Returns start y
+     */
     public int getStartY() {
         return startY;
     }
+    /**
+     * Returns end x
+     */
     public int getEndX() {
         return endX;
     }
+    /**
+     * Returns end x
+     */
     public int getEndY() {
         return endY;
     }
