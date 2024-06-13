@@ -47,7 +47,7 @@ public abstract class Entity extends SuperActor implements Damageable
         w.addObject(hpBar, getX(), getY() - 33); // Position the HP bar slightly above the player
     }
     public void act() {
-        if(!flung.equals("none")){
+        if(getWorld() != null && !flung.equals("none")){
 
             fling();
         }

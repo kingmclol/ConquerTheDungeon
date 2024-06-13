@@ -23,7 +23,7 @@ public class GameWorld extends SuperWorld
     { 
         super(); 
 
-        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Entity.class, ShopItem.class, Aura.class, Drop.class, CellEffect.class, Tile.class);
+        setPaintOrder(Cursor.class, Segment.class, Box.class, SuperTextBox.class, TextBox.class,  Picture.class, UI.class, Cell.class, SuperStatBar.class, Projectile.class, Explosion.class, Aura.class, Entity.class, ShopItem.class, Drop.class, CellEffect.class, Tile.class);
         StatsUI ui = new StatsUI(GameData.getPlayer());
         addObject(ui, 1024+(1200-1024)/2, getHeight()/2);
 
@@ -96,7 +96,7 @@ public class GameWorld extends SuperWorld
      */
     public static void goToLevel(int level) {
         if (level == 0) Greenfoot.setWorld(new TutorialRoom());
-        else if (level % 5 == 0) Greenfoot.setWorld(new ShopRoom(level));
+        else if (level % 3 == 0) Greenfoot.setWorld(new ShopRoom(level)); // Every 3 levels is a shop.
         else Greenfoot.setWorld(new CombatRoom(level));
     }
     // /**

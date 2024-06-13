@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class StoryWorld extends SuperWorld
 {
-    //private GreenfootSound storyWorldMusic;
+    private GreenfootSound storyWorldMusic;
     private String[] dialogue;
     private TextBox dialogueBox;
     private BreathingTextBox promptBox;
@@ -23,7 +23,6 @@ public class StoryWorld extends SuperWorld
      */
     public StoryWorld(boolean loadingFromSave)
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(); 
         visibleActCount = 0;
         GreenfootImage backgroundImage = new GreenfootImage(1024, 768);
@@ -31,8 +30,8 @@ public class StoryWorld extends SuperWorld
         backgroundImage.fill();
         setBackground(backgroundImage);
         
-        // storyWorldMusic = new GreenfootSound("Storyworld.mp3");
-        // storyWorldMusic.playLoop();
+        storyWorldMusic = new GreenfootSound("storyworld.mp3");
+        storyWorldMusic.playLoop();
         
         if (!loadingFromSave) { // New game!
             dialogue = new String[]{
@@ -67,12 +66,12 @@ public class StoryWorld extends SuperWorld
         promptBox = new BreathingTextBox("Click to continue...", 18, Color.WHITE, null, 240);
         //nextWorldButton = new Button(() -> goToNextWorld(), 200, 75, new GreenfootImage("goButton.png"), new GreenfootImage("goButtonHovered.png"), new GreenfootImage("goButtonPressed.png"));
     }
-    // public void started() {
-        // storyWorldMusic.playLoop();
-    // }
-    // public void stopped() {
-        // storyWorldMusic.pause();
-    // }
+    public void started() {
+        storyWorldMusic.playLoop();
+    }
+    public void stopped() {
+        storyWorldMusic.pause();
+    }
     public void act() {
         super.act();
         if (!stillMoreDialogue() && dialogueBox.getWorld() == null) {
@@ -100,7 +99,7 @@ public class StoryWorld extends SuperWorld
      * Goes to the next world.
      */
     private void goToNextWorld() {
-        //storyWorldMusic.stop();
+        storyWorldMusic.stop();
         GameWorld.goToLevel(GameData.getLevel());
     }
     /**

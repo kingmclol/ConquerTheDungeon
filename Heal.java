@@ -5,6 +5,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Heal extends Drop
 {
+    private GreenfootSound powerUpSound = new GreenfootSound("powerUpSound.mp3");
+    
     private int healAmount, actsBeforeExpired = 3600, frame = 0, acts = 0;
     private boolean spawning = true;
     private Animation spawn, idle, expiry;
@@ -27,6 +29,7 @@ public class Heal extends Drop
             Player player = (Player) getOneIntersectingObject(Player.class);
             animate();
             if (player != null) {
+                powerUpSound.play();
                 player.heal(healAmount);
                 getWorld().addObject(new HealingEffect(player, -20, -10), player.getX(), player.getY()); // up Left
                 getWorld().addObject(new HealingEffect(player, -15, 30), player.getX(), player.getY()); // down left

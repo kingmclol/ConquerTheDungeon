@@ -1,19 +1,22 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class ShopTile here.
+ * A shop tile holds a shop item for player upgrades.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah
+ * @version June 2024
  */
 public class ShopTile extends Obstruction
 {
     public static GreenfootImage img = new GreenfootImage("wall.jpg");
     private ShopItem s;
+    /**
+     * Creates a shop tile with a random shop item that could either be: Heart, Speed, or Attack
+     */
     public ShopTile(){
         super(img);
         int rand = Greenfoot.getRandomNumber(3);
-        
+        // Create random upgrade
         if(rand == 0){
             s = new HeartUpgrade(2);
         }
@@ -30,10 +33,7 @@ public class ShopTile extends Obstruction
         w.addObject(s, getX(), getY());
     }
 
-    public void act()
-    {
-        // Add your action code here.
-    }
+
     public String getID() {
         return "shp";
     }

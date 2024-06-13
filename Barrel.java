@@ -1,26 +1,25 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Desructible here.
+ * A barrel is a destroyable object that has randomized drops, including healing, coins, and powerups.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class Barrel extends Destroyable
 {
-    /**
-     * Act - do whatever the Desructible wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
     private GreenfootSound barrelBreakSound = new GreenfootSound("barrelSound.mp3"); 
     public static GreenfootImage img = new GreenfootImage("barrel.png");
     public Barrel() {
         super(img, 10);
-        barrelBreakSound.setVolume(50);
+        barrelBreakSound.setVolume(25);
     }
     public void onDestroy() {
         barrelBreakSound.play(); 
-        int randomDrop = Greenfoot.getRandomNumber(12);
+        // Generate a random number
+        int randomDrop = Greenfoot.getRandomNumber(11);
+        // Drops with coins weighted more
         if (randomDrop == 0 ||randomDrop == 1 ||randomDrop == 4) {
             getWorld().addObject(new Coin(), getX(), getY());
         }
@@ -28,8 +27,9 @@ public class Barrel extends Destroyable
             getWorld().addObject(new PowerUp(), getX(), getY());
         }
         else if(randomDrop == 3){
-            getWorld().addObject(new Heal(Utility.randomIntInRange(30, 60)), getX(), getY());
+            getWorld().addObject(new Heal(Utility.randomIntInRange(10, 25)), getX(), getY());
         }
+        //replace barrel with floor once destroyed
         replaceMe(new EmptyFloor());
         
     }

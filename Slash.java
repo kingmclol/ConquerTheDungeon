@@ -6,7 +6,7 @@ import java.util.List;
  * 
  * @Tony Lin
  * @version (a version number or a date)
- * Image Credits: https://www.google.com/search?q=sword+slash+png&client=opera-gx&hs=15o&sca_esv=b1c93a90692d9bce&udm=2&biw=1233&bih=785&sxsrf=ADLYWIJ1K9vrP-dKEoyDZw0dlo18m8sizQ%3A1718206225186&ei=Eb9pZqLzCtrI0PEPl5Kx-As&ved=0ahUKEwjiv8_9sNaGAxVaJDQIHRdJDL8Q4dUDCBA&uact=5&oq=sword+slash+png&gs_lp=Egxnd3Mtd2l6LXNlcnAiD3N3b3JkIHNsYXNoIHBuZzIFEAAYgAQyBRAAGIAEMgYQABgHGB4yBhAAGAcYHjIIEAAYBRgHGB4yBhAAGAUYHjIGEAAYBRgeSIgUUNIOWIQScAR4AJABAZgB8gGgAYoEqgEFNC4wLjG4AQPIAQD4AQGYAgOgAuYBmAMAiAYBkgcBM6AHkRs&sclient=gws-wiz-serp#vhid=Qh2ToWbfex3NfM&vssid=mosaic
+ * Image Credits: https://spikerman.itch.io/sword-slashes
  */
 public class Slash extends Projectile
 {
@@ -55,7 +55,6 @@ public class Slash extends Projectile
             }
             firstX = getX();
             firstY = getY();
-            System.out.println("init is:" + firstX + "," + firstY);
             initPosition = true;
         }
         if(getWorld() != null)
@@ -83,7 +82,6 @@ public class Slash extends Projectile
             removeTouching(Arrow.class);
         }
         double changeInPosition = Math.sqrt(Math.pow(this.getX() - firstX, 2) + Math.pow(this.getY() - firstY, 2));
-        System.out.println(changeInPosition);
         if(changeInPosition < 150)
         {
             if (a.size() == 0) {

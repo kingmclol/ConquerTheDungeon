@@ -2,10 +2,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class SpikeTrap here.
+ * A spike trap periodically triggers spikes that damage any entities that touch the tile.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class SpikeTrap extends Floor
 {
@@ -15,6 +15,9 @@ public class SpikeTrap extends Floor
     private int activeCounter; 
     private int acts;
     private int period;
+    /**
+     * Creates a spike trap with a random interval and period for spike activation
+     */
     public SpikeTrap() {
         super(img);
         activeCounter = 0;
@@ -25,6 +28,7 @@ public class SpikeTrap extends Floor
     public void act()
     {
         if(++acts % period == 0 && activeCounter == 0) {
+            // every cycle, set a random activationlength
             activeCounter = Utility.randomIntInRange(period/4, period/2);
             setImage(img2);
         }
@@ -39,14 +43,16 @@ public class SpikeTrap extends Floor
     protected void checkTouchTile(){
         if(activeCounter > 0){
             ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
-
+            // get all touching collision boxes
             for(Box box : boxes){
                 Actor owner = box.getOwner();
                 if(owner instanceof Entity){
                     spikeTrapSound.play();
+                    //damage the entity
                     ((Entity) owner).damage(Utility.randomIntInRange(2, 10));
                 }
             }
+            // decrement the active timer
             activeCounter--;
         }
         

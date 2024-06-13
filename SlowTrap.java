@@ -2,17 +2,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class SlowTrap here.
+ * Slows down the speed of any entities that touch the tile.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class SlowTrap extends Floor
 {
-    /**
-     * Act - do whatever the SlowTrap wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
     private GreenfootSound slowTrapSound = new GreenfootSound("slowTrapSound.mp3"); 
     private static GreenfootImage img = new GreenfootImage("slowtrap.png");
     public SlowTrap() {
@@ -25,11 +22,13 @@ public class SlowTrap extends Floor
     }
 
     protected void checkTouchTile(){
+        // Checks if the tile is in contact with any collision box
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
                 slowTrapSound.play(); 
+                // sets the speed to 60% of its original speed
                 ((Entity) owner).setSpeed(0.6);
             }
         }

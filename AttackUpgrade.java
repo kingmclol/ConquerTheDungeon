@@ -1,17 +1,17 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class AttackUpgrade here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Attack damage upgrade that has 3 tiers (unimplemented, 1 tier currently).
+ * <p>When the player has enough coins, they can gain +5 attack damages at a cost of 10 coins.
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class AttackUpgrade extends ShopItem
 {
-    private static String[] info = {"- UPGRADE - ", "Gain +5 attack damage permanantly", "Cost: 5 coins"};
+    private static String[] info = {"- UPGRADE - ", "Gain +5 attack damage permanantly", "Cost: 10 coins"};
     private GreenfootImage img = new GreenfootImage("swordicon.png");
     private int tier;
-    private int price = 5;
+    private int price = 10;
     public AttackUpgrade(int tier){
         super(info);
         this.tier = tier;

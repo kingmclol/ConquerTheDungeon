@@ -2,10 +2,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class SpeedBoost here.
+ * Increases the speed of any entities that touch the tile for a short period of time.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class SpeedBoost extends Floor
 {
@@ -31,6 +31,7 @@ public class SpeedBoost extends Floor
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
                 speedboostSound.play(); 
+                // Increases the speed by 40%
                 ((Entity) owner).setSpeed(1.4);
             }
         }

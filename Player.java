@@ -40,11 +40,11 @@ public class Player extends Entity
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
-    private int ultimateCooldown = 300;
+    private int ultimateCooldown = 540;
     private int cooldownTimer = 0;
     private boolean lockStaff = false, enhancedSwings = false;
     private int hitCount = 0;
-    //Moving
+    //Animations:
     private Animation right,left,down,up,dying, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
@@ -107,6 +107,7 @@ public class Player extends Entity
 
         SoundManager.addSound(50, "swordSound.mp3", 50);
         SoundManager.addSound(50, "staffSound.mp3", 40); 
+        SoundManager.addSound(50, "swordUltimateSound.mp3", 50);
     }
 
     public void act() {
@@ -333,13 +334,14 @@ public class Player extends Entity
      * @param dmg    The damage that the staff does per bullet
      */
     private void handleShooting(int dmg){
-        dmg = Utility.randomIntInRange((int)(0.9*dmg), (int)(1.1*dmg));
+        int staffdmg = (int)(dmg * 0.75);
+        staffdmg = Utility.randomIntInRange((int)(0.9*staffdmg), (int)(1.1*staffdmg));
         if (Greenfoot.mouseClicked(null)) { //Bullet moves in the direction of the mouse click
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
                 int mouseX = mouse.getX();
                 int mouseY = mouse.getY();
-                shoot(mouseX, mouseY, dmg);
+                shoot(mouseX, mouseY, staffdmg);
             }
         }
     }
@@ -363,6 +365,7 @@ public class Player extends Entity
                     targets = (List<Damageable>) Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(spd, damage, this, true), getX(), getY());
                     }
                     break;
@@ -372,6 +375,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Xhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(-1*spd, damage, this, true), getX(), getY());
                     }
                     break;
@@ -381,6 +385,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(-1*spd, damage, this, false), getX(), getY());
                     }
                     break;
@@ -390,6 +395,7 @@ public class Player extends Entity
                     targets = (List<Damageable>)Yhitbox.getIntersectingActors(Damageable.class);
                     if(enhancedSwings)
                     {
+                        SoundManager.playSound("swordUltimateSound.mp3");
                         getWorld().addObject(new Slash(spd, damage, this, false), getX(), getY());
                     }
                     break;
@@ -561,6 +567,7 @@ public class Player extends Entity
             switch(weapon)
             {
                 case "staff":
+                    SoundManager.playSound("staffSound.mp3");
                     for (int i = 0; i < 15; i++) {
                         Bullet bullet = new Bullet(5, 10, this); // Create a new projectile
                         getWorld().addObject(bullet, getX(), getY()); // Add projectile to the world
@@ -824,14 +831,37 @@ public class Player extends Entity
 
     /**
      * Method that removes coins from player when they purchase from shop
+     * @param num   Number of coins to be removed.
      */
     public void removeCoin(int num){
         coin-= num;
         StatsUI.updateCoin(coin);
     }
-
+    /**
+     *  Represents player as a string using its stats.
+     */
     public String toString(){
         return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
+    }
+    
+    public boolean getMoving()
+    {
+        return moving;
+    }
+    
+    public boolean state()
+    {
+        return inAttack;
+    }
+    
+    public boolean isSwordUlt()
+    {
+        return enhancedSwings;
+    }
+    public void resetCooldown()
+    {
+        cooldownTimer = 0;
+        remainingCds = 0;
     }
 
 }

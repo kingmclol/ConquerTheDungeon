@@ -2,10 +2,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class Coin here.
+ * <p> Coins are drops that are used to purchase items in the shop
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * 
+ * @author Neelan Thurairajah 
+ * @version June 2024
  */
 public class Coin extends Drop
 {

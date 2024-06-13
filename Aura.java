@@ -8,7 +8,7 @@ public class Aura extends SuperSmoothMover {
     public Aura(Actor owner) {
         this.owner = owner;
         this.visible = false;
-        animate = Animation.createAnimation(new GreenfootImage("Aura.png"), 0, 1, 4, 205, 220, 0, 150);
+        animate = Animation.createAnimation(new GreenfootImage("Aura.png"), 0, 1, 4, 205, 220, 7, 150);
         setImage(animate.getFrame(0));
         updateVisibility();
     }

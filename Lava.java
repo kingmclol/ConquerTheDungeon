@@ -2,10 +2,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
 /**
- * Write a description of class Lava here.
+ * Lava repeatedly does damage to an entity when the entity is in contact with it
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Neelan Thurairajah
+ * @version June 2024
  */
 public class Lava extends Floor
 {
@@ -24,18 +24,18 @@ public class Lava extends Floor
         checkTouchTile();
     }
     protected void checkTouchTile(){
+        // Check if the lava tile is in contact with any collision box
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
                 lavaSound.play();
+                // damages entity
                 ((Entity) owner).damage(Utility.randomIntInRange(5, 15));
             }
         }
     }
-    protected void doEffect(Actor a){
-        ((Entity) a).damage(Utility.randomIntInRange(5, 15));
-    }
+
     public String getID(){
         return "lv";
     }
