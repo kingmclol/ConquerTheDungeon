@@ -35,8 +35,9 @@ public abstract class ShopItem extends SuperSmoothMover
         }
         if(canInteract){
             String key = Keyboard.getCurrentKey();
-            System.out.println(Mouse.hoveringOver(this));
+            // Check keyboard and mouse inputs
             if("e".equals(key) || (Greenfoot.mousePressed(null) && Mouse.hoveringOver(this))){
+                // add upgrade
                 if(addUpgrade())removeObject();
                 
             }
@@ -47,5 +48,9 @@ public abstract class ShopItem extends SuperSmoothMover
         itemInfo.removeObject();
         getWorld().removeObject(this);
     }
+    /**
+     * Applies the corresponding upgrade to the player if they have enough coins
+     * @return  Whether the player had enough coins and the upgrade was applied
+     */
     protected abstract boolean  addUpgrade();
 }
