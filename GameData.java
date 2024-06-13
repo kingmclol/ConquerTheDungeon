@@ -110,7 +110,6 @@ public class GameData
      * @return The player object
      */
     public static Player getPlayer() {
-        
         return player;
     }
     /**
@@ -119,5 +118,12 @@ public class GameData
      */
     public static int getLevel() {
         return level;
+    }
+    /**
+     * Deletes previous save file.
+     */
+    public static boolean deleteData() {
+        File file = new File(SAVE_FILE); 
+        return file.delete();
     }
 }

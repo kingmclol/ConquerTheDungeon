@@ -8,10 +8,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class AttackUpgrade extends ShopItem
 {
-    private static String[] info = {"- UPGRADE - ", "Gain +5 attack damage permanantly", "Cost: 5 coins"};
+    private static String[] info = {"- UPGRADE - ", "Gain +5 attack damage permanantly", "Cost: 10 coins"};
     private GreenfootImage img = new GreenfootImage("swordicon.png");
     private int tier;
-    private int price = 5;
+    private int price = 10;
     public AttackUpgrade(int tier){
         super(info);
         this.tier = tier;

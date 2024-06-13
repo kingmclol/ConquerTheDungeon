@@ -12,5 +12,7 @@ public class ShopRoom extends Room
     {    
         super(level, new Board(shopBuild));
         alert("SHOP", Color.WHITE, getHeight()-200);
+        GameData.exportData();
+        alert("Game Saved...", Color.GREEN);
     }
 }
