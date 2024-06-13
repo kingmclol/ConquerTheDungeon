@@ -36,9 +36,12 @@ public abstract class Enemy extends Entity {
     }
     
     public void act() {
-        super.act();
-        player = (Player)getClosestInRange(Player.class, 1000);
+        if(getWorld() != null){
+            player = (Player)getClosestInRange(Player.class, 1000);
+        }
+        
         manageCollision();
+        super.act();
     }
     
     /**
