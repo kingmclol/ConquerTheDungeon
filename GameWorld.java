@@ -96,7 +96,7 @@ public class GameWorld extends SuperWorld
      */
     public static void goToLevel(int level) {
         if (level == 0) Greenfoot.setWorld(new TutorialRoom());
-        else if (level % 5 == 0) Greenfoot.setWorld(new ShopRoom(level));
+        else if (level % 3 == 0) Greenfoot.setWorld(new ShopRoom(level)); // Every 3 levels is a shop.
         else Greenfoot.setWorld(new CombatRoom(level));
     }
     // /**
