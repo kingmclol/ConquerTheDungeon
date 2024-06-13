@@ -20,12 +20,16 @@ and probably, it would work. If I didn't make a typo there.
 
 Or, you can use the green button that says `<>Code` at the top-right and just take a zip file of the code and extract it somewhere.
 
-Anyway, once you've got the code, you can run Greenfoot and open the EcosystemSimulator folder from there, and you should be able to play now.
+Anyway, once you've got the code, you can run Greenfoot and open the SoulKnightsICS4U folder from there, and you should be able to play now.
 
 ## Introduction
-In this game, you play as a lucky person who is reincarnated into a world that is solely dedicated to fighting in an never-ending dungeon. Don't think about why you were placed specifically in this world, otherwise you'll get sniped by a nearby skeleton.
+In this game, you play as a lucky person who is reincarnated into a world that is solely dedicated to fighting in a never-ending dungeon. Don't think about why you were placed specifically in this world, otherwise you'll get sniped by a nearby skeleton.
 
 Descend lower and lower, clearing increasingly difficult rooms while getting slightly stronger along the way.
+
+Perhaps there is a way to escape this never-ending hell. No one knows, so all you can do is keep moving forward. ~~There is no escape.~~
+
+*"Why do I keep getting reincarnated here? What was my original life? I can't remember... Must keep going... Kill or be killed..."*
 
 How far can you get before you need to be reincarnated once again?
 
@@ -35,16 +39,18 @@ How far can you get before you need to be reincarnated once again?
 - `R` to switch weapon.
 - `SHIFT` to dash.
 - `Q` to use ultimate.
+- `E` to buy an item in a shop
+- `Mouse hover` over an item in a shop to see its info.
 
 ### Tips
 - Keep your HP above zero while making your enemies' HP zero.
 - Break barrels and use the environment to your advantage.
 - Don't instantly leave to the next level. Break all barrels and collect coins first.
-- Save scumming is very easy, as the save is never deleted unless you decide to do so.
+- Save scumming is very easy, as the save is never deleted unless you decide to do so. Use this to get better items in shops or to restart a bad run.
 
 ## Features
 - **Randomized rooms:** A pool of predetermined rooms to play in, picked randomly.
-- **Shop and upgrades:** Use coins obtained throughout the game to make yourself more powerful.
+- **Shop and upgrades:** Use coins obtained throughout the game to make yourself more powerful. Shops appear every 3 levels.
 - **Saving & loading:** Saves the game every time you are in a shop. Good for save scumming.
 - **Progressive difficulty:** Enemies and waves increase as you delve deeper.
 - **Multiple tile types:** Different interactions between Entities and tiles.
