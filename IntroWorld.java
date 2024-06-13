@@ -15,9 +15,9 @@ public class IntroWorld extends SuperWorld
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
-        "title1.jpg",
-        "title2.jpg",
-        "title3.jpg"
+        "landscape1.png",
+        "landscape2.png",
+        "landscape3.png"
     };
     private Picture currentImage;
     private Picture nextImage;
@@ -33,7 +33,7 @@ public class IntroWorld extends SuperWorld
         super();
         setPaintOrder(TextBox.class, Picture.class);
         promptBox = new BreathingTextBox("PRESS [L] TO START", 52, new Color(188, 138, 1), null, 120);
-        title = new Picture("titletext.png");
+        //title = new Picture("titletext.png");
         //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
         addObject(promptBox, getWidth()/2, getHeight()/2+300);
         
@@ -60,7 +60,7 @@ public class IntroWorld extends SuperWorld
         nextImage = new Picture(backgroundImages[nextIndex()]);
         nextImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
         nextImage.setTransparency(0); // hidden for now.
-        addObject(title, getWidth()/2, 80);
+        //addObject(title, getWidth()/2, 80);
         Greenfoot.setSpeed(50); // Control speed to 50.
         
         GameData.resetData();
