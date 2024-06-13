@@ -55,7 +55,6 @@ public class Slash extends Projectile
             }
             firstX = getX();
             firstY = getY();
-            System.out.println("init is:" + firstX + "," + firstY);
             initPosition = true;
         }
         if(getWorld() != null)
@@ -83,7 +82,6 @@ public class Slash extends Projectile
             removeTouching(Arrow.class);
         }
         double changeInPosition = Math.sqrt(Math.pow(this.getX() - firstX, 2) + Math.pow(this.getY() - firstY, 2));
-        System.out.println(changeInPosition);
         if(changeInPosition < 150)
         {
             if (a.size() == 0) {
