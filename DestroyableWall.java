@@ -13,6 +13,7 @@ public class DestroyableWall extends Destroyable
     private static GreenfootImage img = new GreenfootImage("destroyablewall.jpg");
     public DestroyableWall() {
         super(img, 30);
+        breakWallSound.setVolume(35);
     }
     public void act()
     {

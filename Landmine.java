@@ -19,7 +19,7 @@ public class Landmine extends Floor
     public Landmine() {
         super(img);  
         hiddenBox = new HiddenBox(40, 40, Box.SHOW_BOXES, this);
-        explosion.setVolume(50);
+        explosion.setVolume(40);
     }
     public void addedToWorld(World w) {
         w.addObject(hiddenBox, getX(), getY());

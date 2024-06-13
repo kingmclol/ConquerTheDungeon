@@ -13,7 +13,7 @@ public class Barrel extends Destroyable
     public static GreenfootImage img = new GreenfootImage("barrel.png");
     public Barrel() {
         super(img, 10);
-        barrelBreakSound.setVolume(50);
+        barrelBreakSound.setVolume(25);
     }
     public void onDestroy() {
         barrelBreakSound.play(); 

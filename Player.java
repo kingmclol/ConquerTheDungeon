@@ -44,7 +44,7 @@ public class Player extends Entity
     private int cooldownTimer = 0;
     private boolean lockStaff = false, enhancedSwings = false;
     private int hitCount = 0;
-    //Moving
+    //Animations:
     private Animation right,left,down,up,dying, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
@@ -842,6 +842,26 @@ public class Player extends Entity
      */
     public String toString(){
         return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
+    }
+    
+    public boolean getMoving()
+    {
+        return moving;
+    }
+    
+    public boolean state()
+    {
+        return inAttack;
+    }
+    
+    public boolean isSwordUlt()
+    {
+        return enhancedSwings;
+    }
+    public void resetCooldown()
+    {
+        cooldownTimer = 0;
+        remainingCds = 0;
     }
 
 }

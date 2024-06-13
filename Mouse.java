@@ -1,13 +1,13 @@
 import greenfoot.*;
 import java.util.List;
 /**
- * This class is only meant to make it easier to work with getting information related to the mouse events.
+ * <p>This class is only meant to make it easier to work with getting information related to the mouse events.</p>
  * 
- * To use this, you MUST set the world using Mouse.setWorld(World w) somewhere (preferably in the constructor
- * of your Worlds).
+ * <p>To use this, you MUST set the world using <code>Mouse.setWorld(World w)</code> somewhere (preferably in the constructor
+ * of your Worlds).</p>
  * 
- * This class will regularly return null similarly to how the Greenfoot provided methods work (e.g. no mouse detected so mouse is null)
- * so be sure to have proper null pointer handling lest you get the dreaded NullPointerException.
+ * <p>This class will regularly return null similarly to how the Greenfoot provided methods work (e.g. no mouse detected so mouse is null)
+ * so be sure to have proper null pointer handling lest you get the dreaded NullPointerException.</p>
  * 
  * @author Freeman Wang
  * @version 2024-06-12

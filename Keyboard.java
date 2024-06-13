@@ -5,6 +5,7 @@ public class Keyboard {
 
     public static void update() {
         currentKey = Greenfoot.getKey();
+        System.out.println(currentKey);
     }
 
     public static String getCurrentKey() {

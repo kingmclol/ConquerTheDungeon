@@ -1,8 +1,11 @@
 /**
- * Simple Timer that counts the number of acts that has elapsed since its creation, based on the acts that
- * The World executes.
+ * <p>Simple Timer that counts the number of acts that has elapsed since its creation, based on the acts that
+ * the World executes.</p>
  * 
- * In the World's Act method, include Timer.tick() for it to work.
+ * <p><strong>In the World's Act method, include <code>Timer.tick()</code> for it to work.</strong></p>
+ * 
+ * @author freeman Wang
+ * @version 2024-06-13
  */
 public class Timer
 {
