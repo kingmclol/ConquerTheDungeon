@@ -58,10 +58,8 @@ public class Goblin extends Enemy
         {
             deathAnimation();
         }
-        if(!death)
-        {
-           super.act(); 
-        }
+        super.act(); 
+        
     }
 
     public void findTarget(){

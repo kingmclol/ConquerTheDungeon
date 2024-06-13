@@ -66,7 +66,7 @@ public class Player extends Entity
 
     public Player() {
         super(100);
-        System.out.println(this);
+        
         critRate = 0.3;
         critDamage = 1.6;
 
@@ -114,6 +114,7 @@ public class Player extends Entity
         moving = false;
         
         if (cooldownTimer > 0) {
+            StatsUI.updateUlt(((double)cooldownTimer/ultimateCooldown)*100.0);
             cooldownTimer--; // Decrement cooldown timer for ult
         }
         /*
@@ -133,6 +134,11 @@ public class Player extends Entity
             if("r".equals(Keyboard.getCurrentKey()))
             {
                 switchWeapon();
+                StatsUI.switchUlt(getCurrentWeapon());
+                if(enhancedSwings){
+                    cooldownTimer = ultimateCooldown;
+                    enhancedSwings = false;
+                }
             }
         }
         if(this.getCurrentWeapon().equals("staff"))
@@ -194,7 +200,7 @@ public class Player extends Entity
         if(timeForStaff <= 0 && !inAttack)
         {
             switchWeapon(); // automatically switch
-
+            StatsUI.switchUlt(getCurrentWeapon());
             remainingCds = 600; // restart Cooldown once staff is expired.
             timeForStaff = 0;
             //timeForStaff = 600; // reset Timer
@@ -479,8 +485,11 @@ public class Player extends Entity
                     cooldownTimer = ultimateCooldown;
                     break;
                 case "sword":
-                    enhancedSwings = true;
-                    hitCount = 0;
+                    if(!enhancedSwings){
+                        enhancedSwings = true;
+                        hitCount = 0;
+                    }
+
                     break;
             }
         }

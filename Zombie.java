@@ -41,10 +41,7 @@ public class Zombie extends Enemy
         {
             attackAnimation();
         }
-        if(this.getHp() <= 0) // trigger death animation.
-        {
-            deathAnimation();
-        }
+
         super.act();
     }
 
@@ -105,6 +102,7 @@ public class Zombie extends Enemy
             spd = 0;
             death = true;
         }
+        
         if(acts % 10 == 0)
         {
             frame = (frame+1)%(dying.getAnimationLength());
@@ -114,6 +112,8 @@ public class Zombie extends Enemy
         {
             die();
         }
+        
+
     }
 
     public void attackAnimation()
