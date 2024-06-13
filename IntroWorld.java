@@ -34,7 +34,10 @@ public class IntroWorld extends SuperWorld
     public IntroWorld()
     {
         super();
-
+        
+        introWorldMusic = new GreenfootSound("intromusic.mp3");
+        introWorldMusic.setVolume(50); 
+        
         setPaintOrder( TextBox.class, Button.class, Picture.class);
         
         title = new TextBox("Conquer The Dungeon", 86, Color.BLACK, null, 2, 0);
@@ -86,6 +89,12 @@ public class IntroWorld extends SuperWorld
         this(); // Run the real constructor.
         introWorldMusic.playLoop(); // Run this one (1) line of code.
     }
+    public void started() {
+        introWorldMusic.playLoop();
+    }
+    public void stopped() {
+        introWorldMusic.pause(); 
+    }
     public void act() {
         super.act();
 
@@ -95,7 +104,7 @@ public class IntroWorld extends SuperWorld
         }
         String key = Keyboard.getCurrentKey();
         if ("l".equals(key)) { // once L is pressed, move to the next world.
-            //introWorldMusic.stop(); 
+            introWorldMusic.stop(); 
             Greenfoot.setWorld(new StoryWorld(loadingFromSave));
         }
         else if ("i".equals(key)) { // Import data,
@@ -135,6 +144,7 @@ public class IntroWorld extends SuperWorld
      * Starts the game
      */
     private void startGame(){
+        introWorldMusic.stop();
         Greenfoot.setWorld(new StoryWorld(loadingFromSave));
     }
     /**
