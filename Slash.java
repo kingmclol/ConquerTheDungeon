@@ -12,7 +12,6 @@ public class Slash extends Projectile
 {
     //Instance Variables: 
     private GreenfootImage image = new GreenfootImage("slashing.png");
-    private int angleCorrection = 15;
     private int firstX, firstY;
     private boolean movingHorizontal, initPosition = false;
     /**
@@ -29,21 +28,18 @@ public class Slash extends Projectile
 
     public void act()
     {
-        // Add your action code here.
+        //Initialize Spawn positions, image orientation
         if(!initPosition)
         {
             if(movingHorizontal)
             {
                 if(speed > 0)
                 {
-                    //image.mirrorHorizontally();
                     setImage(image);
-                    //setRotation(angleCorrection);
                 }
                 else
                 {
                     image.mirrorHorizontally();
-                    //setRotation(180-angleCorrection); 
                 }
             }
             else
@@ -75,6 +71,11 @@ public class Slash extends Projectile
             doDamage();
         }
     }
+    @Override
+    /**
+     * Method responsible for this ranged slash to deal multi-target damage up to a set amount of distance ahead of the 
+     * striking direction from the player.
+     */
 
     public void doDamage() {
         List<Damageable> a = (List<Damageable>)getIntersectingObjects(Damageable.class);
@@ -100,11 +101,10 @@ public class Slash extends Projectile
                 }
             }
             hasHit = true; // Set the flag to true once damage is dealt
-            //getWorld().removeObject(this); // Remove the projectile from the world
         }
         else
         {
-            getWorld().removeObject(this);
+            getWorld().removeObject(this); // Remove Projectile.
         }
 
     }
