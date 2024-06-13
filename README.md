@@ -1,7 +1,7 @@
 # Conquer the Dungeon
 This is a game made using the Greenfoot engine for ICS4U, developed by
 * Freeman Wang *(tilemap system, pathfinding, room design)*
-* Tony Lin *(animaion, art)*
+* Tony Lin *(animation, art)*
 * Osmond Lin *(enemy AI)*
 * Ivan Xie *(Music & sound)*
 * Neelan Thurairajah *(UI & tile behaviour)*
@@ -58,7 +58,12 @@ This game was created using some existing assets sourced from others.
 - SuperSmoothMover, SuperTextBox, SuperStatBar written by Jordan Cohen
 
 ### Art & Animation
-- See the file `filenamehere.txt` for full LPC spritsheet credits.
+- See the file `filenamehere.txt` for full LPC spritesheet credits.
+- [Enhanced Sword Slash Effect Art](https://spikerman.itch.io/sword-slashes)
+- [Goblin Animation/Graphics](https://opengameart.org/content/lpc-goblin)
+- [Heal Animation/Graphics by Serbhii](https://stock.adobe.com/images/heart-pixel-art-animation-isolated-vector-illustration-of-mobile-or-pc-game-sprites-design-for-stickers-logo-mobile-app-game-assets-8-bit-sprite-sheet-contains-flip-appear-disappear/433551947)
+- [Regeneration Effect(Yellow)from Picking up Heals, and Power up Drops Graphics (Purple)](https://www.vecteezy.com/vector-art/25442353-8-bit-sparkling-sparkle-star-pixel-art)
+- [Coins Animation/Graphics by Nastya Prokopchuk](https://www.istockphoto.com/vector/set-of-8-bit-pixel-graphics-icons-isolated-vector-illustration-game-art-coins-of-gm1787801854-547490383)
 
 ### Sounds & Music
 - Lava sound: https://www.youtube.com/watch?v=_pvn1O0H1ok 
