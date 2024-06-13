@@ -39,7 +39,7 @@ How far can you get before you need to be reincarnated once again?
 - `R` to switch weapon.
 - `SHIFT` to dash.
 - `Q` to use ultimate.
-- `E` to buy an item in a shop
+- `E` or `Left click` to buy an item in a shop
 - `Mouse hover` over an item in a shop to see its info.
 
 ### Tips
@@ -65,6 +65,15 @@ This game was created using some existing assets sourced from others.
 
 ### Art & Animation
 - See the `Credits` directory for attribution for LPC spritesheets.
+- [Knight Title Background](https://www.wallpaperflare.com/dungeons-and-dragons-knight-dungeon-and-fighter-minimalism-wallpaper-yvcvv)
+- [Dungeon Title Background](https://dmsworkshop.com/2019/05/)
+- [Dungeon Door Title Background](https://www.artstation.com/artwork/VdErn4)
+- [Speed Stat Icon](https://minecraft.fandom.com/wiki/Speed?file=Speed_JE3_BE2.png)
+- [Attack Stat Icon](https://upload.wikimedia.org/wikipedia/commons/d/df/Sword_Pixel_art_-_Radin.png)
+- [Health Stat Icon](https://www.deviantart.com/aesthetic-peach-milk/art/Textures-pixel-heart-1-2000x-742492676)
+- [Explosion Animation by JROB774](https://opengameart.org/content/pixel-explosion-12-frames)
+- [Button PNG Designed By Thi Minh](https://pngtree.com/freepng/buttons-games-button-illustration_6853184.html?sol=downref&id=bef)
+- [Title Text](https://www.textstudio.com/logo/word-art-text-graphic-generator-928)
 - [Enhanced Sword Slash Effect Art](https://spikerman.itch.io/sword-slashes)
 - [Goblin Animation/Graphics](https://opengameart.org/content/lpc-goblin)
 - [Heal Animation/Graphics by Serbhii](https://stock.adobe.com/images/heart-pixel-art-animation-isolated-vector-illustration-of-mobile-or-pc-game-sprites-design-for-stickers-logo-mobile-app-game-assets-8-bit-sprite-sheet-contains-flip-appear-disappear/433551947)
