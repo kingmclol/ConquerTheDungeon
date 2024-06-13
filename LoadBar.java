@@ -20,32 +20,40 @@ public class LoadBar extends UI
     private GreenfootImage img;
     private Color c1;
     private Color c2;
+    private boolean cd = false; 
     private boolean border = false;
-    public LoadBar(int width, int height, Color c1, boolean interpolation){
+    private int opacity;
+    public LoadBar(int width, int height, Color c1, int opacity, boolean interpolation){
         this.c1 = c1;
         this.c2 = c1;
         this.width = width;
         this.height = height;
         this.interpolation = interpolation;
         this.border = true;
+        this.opacity = opacity;
         img = new GreenfootImage(width, height);
+        img.setTransparency(opacity);
         img.setColor(c1);
         img.fill();
     
         setImage(img);
     }
-    public LoadBar(int width, int height, Color c1, Color c2, boolean interpolation){
+    public LoadBar(int width, int height, Color c1, Color c2, int opacity, boolean interpolation){
         this.width = width;
         this.height = height;
         this.depletionTime = depletionTime;
         this.c1 = c1;
         this.c2 = c2;
+        this.interpolation = interpolation;
+        this.opacity = opacity;
         img = new GreenfootImage(width, height);
+        img.setTransparency(opacity);
         img.setColor(c1);
         img.fill();
         
         setImage(img);
     }
+
     public void act()
     {
   
@@ -98,14 +106,16 @@ public class LoadBar extends UI
         
         int barWidth = (int) ((double) width * (barPercent/ 100.0));
         img.setColor(c1);
-        img.fillRect(0, 0, barWidth, 50);
+        img.fillRect(0, 0, barWidth, height);
          
         if(barPercent == 100.0){
             img.setColor(c2);
-            img.fillRect(0, 0, barWidth, 50);
+            
+            img.fillRect(0, 0, barWidth, height);
         }
         if(border){
             img.setColor (new Color(188, 138, 1));
+            
             for (int i = 0; i < 2; i++){
                 img.drawRect (i, i, width - 1 - (i * 2), height - 1 - (i * 2));
             }  

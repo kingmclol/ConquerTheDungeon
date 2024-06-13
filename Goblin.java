@@ -63,10 +63,8 @@ public class Goblin extends Enemy
             goblinDeathSound.play();
             deathAnimation();
         }
-        if(!death)
-        {
-           super.act(); 
-        }
+        super.act(); 
+        
     }
 
     /**
