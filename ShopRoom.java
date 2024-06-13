@@ -14,5 +14,6 @@ public class ShopRoom extends Room
         alert("SHOP", Color.WHITE, getHeight()-200);
         GameData.exportData();
         alert("Game Saved...", Color.GREEN);
+        alert("Press E to buy an item. Hover to see cost.", Color.WHITE, getHeight()-160);
     }
 }

@@ -66,7 +66,6 @@ public class CombatRoom extends Room
      */
     private List<List<String>> generateSpawnWaves(int level) {
         List<List<String>> temp = new ArrayList<List<String>>();
-        
         // Caclculate the number of waves I want to spawn in.
         int numWaves = level/5 + 1;
         // And the max and min levels.

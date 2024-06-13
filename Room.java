@@ -87,7 +87,6 @@ public abstract class Room extends GameWorld
             return new Board(fallbackBuildString);
         }
         String buildString = roomTemplates.get(Greenfoot.getRandomNumber(roomTemplates.size()));
-        if (GameWorld.SHOW_LOGS) System.out.println(buildString);
         Board b = new Board(buildString);
         return b;
     }

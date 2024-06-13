@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public abstract class Tile extends SuperActor
 {
-    private static final boolean DRAW_BORDERS = true;
+    private static final boolean DRAW_BORDERS = false;
     
     protected boolean walkable;
     private static HashMap<String, Class> tileDatabase;
