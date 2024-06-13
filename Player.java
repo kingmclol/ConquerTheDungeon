@@ -25,34 +25,33 @@ import java.util.List;
  */
 public class Player extends Entity
 {    
+    //Player Stats
     private boolean isPoweredUp = false;
     private long powerUpStartTime = 0;
     private int normalSpeed;
     private int powerUpSpeed;
-    
     private int attackDmg = 20;
     private int coin = 0;
     private double speed;
     private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
-    private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
-    private HiddenBox Xhitbox, Yhitbox;
+
+    private HiddenBox Xhitbox, Yhitbox; // HitBoxes
 
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
+    private int ultimateCooldown = 300;
+    private int cooldownTimer = 0;
     private boolean lockStaff = false, enhancedSwings = false;
     private int hitCount = 0;
     //Moving
-    private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
+    private Animation right,left,down,up,dying, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
     private boolean inAttack = false, mouseClick, moving = false;
     private static String[] weaponList = new String[2];
 
     private Aura aura;
-
-    private int ultimateCooldown = 300;
-    private int cooldownTimer = 0;
 
     private boolean isDashing = false;
     private long dashCooldownTime = System.currentTimeMillis();
@@ -81,6 +80,7 @@ public class Player extends Entity
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
         right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 10);
+        dying = Animation.createAnimation(new GreenfootImage("Player.png"), 20, 1, 10, 64, 64);
 
         //Initialize weapons
         weaponList[0] = "sword";
@@ -88,7 +88,7 @@ public class Player extends Entity
 
         Xhitbox = new HiddenBox(40, 60);
         Yhitbox = new HiddenBox(62, 40);
-        
+
         //weapon:
         for(int i = 0; i<swingingUp.length; i++)
         {
@@ -104,7 +104,7 @@ public class Player extends Entity
         //Start at frame 0
         setImage(up.getFrame(0));
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
-        
+
         SoundManager.addSound(50, "swordSound.mp3", 50);
         SoundManager.addSound(50, "staffSound.mp3", 40); 
     }
@@ -114,87 +114,87 @@ public class Player extends Entity
         y = getY();
 
         moving = false;
-
-        if (cooldownTimer > 0) {
-            cooldownTimer--; // Decrement cooldown timer for ult
-        }
-
-        if (cooldownTimer <= 0) {// Can use ultimate once cooldown is over
-            useUltimate();
-        }
-
-        if(remainingCds > 0) // Cooldown for staff weapon
+        if(!death)
         {
-            remainingCds--;
-        }
-        else
-        {
-            if("r".equals(Keyboard.getCurrentKey()))
-            {
-                switchWeapon();
+            if (cooldownTimer > 0) {
+                cooldownTimer--; // Decrement cooldown timer for ult
             }
-        }
-        if(this.getCurrentWeapon().equals("staff"))
-        {
-            //If player is currently using staff, decrease the time he is allowed to use it for
-            timeForStaff--;
-            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
-            // continue timer, up to 10 seconds per time whether you end early or not.
-        }
-        else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
-        {
-            timeForStaff = timeForStaff+(1.0); 
-            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
-            // for every second spent in sword, regenerate 1/6th of the timer second for staff.
-        }
-        //Mouse click == false prevents spam clicking, which keeps resetting the animation.
-        if(Greenfoot.mousePressed(null) && mouseClick == false)
-        {
-            inAttack = true;
-            mouseClick = true;
-            frame = 0;
-            //set frame 0 when attacking.
-        }
-        if(flung.equals("none")){
-            if(!inAttack)
+            if (cooldownTimer <= 0) {// Can use ultimate once cooldown is over
+                useUltimate();
+            }
+            if(remainingCds > 0) // Cooldown for staff weapon
             {
-                movePlayer();
+                remainingCds--;
             }
             else
             {
-                attackAnimation();
+                if("r".equals(Keyboard.getCurrentKey()))
+                {
+                    switchWeapon();
+                }
+            }
+            if(this.getCurrentWeapon().equals("staff"))
+            {
+                //If player is currently using staff, decrease the time he is allowed to use it for
+                timeForStaff--;
+                StatsUI.updateCd1((timeForStaff/600.0)*100.0);
+                // continue timer, up to 10 seconds per time whether you end early or not.
+            }
+            else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
+            {
+                timeForStaff = timeForStaff+(1.0); 
+                StatsUI.updateCd1((timeForStaff/600.0)*100.0);
+                // for every second spent in sword, regenerate 1/6th of the timer second for staff.
+            }
+            //Mouse click == false prevents spam clicking, which keeps resetting the animation.
+            if(Greenfoot.mousePressed(null) && mouseClick == false)
+            {
+                inAttack = true;
+                mouseClick = true;
+                frame = 0;
+                //set frame 0 when attacking.
+            }
+            if(flung.equals("none")){
+                if(!inAttack)
+                {
+                    movePlayer();
+                }
+                else
+                {
+                    attackAnimation();
 
-                if(Math.random() < critRate){ //Chance of player to crit
-                    if(this.getCurrentWeapon().equals("staff"))
-                    {
-                        handleShooting((int)((double)attackDmg * critDamage));
-                    }
-                    else
-                    {
-                        attack((int)((double)attackDmg * critDamage));
-                    }
-                }else{
-                    if(this.getCurrentWeapon().equals("staff"))
-                    {
-                        handleShooting(attackDmg);
-                    }
-                    else
-                    {
-                        attack(attackDmg);
+                    if(Math.random() < critRate){ //Chance of player to crit
+                        if(this.getCurrentWeapon().equals("staff"))
+                        {
+                            handleShooting((int)((double)attackDmg * critDamage));
+                        }
+                        else
+                        {
+                            attack((int)((double)attackDmg * critDamage));
+                        }
+                    }else{
+                        if(this.getCurrentWeapon().equals("staff"))
+                        {
+                            handleShooting(attackDmg);
+                        }
+                        else
+                        {
+                            attack(attackDmg);
+                        }
                     }
                 }
             }
-        }
-        checkPowerUpStatus();
+            checkPowerUpStatus();
 
-        // if still in staff and not middle of attack animation,
-        if(timeForStaff <= 0 && !inAttack)
-        {
-            switchWeapon(); // automatically switch
+            // if still in staff and not middle of attack animation,
+            if(timeForStaff <= 0 && !inAttack)
+            {
+                switchWeapon(); // automatically switch
 
-            remainingCds = 600; // restart Cooldown once staff is expired.
-            timeForStaff = 0;
-            //timeForStaff = 600; // reset Timer
+                remainingCds = 600; // restart Cooldown once staff is expired.
+                timeForStaff = 0;
+                //timeForStaff = 600; // reset Timer
+            }
         }
         acts++;
         super.act();
@@ -443,9 +443,24 @@ public class Player extends Entity
         aura.makeVisible();
     }
 
+    /**
+     * Method that manages animation when the player dies, or when the player's hp reaches 0.
+     */
+
     public void deathAnimation()
     {
-        die();
+        if(!death)
+        {
+            frame = 0;
+            speed = 0;
+            death = true;
+        }
+        frame = (frame+1)%(dying.getAnimationLength());
+        setImage(dying.getFrame(frame));
+        if(frame == (dying.getAnimationLength()-1))
+        {
+            die();
+        }
     }
 
     /**
