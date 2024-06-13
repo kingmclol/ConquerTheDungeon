@@ -397,7 +397,7 @@ public class Player extends Entity
             if(enhancedSwings)
             {
                 hitCount++;
-                if(hitCount >= 15)
+                if(hitCount >= 7)
                 {
                     hitCount = 0;
                     enhancedSwings = false;
