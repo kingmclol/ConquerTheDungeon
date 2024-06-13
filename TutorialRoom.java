@@ -19,6 +19,6 @@ public class TutorialRoom extends Room
     }
     public void act()
     {
-        
+        super.act();
     }
 }
