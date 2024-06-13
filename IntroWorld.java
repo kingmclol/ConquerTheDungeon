@@ -1,8 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * ==================== TITLE HERE ====================
- * The IntroWorld is the first World that the player sees. It's only use is to look cool before the Player goes to the next World.
+ * <p>==================== Conquer the Dungeon ====================
+ * <p>The IntroWorld is the first World that the player sees. It's only use is to look cool before the Player goes to the next World.
+ * 
+ * <p><strong>For the block comment, go to <code>README.md</code>.</strong>
  * 
  * @author Freeman Wang
  * @version 2024-04-20
@@ -11,7 +13,9 @@ public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
     BreathingTextBox promptBox;
+
     TextBox title;
+
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
@@ -24,14 +28,13 @@ public class IntroWorld extends SuperWorld
     private Picture nextImage;
     private int index;
     private boolean loadingFromSave;
-    //private Vector titleAnchor, promptAnchor, worldCenter;
-    //private static final double DELTA_FACTOR = 0.1; // Scrapped, for making textboxs move with cursor.
     /**
      * Create an intro world where the music <strong>will not</strong> start automatically
      */
     public IntroWorld()
     {
         super();
+
         setPaintOrder( TextBox.class, Button.class, Picture.class);
         promptBox = new BreathingTextBox("PRESS [L] TO START", 52, new Color(188, 138, 1), null, 120);
         //title = new Picture("titletext.png");
@@ -46,6 +49,7 @@ public class IntroWorld extends SuperWorld
         buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
         addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, new Color(188, 138, 1), null, 60), getWidth()/2, 300);
         
+
         
         // introWorldMusic = new GreenfootSound("Introworld.mp3");
         // introWorldMusic.setVolume(30);
@@ -53,7 +57,6 @@ public class IntroWorld extends SuperWorld
         actCount = 0;
         index = 0;
         loadingFromSave = false;
-        //worldCenter = new Vector(getWidth()/2, getHeight()/2);
         
         currentImage = new Picture(backgroundImages[index]);
         currentImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
@@ -87,11 +90,7 @@ public class IntroWorld extends SuperWorld
     }
     public void act() {
         super.act();
-        // parallax effect for text boxes, unused.
-        // if (getMousePos() != null) { // if the mouse is null, do not update their positions.
-            // promptBox.setLocation(promptAnchor.add(getMouseDelta().scale(DELTA_FACTOR)));
-            // title.setLocation(titleAnchor.add(getMouseDelta().scale(DELTA_FACTOR)));
-        // }
+
         if (++actCount >= 600) { // every 10 seconds, change background image.
             switchBackgroundImage();
             actCount = 0;
@@ -99,15 +98,24 @@ public class IntroWorld extends SuperWorld
         String key = Keyboard.getCurrentKey();
         if ("l".equals(key)) { // once L is pressed, move to the next world.
             //introWorldMusic.stop(); 
-            Greenfoot.setWorld(new StoryWorld());
+            Greenfoot.setWorld(new StoryWorld(loadingFromSave));
         }
-        else if ("i".equals(key)) {
+        else if ("i".equals(key)) { // Import data,
             if (GameData.importData()) {
                 alert("Loaded from save...", new Color(40, 230, 70), getHeight()/2);
                 loadingFromSave = true;
-            } else {
+            } else { // not successful
                 alert("Cannot load save data..", new Color(230, 70, 70), getHeight()/2);
             }
+        }
+        else if ("p".equals(key)) {
+            if (GameData.deleteData()) { // delete the save file.
+                alert("Deleted previous save.", new Color(230, 70, 70), getHeight()/2+100);
+            }
+            else { // Could not delete (most likely already deleted)
+                alert("Already deleted.", new Color(230, 70, 70), getHeight()/2+100);
+            }
+            loadingFromSave = false; // reset this flag
         }
     }
     /**
@@ -116,9 +124,6 @@ public class IntroWorld extends SuperWorld
     private void switchBackgroundImage() {
         currentImage.fadeOut(1); // make the current image begin to disappear.
         addObject(nextImage,getWidth()/2, getHeight()/2); // add the next image.
-        removeObject(title);
-        
-        addObject(title, getWidth()/2, 80);
         nextImage.fadeIn(1);
         // update reference of current image to the next image, as the current image will remove itself fro the world
         // by itself, so need to keep it anymore.
@@ -135,7 +140,7 @@ public class IntroWorld extends SuperWorld
         return index;
     }
     private void startGame(){
-        Greenfoot.setWorld(new StoryWorld());
+        Greenfoot.setWorld(new StoryWorld(loadingFromSave));
     }
     private void loadGame(){
         if (GameData.importData()) {
@@ -151,15 +156,5 @@ public class IntroWorld extends SuperWorld
     // }
     // public void stopped() {
         // introWorldMusic.pause(); 
-    // }
-
-    // /**
-     // * Returns a vector pointing from the world center to the mouse position. Returns a new vector of 
-     // * zero magnitude if mouse is null.
-     // */
-    // private Vector getMouseDelta() {
-        // Vector mousePos = getMousePos();
-        // if (mousePos == null) return new Vector(0,0); // no mouse, return zero magnitude vector
-        // return worldCenter.distanceFrom(getMousePos()); // return vector pointing from world center to mouse.
     // }
 }

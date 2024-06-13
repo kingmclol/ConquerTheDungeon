@@ -409,7 +409,7 @@ public class Player extends Entity
             if(enhancedSwings)
             {
                 hitCount++;
-                if(hitCount >= 15)
+                if(hitCount >= 7)
                 {
                     hitCount = 0;
                     enhancedSwings = false;
@@ -473,6 +473,7 @@ public class Player extends Entity
         {
             die();
         }
+        if(this.getWorld() == null) Greenfoot.setWorld(new EndScreenWorld());
     }
 
     /**
