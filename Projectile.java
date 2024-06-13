@@ -24,6 +24,8 @@ public abstract class Projectile extends SuperSmoothMover {
     protected int damage;
     protected Actor owner;
     
+    protected boolean hasHit = false; // Flag to track if the projectile has already hit something
+
     /**
      * Constructor that all projectiles will inherit and add upon
      * 
@@ -31,8 +33,6 @@ public abstract class Projectile extends SuperSmoothMover {
      * @param dmg    The amount of damage done by the projectile
      * @param own    The owner of this projectile, or the entity who shot it
      */
-    protected boolean hasHit = false; // Flag to track if the projectile has already hit something
-
     public Projectile(int spd, int dmg, Actor own) {
         speed = spd;
         damage = dmg;

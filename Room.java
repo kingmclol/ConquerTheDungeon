@@ -17,6 +17,13 @@ import java.util.List;
  */
 public abstract class Room extends GameWorld
 {
+
+    /**
+     * Constructor for objects of class Room.
+     * 
+     */
+    private GreenfootSound dungeonSound = new GreenfootSound("dungeonSound.mp3");
+    
     private static ArrayList<String> roomTemplates;
     protected int currentLevel;
     protected Timer timer;
@@ -37,8 +44,16 @@ public abstract class Room extends GameWorld
         board.addEntity(GameData.getPlayer(), board.getRandomSpawnableCell());
         alert("LEVEL " + currentLevel, Color.WHITE, getHeight()-100);
         addBorderBoxes();
+        
+        dungeonSound.setVolume(50);
+        dungeonSound.playLoop();
     }
-
+    public void started() {
+        dungeonSound.playLoop();
+    }
+    public void stopped() {
+        dungeonSound.pause();
+    }
     public void act() {
         super.act();
     }

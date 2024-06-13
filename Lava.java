@@ -13,6 +13,7 @@ public class Lava extends Floor
      * Act - do whatever the Lava wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    private GreenfootSound lavaSound = new GreenfootSound("lavaSound.mp3");
     public static GreenfootImage img = new GreenfootImage("lava.jpg");
     public Lava() {
         super(img);
@@ -27,6 +28,7 @@ public class Lava extends Floor
         for(Box box : boxes){
             Actor owner = box.getOwner();
             if(owner instanceof Entity){
+                lavaSound.play();
                 ((Entity) owner).damage(Utility.randomIntInRange(5, 15));
             }
         }

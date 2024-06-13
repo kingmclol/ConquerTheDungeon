@@ -20,40 +20,38 @@ import java.util.List;
  * 
  * @author Osmond Lin
  * @author Tony Lin
+ * @author Neelan Thurairajah
  * @version 2024-06-12
  */
 public class Player extends Entity
-{
+{    
+    //Player Stats
     private boolean isPoweredUp = false;
     private long powerUpStartTime = 0;
     private int normalSpeed;
     private int powerUpSpeed;
-    private int normalShootingInterval;
-    private int powerUpShootingInterval;
-    private int shootingTimer;
     private int attackDmg = 20;
     private int coin = 0;
     private double speed;
     private int xOffset, yOffset, atkSpd = 10, frame = 0, acts = 0, index = 0;
-    private List<Enemy> slashableEnemies; //IMPLEMENT COLLISION BOX
-    private HiddenBox Xhitbox, Yhitbox;
+
+    private HiddenBox Xhitbox, Yhitbox; // HitBoxes
 
     private static int x, y; // location of the Player.
     //Cooldowns, durations:
     private double timeForStaff = 600.0, remainingCds = 0;
+    private int ultimateCooldown = 300;
+    private int cooldownTimer = 0;
     private boolean lockStaff = false, enhancedSwings = false;
     private int hitCount = 0;
     //Moving
-    private Animation right,left,down,up, staffUp, staffDown, staffLeft, staffRight;
+    private Animation right,left,down,up,dying, staffUp, staffDown, staffLeft, staffRight;
     private GreenfootImage[] swingingUp = new GreenfootImage[6],swingingDown = new GreenfootImage[6],swingingLeft = new GreenfootImage[6],swingingRight = new GreenfootImage[6];
     private static String facing = "right",weapon = "sword";
     private boolean inAttack = false, mouseClick, moving = false;
     private static String[] weaponList = new String[2];
 
     private Aura aura;
-
-    private int ultimateCooldown = 300;
-    private int cooldownTimer = 0;
 
     private boolean isDashing = false;
     private long dashCooldownTime = System.currentTimeMillis();
@@ -64,6 +62,9 @@ public class Player extends Entity
     private double critRate;
     private double critDamage;
 
+    /**
+     * Player constructor that sets the initial stats of the player and manages the initial animation frames
+     */
     public Player() {
         super(100);
         
@@ -72,9 +73,6 @@ public class Player extends Entity
 
         normalSpeed = 4;
         powerUpSpeed = normalSpeed + (int)(normalSpeed * 0.3);
-        normalShootingInterval = 25;
-        powerUpShootingInterval = 10;
-        shootingTimer = 30;
 
         hpBar = new SuperStatBar(hp, hp, this, 50, 8, -37, Color.GREEN, Color.BLACK, false, Color.YELLOW, 1);
         //Animation spritesheet cutter using Mr Cohen's animation class: 
@@ -82,6 +80,7 @@ public class Player extends Entity
         left = Animation.createAnimation(new GreenfootImage("Player.png"), 9, 1, 9, 64, 64);
         down = Animation.createAnimation(new GreenfootImage("Player.png"), 10, 1, 9, 64, 64);
         right = Animation.createAnimation(new GreenfootImage("Player.png"), 11, 1, 9, 64, 64, 10);
+        dying = Animation.createAnimation(new GreenfootImage("Player.png"), 20, 1, 10, 64, 64);
 
         //Initialize weapons
         weaponList[0] = "sword";
@@ -105,120 +104,128 @@ public class Player extends Entity
         //Start at frame 0
         setImage(up.getFrame(0));
         collisionBox = new CollisionBox(30, 20, Box.SHOW_BOXES, this, 0, 20); // THIS NEEDS TO BE MOVED TO ENTITY. FOR TESTING ONLY RN
+
+        SoundManager.addSound(50, "swordSound.mp3", 50);
+        SoundManager.addSound(50, "staffSound.mp3", 40); 
     }
 
     public void act() {
-        
         x = getX();
         y = getY();
         moving = false;
         
-        if (cooldownTimer > 0) {
-            StatsUI.updateUlt(((double)cooldownTimer/ultimateCooldown)*100.0);
-            cooldownTimer--; // Decrement cooldown timer for ult
-        }
-        /*
-        if (weapon.equals("staff") && cooldownTimer <= 0) {
-            useUltimate();
-        }*/
-        if (cooldownTimer <= 0) {
-            useUltimate();
-        }
 
-        if(remainingCds > 0) // 1 minute
-        {
-            remainingCds--;
-        }
-        else
-        {
-            if("r".equals(Keyboard.getCurrentKey()))
-            {
-                switchWeapon();
-                StatsUI.switchUlt(getCurrentWeapon());
-                if(enhancedSwings){
-                    cooldownTimer = ultimateCooldown;
-                    enhancedSwings = false;
-                }
+
+        moving = false;
+        if(!death){
+            if (cooldownTimer > 0) {
+                StatsUI.updateUlt(((double)cooldownTimer/ultimateCooldown)*100.0);
+                cooldownTimer--; // Decrement cooldown timer for ult
+                
             }
-        }
-        if(this.getCurrentWeapon().equals("staff"))
-        {
-            timeForStaff--;
-            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
-            // continue timer, up to 10 seconds per time whether you end early or not.
-        }
-        else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
-        {
-            timeForStaff = timeForStaff+(1.0); 
-            StatsUI.updateCd1((timeForStaff/600.0)*100.0);
-            // for every second spent in sword, regenerate 1/6th of the timer second for staff.
-        }
-        //Mouse click == false prevents spam clicking, which keeps resetting the animation.
-        if(Greenfoot.mousePressed(null) && mouseClick == false)
-        {
-            inAttack = true;
-            mouseClick = true;
-            frame = 0;
-            //set frame 0 when attacking.
-        }
-        if(flung.equals("none")){
-            if(!inAttack)
+            if (cooldownTimer <= 0) {// Can use ultimate once cooldown is over
+                useUltimate();
+            }
+            if(remainingCds > 0) // Cooldown for staff weapon
             {
-                movePlayer();
+                remainingCds--;
             }
             else
             {
-                attackAnimation();
-                if(Math.random() < critRate){
-
-
-                    if(this.getCurrentWeapon().equals("staff"))
-                    {
-                        handleShooting((int)((double)attackDmg * critDamage));
-                    }
-                    else
-                    {
-                        attack((int)((double)attackDmg * critDamage));
-                    }
-                }else{
-                    if(this.getCurrentWeapon().equals("staff"))
-                    {
-                        handleShooting(attackDmg);
-                    }
-                    else
-                    {
-                        attack(attackDmg);
+                if("r".equals(Keyboard.getCurrentKey()))
+                {
+                    switchWeapon();
+                    StatsUI.switchUlt(getCurrentWeapon());
+                    if(enhancedSwings){
+                        cooldownTimer = ultimateCooldown;
+                        enhancedSwings = false;
                     }
                 }
             }
-        }
+            
+            if(this.getCurrentWeapon().equals("staff"))
+            {
+                //If player is currently using staff, decrease the time he is allowed to use it for
+                timeForStaff--;
+                StatsUI.updateCd1((timeForStaff/600.0)*100.0);
+                // continue timer, up to 10 seconds per time whether you end early or not.
+            }
+            else if(timeForStaff < 600 && this.getCurrentWeapon().equals("sword"))
+            {
+                timeForStaff = timeForStaff+(1.0); 
+                StatsUI.updateCd1((timeForStaff/600.0)*100.0);
+                // for every second spent in sword, regenerate 1/6th of the timer second for staff.
+            }
+            //Mouse click == false prevents spam clicking, which keeps resetting the animation.
+            if(Greenfoot.mousePressed(null) && mouseClick == false)
+            {
+                inAttack = true;
+                mouseClick = true;
+                frame = 0;
+                //set frame 0 when attacking.
+            }
+            if(flung.equals("none")){
+                if(!inAttack)
+                {
+                    movePlayer();
+                }
+                else
+                {
+                    attackAnimation();
 
-        // Add other behaviours here (like checking for collisions, etc.)
-        checkPowerUpStatus();
+                    if(Math.random() < critRate){ //Chance of player to crit
+                        if(this.getCurrentWeapon().equals("staff"))
+                        {
+                            handleShooting((int)((double)attackDmg * critDamage));
+                        }
+                        else
+                        {
+                            attack((int)((double)attackDmg * critDamage));
+                        }
+                    }else{
+                        if(this.getCurrentWeapon().equals("staff"))
+                        {
+                            handleShooting(attackDmg);
+                        }
+                        else
+                        {
+                            attack(attackDmg);
+                        }
+                    }
+                }
+            }
+            checkPowerUpStatus();
+
 
         // if still in staff and not middle of attack animation,
-        if(timeForStaff <= 0 && !inAttack)
-        {
-            switchWeapon(); // automatically switch
-            StatsUI.switchUlt(getCurrentWeapon());
-            remainingCds = 600; // restart Cooldown once staff is expired.
-            timeForStaff = 0;
-            //timeForStaff = 600; // reset Timer
+            if(timeForStaff <= 0 && !inAttack)
+            {
+                switchWeapon(); // automatically switch
+                StatsUI.switchUlt(getCurrentWeapon());
+                remainingCds = 600; // restart Cooldown once staff is expired.
+                timeForStaff = 0;
+  
+            }
         }
+        
         acts++;
         super.act();
     }
 
+    /**
+     * An aura actor will always follow the player while player is in world.
+     * Whenever player is in their power up state, the aura will appear visible.
+     */
     public void addedToWorld(World world) {
         super.addedToWorld(world);
-
         aura = new Aura(this);
         world.addObject(aura, getX(), getY());
     }
 
+    /**
+     * Method that moves the player
+     */
     private void movePlayer() {
-
-
         int dx = 0, dy = 0; //Change in X and Y based on movement
         int x;// Animation Speed base on a factor of variable X
         speed = isPoweredUp ? powerUpSpeed : normalSpeed;
@@ -231,7 +238,6 @@ public class Player extends Entity
             frame = (frame+1)%(up.getAnimationLength());
         }
         acts++;
-
         if (Greenfoot.isKeyDown("w")) {
             dy -= speed;
             setImage(up.getFrame(frame));
@@ -265,7 +271,7 @@ public class Player extends Entity
         {
             frame = (frame+1)%(up.getAnimationLength()); 
         }
-        if (isDashing) {
+        if (isDashing) { //manages the player's dash
             dashFrames++;
             displace(dashVelocity);
             if (dashFrames >= 10) {
@@ -283,6 +289,13 @@ public class Player extends Entity
         }
     }
 
+    /**
+     * Method that moves the player using vector movement
+     * 
+     * @param dx   The x-component of the vector
+     * @param dy   The y-component of the vector
+     * @param spd  The speed at which the player moves
+     */
     public void move(double dx, double dy, double spd)
     {
         double vectorMagnitude = Math.sqrt(dx*dx + dy*dy);
@@ -296,8 +309,14 @@ public class Player extends Entity
         setLocation(x + xComponent, y + yComponent);
     }
 
-    private void dash(int x, int y) {
-        dashVelocity = new Vector(x, y);
+    /**
+     * Method that allows the player to dash using vector movement
+     * 
+     * @param dx   The x-component of the vector
+     * @param dy   The y-component of the vector  
+     */
+    private void dash(int dx, int dy) {
+        dashVelocity = new Vector(dx, dy);
         if (isDashing) return; // Prevent dashing again if already dashing
 
         isDashing = true;
@@ -308,24 +327,31 @@ public class Player extends Entity
 
     }
 
+    /**
+     * Method that manages the shooting of the player when in staff mode
+     * 
+     * @param dmg    The damage that the staff does per bullet
+     */
     private void handleShooting(int dmg){
         dmg = Utility.randomIntInRange((int)(0.9*dmg), (int)(1.1*dmg));
-        shootingTimer++;
-        int shootingInterval = isPoweredUp ? powerUpShootingInterval : normalShootingInterval;
-        if (Greenfoot.mouseClicked(null) && shootingTimer >= shootingInterval) {
+        if (Greenfoot.mouseClicked(null)) { //Bullet moves in the direction of the mouse click
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
                 int mouseX = mouse.getX();
                 int mouseY = mouse.getY();
                 shoot(mouseX, mouseY, dmg);
-                shootingTimer = 0;
             }
         }
     }
 
+    /**
+     * Method for the player to attack when in sword mode
+     * 
+     * @param damage    The damage per swing of the sword
+     */
     private void attack(int damage) {
         damage = Utility.randomIntInRange((int)(0.9*damage), (int)(1.1*damage));
-        if(frame == 5)
+        if(frame == 5)//does damage on the fifth frame
         {
             List<Damageable> targets;
             int spd = 6;
@@ -393,30 +419,65 @@ public class Player extends Entity
         }
     }
 
+    /**
+     * Returns the direction the player is facing
+     * 
+     * @return facing   The players current facing direction
+     */
     public static String getFacing (){
         return facing;
     }
 
+    /**
+     * Returns the current attack damage of the player
+     */
     public int getAttackDmg(){
         return attackDmg;
     }
 
+    /**
+     * Method that allows player to shoot a bullet
+     * 
+     * @param targetX    The x component of the target's direction
+     * @param targetY    The y component of the target's direction
+     */
     private void shoot(int targetX, int targetY, int dmg) {
-        Bullet bullet = new Bullet(4, dmg, this,targetX, targetY);
+        Bullet bullet = new Bullet(4, dmg, this, targetX, targetY);
         getWorld().addObject(bullet, getX(), getY());
     }
 
+    /**
+     * Method that puts player in power up state for a set duration
+     */
     public void activatePowerUp() {
         isPoweredUp = true;
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
     }
 
+    /**
+     * Method that manages animation when the player dies, or when the player's hp reaches 0.
+     */
+
     public void deathAnimation()
     {
-        die();
+        if(!death)
+        {
+            frame = 0;
+            speed = 0;
+            death = true;
+        }
+        frame = (frame+1)%(dying.getAnimationLength());
+        setImage(dying.getFrame(frame));
+        if(frame == (dying.getAnimationLength()-1))
+        {
+            die();
+        }
     }
 
+    /**
+     * Method that manages whether the aura appears or not
+     */
     private void checkPowerUpStatus() {
         if (isPoweredUp && (System.currentTimeMillis() - powerUpStartTime >= 8000)) {
             isPoweredUp = false;
@@ -427,31 +488,50 @@ public class Player extends Entity
     }
 
     public void die() {
-        // hp = maxHp;
-        // GameData.exportData();
         getWorld().removeObject(this);
-        // System.exit(1);
-        
     }
 
+    /**
+     * Returns current hp
+     * 
+     * @return hp  The current hp
+     */
     public int getHp() {
         return hp;
     }
 
+    /**
+     * Setter method for hp
+     * 
+     * @param health    The hp of player
+     */
     public void setHp(int health){
         hp = health;
     }
 
+    /**
+     * Returns the player's x-position in world
+     * 
+     * @return   The player's x-position in world
+     */
     public static int returnX()
     {
         return x;
     }
 
+    /**
+     * Returns the player's y-position in world
+     * 
+     * @return   The player's y-position in world
+     */
     public static int returnY()
     {
         return y;
     }
 
+    /**
+     * Method that manages the animation when player is not moving
+     */
     public void idle()
     {
         switch(facing)
@@ -471,6 +551,9 @@ public class Player extends Entity
         }
     }
 
+    /**
+     * Method for player to use ultimate ability, one for both sword and staff
+     */
     public void useUltimate() {
         String key = Keyboard.getCurrentKey();
         if("q".equals(key)){
@@ -495,11 +578,19 @@ public class Player extends Entity
         }
     }
 
+    /**
+     * Returns the current weapon player is holding
+     * 
+     * @return weapon   The player's current weapon
+     */
     public String getCurrentWeapon()
     {
         return weapon;
     }
 
+    /**
+     * Method that manages when player switches in between weapons
+     */
     public void switchWeapon()
     {
         index++;
@@ -553,7 +644,7 @@ public class Player extends Entity
     }
 
     /**
-     * 
+     * Method that manages the attack animation of the player
      */
     public void attackAnimation()
     {
@@ -562,6 +653,7 @@ public class Player extends Entity
             case "sword": // if holding sword
                 if(frame == (swingingUp.length-1)) // if animation reaches the end.
                 {
+                    SoundManager.playSound("swordSound.mp3");
                     inAttack = false;
                     frame = 0;
                     switch(facing)
@@ -605,6 +697,7 @@ public class Player extends Entity
             case "staff":
                 if(frame == (staffUp.getAnimationLength()-1)) // if animation reaches the end.
                 {
+                    SoundManager.playSound("staffSound.mp3");
                     inAttack = false;
                     frame = 0;
                     switch(facing)
@@ -650,20 +743,41 @@ public class Player extends Entity
                 break;
         }
     }
+
+    /**
+     * Method that adds hp to player
+     * 
+     * @param hp   The amount of hp to be added
+     */
     public void addMaxHp(int hp){
         maxHp += hp;
         StatsUI.updateMaxHp(maxHp);
     }
+
+    /**
+     * Method that adds attack damage to player
+     * 
+     * @param dmg   The amount of damage to be added
+     */
     public void addAttackDamage(int dmg){
         attackDmg += dmg;
         StatsUI.updateAtkDmg(attackDmg);
     }
+
+    /**
+     * Method that adds speed to the player
+     * 
+     * @param spd   The amount of speed to be added
+     */
     public void addSpeed(int spd){
         normalSpeed += spd;
         powerUpSpeed = normalSpeed + (int)(normalSpeed * 0.3);
         StatsUI.updateSpd(normalSpeed);
-        
     }
+
+    /**
+     * Method that loads the player's current data
+     */
     public void loadPlayerData(String [] data){
         attackDmg = Integer.valueOf(data[1]);
         speed = Integer.valueOf(data[2]);
@@ -672,23 +786,49 @@ public class Player extends Entity
         coin = Integer.valueOf(data[5]);
     }
 
+    /**
+     * Method that returns the max health of player
+     * 
+     * @return maxHp   the max health of player
+     */
     public int getMaxHp(){
-         return maxHp;
+        return maxHp;
     }
+
+    /**
+     * Method that returns the speed of the player
+     * 
+     * @return normalSpeed   The speed of the player
+     */
     public int getSpeed(){
-         return normalSpeed;
+        return normalSpeed;
     }
+
+    /**
+     * Method that returns the amount of coins the player has in possession
+     * 
+     * @return coin    The amount of coins the player has
+     */
     public int getCoin(){
-         return coin;
+        return coin;
     }
+
+    /**
+     * Method that adds to the number of coins player has
+     */
     public void addCoin(){
         coin++;
         StatsUI.updateCoin(coin);
     }
+
+    /**
+     * Method that removes coins from player when they purchase from shop
+     */
     public void removeCoin(int num){
         coin-= num;
         StatsUI.updateCoin(coin);
     }
+
     public String toString(){
         return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
     }

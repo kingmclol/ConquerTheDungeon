@@ -100,7 +100,7 @@ public class StoryWorld extends SuperWorld
      * Check whether all dialogue has been exhausted.
      * @return true if there still is more dialogue.
      */
-    private Boolean stillMoreDialogue() {
+    private boolean stillMoreDialogue() {
         int nextLine = line + 1;
         return nextLine < dialogue.length;
     }

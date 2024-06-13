@@ -9,25 +9,23 @@ import java.util.ArrayList;
  */
 public class Landmine extends Floor
 {
-
+    private GreenfootSound explosion = new GreenfootSound("explosion.mp3"); 
     public static GreenfootImage img = new GreenfootImage("landmine.png");
     private HiddenBox hiddenBox;
     private boolean exploded;
     public Landmine() {
         super(img);  
         hiddenBox = new HiddenBox(40, 40, Box.SHOW_BOXES, this);
-        
-
+        explosion.setVolume(50);
     }
     public void addedToWorld(World w) {
         w.addObject(hiddenBox, getX(), getY());
 
     }
     private void explode(){
-        
+        explosion.play();
         getWorld().addObject(new Explosion(1.0), getX(), getY());
         replaceMe(getInstanceFromID("f"));
-  
     }
     public void act()
     {
