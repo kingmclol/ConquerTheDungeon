@@ -11,7 +11,7 @@ public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
     BreathingTextBox promptBox;
-    TextBox title;
+    Picture title;
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
@@ -32,16 +32,17 @@ public class IntroWorld extends SuperWorld
     {
         super();
         setPaintOrder(TextBox.class, Picture.class);
-        promptBox = new BreathingTextBox("PRESS [L] TO START", 52, Color.RED, null, 120);
+        promptBox = new BreathingTextBox("PRESS [L] TO START", 52, new Color(188, 138, 1), null, 120);
+        //title = new Picture("titletext.png");
         //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
         addObject(promptBox, getWidth()/2, getHeight()/2+300);
         
-        title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
+        //title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
         //titleAnchor = new Vector(getWidth()/2, 80);
-        addObject(title, getWidth()/2, 80);
+        
         
         // This is a temporary prompt.)
-        addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, Color.BLACK, null, 60), getWidth()/2, 300);
+        addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, new Color(188, 138, 1), null, 60), getWidth()/2, 300);
         
         
         // introWorldMusic = new GreenfootSound("Introworld.mp3");
@@ -53,13 +54,13 @@ public class IntroWorld extends SuperWorld
         //worldCenter = new Vector(getWidth()/2, getHeight()/2);
         
         currentImage = new Picture(backgroundImages[index]);
-        currentImage.setTranslation(Utility.randomVector(0.5, 1, 0.2, 0.5));
+        currentImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
         addObject(currentImage, getWidth()/2, getHeight()/2);
         
         nextImage = new Picture(backgroundImages[nextIndex()]);
-        nextImage.setTranslation(Utility.randomVector(0.5, 1, 0.2, 0.5));
+        nextImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
         nextImage.setTransparency(0); // hidden for now.
-        
+        //addObject(title, getWidth()/2, 80);
         Greenfoot.setSpeed(50); // Control speed to 50.
         
         GameData.resetData();
@@ -110,6 +111,9 @@ public class IntroWorld extends SuperWorld
     private void switchBackgroundImage() {
         currentImage.fadeOut(1); // make the current image begin to disappear.
         addObject(nextImage,getWidth()/2, getHeight()/2); // add the next image.
+        removeObject(title);
+        
+        addObject(title, getWidth()/2, 80);
         nextImage.fadeIn(1);
         // update reference of current image to the next image, as the current image will remove itself fro the world
         // by itself, so need to keep it anymore.

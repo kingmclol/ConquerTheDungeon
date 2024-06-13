@@ -60,6 +60,7 @@ public class Zombie extends Enemy
         {
             super.act();
         }
+
     }
 
     /**
@@ -128,6 +129,7 @@ public class Zombie extends Enemy
             spd = 0;
             death = true;
         }
+        
         if(acts % 10 == 0)
         {
             frame = (frame+1)%(dying.getAnimationLength());
@@ -137,6 +139,8 @@ public class Zombie extends Enemy
         {
             die();
         }
+        
+
     }
 
     /**

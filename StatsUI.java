@@ -9,10 +9,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public  class StatsUI extends UI
 {
     private GreenfootImage img;
-    private static LoadBar hpBar = new LoadBar(75, 10, Color.RED, true);
-    private static LoadBar cdBar1 = new LoadBar(100, 4, Color.WHITE, Color.RED, false);
-    private static LoadBar cdBar2 = new LoadBar(100, 4, Color.WHITE, Color.GREEN, false);
-    
+    private static LoadBar hpBar = new LoadBar(75, 10, Color.RED, 255, true);
+    private static LoadBar cdBar1 = new LoadBar(100, 4, Color.WHITE, Color.RED, 255, false);
+    private static LoadBar cdBar2 = new LoadBar(100, 4, Color.WHITE, Color.GREEN, 255, false);
+    private static LoadBar ultBar = new LoadBar(60, 60, Color.GRAY, Color.GRAY, 200, false);
+       
+    private static Picture ult1 = new Picture("ult1.png");
+    private static Picture ult2 = new Picture("ult2.png");
     private Picture charImg = new Picture("charportrait.png");
     private Picture staffImg = new Picture("staff.png");
     private Picture swordImg = new Picture("swordicon.png");
@@ -25,6 +28,7 @@ public  class StatsUI extends UI
     private PopUpBox spdStatInfo = new PopUpBox(new SuperTextBox(new String []{"- Speed Stat -", "Determines how ",  "fast you move."}, new Font(13), 120), 55, 75);
     
     private PopUpBox staffInfo = new PopUpBox(new SuperTextBox(new String []{"- Staff Meter -", "This meter determines",  "how long you can"," use the staff."}, new Font(13), 135), 70, 35);
+    private PopUpBox ultInfo = new PopUpBox(new SuperTextBox(new String []{"- Ultimate Ability -", "Activate by pressing Q",  "to use the special ability","of the current weapon."}, new Font(13), 160), 65, 65);
 
     private static TextBox atkText;
     private static TextBox heartText; 
@@ -40,12 +44,17 @@ public  class StatsUI extends UI
         heartText = new TextBox(Integer.toString(player.getMaxHp()), 24, Color.WHITE, null, 0, 255);
         spdText = new TextBox(Integer.toString(player.getMaxHp()), 24, Color.WHITE, null, 0, 255);
         coinText = new TextBox(Integer.toString(player.getCoin()), 24, Color.YELLOW, null, 0, 255);
+        ult1 = new Picture("ult1.png");
+        ult2 = new Picture("ult2.png");
+        ultBar.setRotation(-90);
         updateCoin(player.getCoin());
         updateAtkDmg(player.getAttackDmg());
         updateHP(((double) player.getHp()/player.getMaxHp())*100.0);
         updateSpd(player.getSpeed());
         cdBar1.setTargetPercent(100.0);
         cdBar2.setTargetPercent(100.0);
+        ultBar.setTargetPercent(0);
+        switchUlt(player.getCurrentWeapon());
         setImage(img);
     }
     public static void loadStatsData(String [] data){
@@ -67,6 +76,10 @@ public  class StatsUI extends UI
         w.addObject(charImg, getX(), 75);
         w.addObject(cdBar1, getX(), 700);
         w.addObject(cdBar2, getX(), 625);
+        w.addObject(ult1, getX(), 540);
+        w.addObject(ult2, getX(), 540);
+        w.addObject(ultInfo, getX(), 540);
+        w.addObject(ultBar, getX(), 540);
         w.addObject(staffImg, getX() - 50, 680);
         w.addObject(staffInfo, getX() - 50, 680);
         w.addObject(atkStatInfo, getX() - 40, 250);
@@ -97,5 +110,18 @@ public  class StatsUI extends UI
     }
     public static void updateCd2(double percent){
         cdBar2.setTargetPercent(percent);
+    }
+    public static void updateUlt(double percent){
+        ultBar.setTargetPercent(percent);
+    }
+    public static void switchUlt(String weapon){
+        if(weapon.equals("sword")){
+            ult1.setTransparency(0);
+            ult2.setTransparency(255);
+        }
+        else{
+            ult1.setTransparency(255);
+            ult2.setTransparency(0);
+        }
     }
 }
