@@ -37,7 +37,7 @@ public class IntroWorld extends SuperWorld
         //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
         addObject(promptBox, getWidth()/2, getHeight()/2+300);
         
-        TextBox title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
+        TextBox title = new TextBox("Conquer the Dungeon", 86, Color.BLACK, null, 2, 0);
         //titleAnchor = new Vector(getWidth()/2, 80);
         
         
