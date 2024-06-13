@@ -11,7 +11,7 @@ public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
     BreathingTextBox promptBox;
-    Picture title;
+    TextBox title;
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
@@ -19,6 +19,7 @@ public class IntroWorld extends SuperWorld
         "landscape2.png",
         "landscape3.png"
     };
+    private TextBox buttonText2;
     private Picture currentImage;
     private Picture nextImage;
     private int index;
@@ -31,17 +32,18 @@ public class IntroWorld extends SuperWorld
     public IntroWorld()
     {
         super();
-        setPaintOrder(TextBox.class, Picture.class);
+        setPaintOrder( TextBox.class, Button.class, Picture.class);
         promptBox = new BreathingTextBox("PRESS [L] TO START", 52, new Color(188, 138, 1), null, 120);
         //title = new Picture("titletext.png");
         //promptAnchor = new Vector(getWidth()/2, getHeight()/2 + 300);
         addObject(promptBox, getWidth()/2, getHeight()/2+300);
         
-        //title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
+        title = new TextBox("TITLE SCREEN", 86, Color.BLACK, null, 2, 0);
         //titleAnchor = new Vector(getWidth()/2, 80);
-        
-        
-        // This is a temporary prompt.)
+        Button button = new Button(this::startGame, 200, 80);
+        Button button2 = new Button(this::loadGame, 200, 80);
+        TextBox buttonText1 = new TextBox("START", 32, Color.BLACK, null, 0, 255);
+        buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
         addObject(new BreathingTextBox("Press 'I' to load previous save.", 24, new Color(188, 138, 1), null, 60), getWidth()/2, 300);
         
         
@@ -60,9 +62,12 @@ public class IntroWorld extends SuperWorld
         nextImage = new Picture(backgroundImages[nextIndex()]);
         nextImage.setTranslation(Utility.randomVector(0.2, 0.5, 0.075, 0.2));
         nextImage.setTransparency(0); // hidden for now.
-        //addObject(title, getWidth()/2, 80);
+        addObject(title, getWidth()/2, 80);
         Greenfoot.setSpeed(50); // Control speed to 50.
-        
+        addObject(button, getWidth()/2, getHeight()/2);
+        addObject(button2, getWidth()/2, getHeight()/2 + 200);
+        addObject(buttonText1, getWidth()/2, getHeight()/2);
+        addObject(buttonText2, getWidth()/2, getHeight()/2 + 200);
         GameData.resetData();
     }
     /**
@@ -128,6 +133,18 @@ public class IntroWorld extends SuperWorld
     private int nextIndex() {
         index = (index + 1)%backgroundImages.length;
         return index;
+    }
+    private void startGame(){
+        Greenfoot.setWorld(new StoryWorld());
+    }
+    private void loadGame(){
+        if (GameData.importData()) {
+            buttonText2.display("DATA LOADED!");
+            alert("Loaded from save...", new Color(40, 230, 70), getHeight()/2);
+            loadingFromSave = true;
+        } else {
+            alert("Cannot load save data..", new Color(230, 70, 70), getHeight()/2);
+        }
     }
     // public void started() {
         // introWorldMusic.playLoop();
