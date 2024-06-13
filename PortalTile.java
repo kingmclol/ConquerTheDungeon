@@ -13,10 +13,26 @@ public class PortalTile extends Floor
      * Act - do whatever the PortalTile wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    private static GreenfootImage img = new GreenfootImage("portal.png");
+    private int count;
+    private int actCount;
+    private static GreenfootImage img = new GreenfootImage("portal1.png");
     public PortalTile()
     {
         super(img);
+        count = 1;
+        actCount = 0;
+    }
+    public void act() {
+        actCount++; 
+        if (actCount % 10 == 0) {
+            count++;
+            GreenfootImage img = new GreenfootImage("portal" + count + ".png");
+            setImage(img);
+            if (count == 4) {
+                count = 0;
+            }
+        }
+        super.act();
     }
     protected void checkTouchTile(){
         ArrayList<CollisionBox> boxes = (ArrayList<CollisionBox>) getIntersectingObjects(CollisionBox.class);

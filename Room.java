@@ -22,7 +22,7 @@ public abstract class Room extends GameWorld
      * Constructor for objects of class Room.
      * 
      */
-    private GreenfootSound dungeonSound = new GreenfootSound("dungeonSound.mp3");
+    private static GreenfootSound dungeonSound = new GreenfootSound("dungeonSound.mp3");
     
     private static ArrayList<String> roomTemplates;
     protected int currentLevel;
@@ -44,7 +44,6 @@ public abstract class Room extends GameWorld
         board.addEntity(GameData.getPlayer(), board.getRandomSpawnableCell());
         alert("LEVEL " + currentLevel, Color.WHITE, getHeight()-100);
         addBorderBoxes();
-        
         dungeonSound.setVolume(50);
         dungeonSound.playLoop();
     }
@@ -91,5 +90,17 @@ public abstract class Room extends GameWorld
         if (GameWorld.SHOW_LOGS) System.out.println(buildString);
         Board b = new Board(buildString);
         return b;
+    }
+    /**
+     * Plays or stops the music depending on the variable given.
+     * @param playing whether to play the music
+     */
+    public static void setMusicState(boolean playing) {
+        if (playing) {
+            dungeonSound.setVolume(50);
+            dungeonSound.playLoop();
+        } else {
+            dungeonSound.stop();
+        }
     }
 }

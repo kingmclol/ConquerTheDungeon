@@ -68,9 +68,9 @@ public class CombatRoom extends Room
         List<List<String>> temp = new ArrayList<List<String>>();
         
         // Caclculate the number of waves I want to spawn in.
-        int numWaves = level/3 + 1;
+        int numWaves = level/5 + 1;
         // And the max and min levels.
-        int minEnemies = 3 + Greenfoot.getRandomNumber(level/2 + 1);
+        int minEnemies = 3 + Greenfoot.getRandomNumber(level/4 + 1);
         int maxEnemies = minEnemies + Greenfoot.getRandomNumber(level/3 + 2);
         
         for (int wave = 0; wave < numWaves; wave++) { // For each wave in this level...

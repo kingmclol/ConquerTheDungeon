@@ -16,7 +16,7 @@ public class ExplosiveBarrel extends Destroyable
     private static GreenfootImage img = new GreenfootImage("explosivebarrel.png");
     public ExplosiveBarrel() {
         super(img, 15);
-        explosion.setVolume(75);
+        explosion.setVolume(40);
     }
     public void act()
     {

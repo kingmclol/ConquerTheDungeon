@@ -16,7 +16,7 @@ public class Barrel extends Destroyable
     public static GreenfootImage img = new GreenfootImage("barrel.png");
     public Barrel() {
         super(img, 10);
-        barrelBreakSound.setVolume(50);
+        barrelBreakSound.setVolume(25);
     }
     public void onDestroy() {
         barrelBreakSound.play(); 
@@ -28,7 +28,7 @@ public class Barrel extends Destroyable
             getWorld().addObject(new PowerUp(), getX(), getY());
         }
         else if(randomDrop == 3){
-            getWorld().addObject(new Heal(Utility.randomIntInRange(30, 60)), getX(), getY());
+            getWorld().addObject(new Heal(Utility.randomIntInRange(10, 25)), getX(), getY());
         }
         replaceMe(new EmptyFloor());
         
