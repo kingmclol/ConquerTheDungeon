@@ -14,7 +14,7 @@ public class SlowTrap extends Floor
     private static GreenfootImage img = new GreenfootImage("slowtrap.png");
     public SlowTrap() {
         super(img);
-        slowTrapSound.setVolume(100); 
+        slowTrapSound.setVolume(60); 
     }
     public void act()
     {
