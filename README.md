@@ -66,6 +66,12 @@ This game was created using some existing assets sourced from others.
 - [Coins Animation/Graphics by Nastya Prokopchuk](https://www.istockphoto.com/vector/set-of-8-bit-pixel-graphics-icons-isolated-vector-illustration-game-art-coins-of-gm1787801854-547490383)
 - [Portal Graphics and Animation](https://www.cleanpng.com/png-portal-video-game-film-column-sprite-5506003/)
 - [Status Effect Animation and Graphics from Power Ups by MyPicts](https://www.deviantart.com/mypicts/art/Aura-412012866)
+- Wall and cracked wall images: https://superwalrusland.com/ohr/issue26/pa/pixelart.html
+- Barrel image: https://makinggamesinc.itch.io/pixel-art-barrell
+- Speedboost and slowtrap images: https://geometry-dash-fan-ideas.fandom.com/wiki/New_Speed_Portals
+- Floor and spiketrap images: https://pixelpajamastudios.itch.io/16x16-pixel-art-dungeon-pack
+- Landmine image: https://dank-memer.fandom.com/f/t/Landmine
+- Lava image: https://www.dreamstime.com/pixel-minecraft-style-fiery-lava-block-background-concept-game-pixelated-seamless-square-orange-yellow-dots-vector-illustration-image274167480
 
 ### Sounds & Music
 - Lava sound: https://www.youtube.com/watch?v=_pvn1O0H1ok 
