@@ -473,6 +473,7 @@ public class Player extends Entity
         {
             die();
         }
+        if(this.getWorld() == null) Greenfoot.setWorld(new EndScreenWorld());
     }
 
     /**
