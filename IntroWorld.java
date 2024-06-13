@@ -13,8 +13,8 @@ public class IntroWorld extends SuperWorld
 {
     private GreenfootSound introWorldMusic; 
 
-    Picture title;
-
+    private Picture title;
+    
     private int actCount;
     // Images from /u/Voidentir at https://old.reddit.com/r/DigitalArt/comments/1akfavq/my_old_landscape_artworks/
     private static String[] backgroundImages = new String[] {
@@ -42,7 +42,7 @@ public class IntroWorld extends SuperWorld
         Button button2 = new Button(this::loadGame, 200, 80, new GreenfootImage("button.png"), new GreenfootImage("button2.png"), new GreenfootImage("button3.png"));
         Button deleteDataButton = new Button(this::deleteGame, 200, 80, new GreenfootImage("button.png"), new GreenfootImage("button2.png"), new GreenfootImage("button3.png"));
         TextBox buttonText1 = new TextBox("START", 32, Color.BLACK, null, 0, 255);
-        TextBox buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
+        buttonText2 = new TextBox("LOAD DATA", 32, Color.BLACK, null, 0, 255);        // This is a temporary prompt.)
         TextBox deleteDataText = new TextBox("DELETE DATA", 32, Color.BLACK, null, 0, 255);
 
         
@@ -116,6 +116,8 @@ public class IntroWorld extends SuperWorld
     private void switchBackgroundImage() {
         currentImage.fadeOut(1); // make the current image begin to disappear.
         addObject(nextImage,getWidth()/2, getHeight()/2); // add the next image.
+        removeObject(title); // remove title
+        addObject(title, getWidth()/2, 80); // add it back to make it paint over background
         nextImage.fadeIn(1);
         // update reference of current image to the next image, as the current image will remove itself fro the world
         // by itself, so need to keep it anymore.

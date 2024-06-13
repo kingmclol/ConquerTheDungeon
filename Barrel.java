@@ -28,7 +28,7 @@ public class Barrel extends Destroyable
             getWorld().addObject(new PowerUp(), getX(), getY());
         }
         else if(randomDrop == 3){
-            getWorld().addObject(new Heal(Utility.randomIntInRange(30, 60)), getX(), getY());
+            getWorld().addObject(new Heal(Utility.randomIntInRange(10, 25)), getX(), getY());
         }
         replaceMe(new EmptyFloor());
         
