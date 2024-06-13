@@ -34,11 +34,16 @@ How far can you get before you need to be reincarnated once again?
 - Click to attack.
 - `R` to switch weapon.
 - `SHIFT` to dash.
-- Keep your HP above zero while making your enemies' hp zero.
+- `Q` to use ultimate.
+- Keep your HP above zero while making your enemies' HP zero.
 
 - Break barrels and use the environment to your advantage.
 
 ## Features
-Yes.
+- Randomized Rooms: A pool of predetermined rooms to play in, picked randomly.
+- Shop and upgrades: Used coins to make yourself more powerful.
+- Saving & Loading: Saves the game every time you are in a shop. Good for save scumming.
+- Progressive difficulty: Enemies and waves increase as you delve deeper.
+- Multiple Tile types: Different interactions between Entities and tiles.
 
 ## Credits
