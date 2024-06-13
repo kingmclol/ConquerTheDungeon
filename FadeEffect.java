@@ -1,19 +1,20 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class FadeEffect here.
+ * Creates a effect on a cell that is of a colour and fades out over time.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Freeman Wang
+ * @version May 2024
  */
 public class FadeEffect extends CellEffect
 {
-    /**
-     * Act - do whatever the FadeEffect wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     private Color c;
     private int initialTransparency;
+    /**
+     * Creates a FadeEffect of the given colour and initial transparency.
+     * @param c color to use
+     * @param initialTransparency the initial transpoarnency of the effect
+     */
     public FadeEffect(Color c, int initialTransparency) {
         this.initialTransparency = initialTransparency;
         this.c = c;
