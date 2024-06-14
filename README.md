@@ -58,9 +58,10 @@ How far can you get before you need to be reincarnated once again?
 - **Thoroughly animated:** Animations for entities are animated for almost every action they take.
 
 ## Known Bugs
-- When loading from a save file, the health bar for the player does not reflect the actual health of the player.
-  - The health bar in the side panel is correct, however.
-
+- When loading from a save file, the health bar for the player does not reflect the actual health of the player. The health bar in the side panel is correct, however.
+- When dying while in a sword attack animation, you may be softlocked. Most prominent when killing yourself from an explosive barrel.
+- Possible bug of shooting staff projectiles in sword form. Unknown cause.
+- **SWORD ULTIMATES GOING THROUGH WALLS IS INTENDED.**
 - **SOME ENEMIES NOT FOLLOWING YOU IS INTENDED; IF YOU ARE TOO FAR, THEY WILL NOT MOVE TOWARD YOU.**
 
 ## Credits
