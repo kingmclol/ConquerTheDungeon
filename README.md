@@ -61,6 +61,7 @@ How far can you get before you need to be reincarnated once again?
 - When loading from a save file, the health bar for the player does not reflect the actual health of the player.
   - The health bar in the side panel is correct, however.
 
+- **SOME ENEMIES NOT FOLLOWING YOU IS INTENDED; IF YOU ARE TOO FAR, THEY WILL NOT MOVE TOWARD YOU.**
 
 ## Credits
 This game was created using some existing assets sourced from others.
