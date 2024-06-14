@@ -48,6 +48,7 @@ public class Skeleton extends Enemy
         if(this.getHp() <= 0)
         {
             inAttack = false;
+            skeletonDeathSound.play(); 
         }
         if(this.getHp() > 0 && !inAttack)
         {
@@ -59,15 +60,7 @@ public class Skeleton extends Enemy
             attack();
             attackAnimation();
         }
-        if(this.getHp() <= 0) // trigger death animation.
-        {
-            skeletonDeathSound.play(); 
-            deathAnimation();
-        }
-        if(!death){
-            super.act();
-        }
-
+        super.act();
     }
 
     /**
@@ -78,7 +71,6 @@ public class Skeleton extends Enemy
             pathToEntity(player);
         }
     }
-
     /**
      * Method that manages the skeleton's attack, which is shooting arrows
      */
@@ -141,7 +133,7 @@ public class Skeleton extends Enemy
     /**
      * Method that manages death animation
      */
-    public void deathAnimation()
+    public void deathAnimation(int timeInBetween, int length)
     {
         if(!death)
         {
@@ -149,12 +141,12 @@ public class Skeleton extends Enemy
             spd = 0;
             death = true;
         }
-        if(acts % 10 == 0)
+        if(acts % timeInBetween == 0)
         {
-            frame = (frame+1)%(dying.getAnimationLength());
+            frame = (frame+1)%(length);
         }
         setImage(dying.getFrame(frame));
-        if(frame == (dying.getAnimationLength()-1))
+        if(frame == (length-1))
         {
             die();
         }

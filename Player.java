@@ -67,7 +67,7 @@ public class Player extends Entity
      */
     public Player() {
         super(100);
-        
+
         critRate = 0.3;
         critDamage = 1.6;
 
@@ -114,7 +114,6 @@ public class Player extends Entity
         x = getX();
         y = getY();
         moving = false;
-        
 
 
         moving = false;
@@ -122,7 +121,7 @@ public class Player extends Entity
             if (cooldownTimer > 0) {
                 StatsUI.updateUlt(((double)cooldownTimer/ultimateCooldown)*100.0);
                 cooldownTimer--; // Decrement cooldown timer for ult
-                
+
             }
             if (cooldownTimer <= 0) {// Can use ultimate once cooldown is over
                 useUltimate();
@@ -143,7 +142,7 @@ public class Player extends Entity
                     }
                 }
             }
-            
+
             if(this.getCurrentWeapon().equals("staff"))
             {
                 //If player is currently using staff, decrease the time he is allowed to use it for
@@ -197,20 +196,27 @@ public class Player extends Entity
             }
             checkPowerUpStatus();
 
-
-        // if still in staff and not middle of attack animation,
+            // if still in staff and not middle of attack animation,
             if(timeForStaff <= 0 && !inAttack)
             {
                 switchWeapon(); // automatically switch
                 StatsUI.switchUlt(getCurrentWeapon());
                 remainingCds = 600; // restart Cooldown once staff is expired.
                 timeForStaff = 0;
-  
+
             }
         }
-        
         acts++;
-        super.act();
+        if(getWorld() != null && !flung.equals("none")){
+            fling();
+        }
+        if(speedBoost > 0){
+            speedBoost--;
+        }
+        if (hp <= 0) {
+            deathAnimation(60, dying.getAnimationLength());
+        }
+        manageCollision();
     }
 
     /**
@@ -460,12 +466,11 @@ public class Player extends Entity
         powerUpStartTime = System.currentTimeMillis();
         aura.makeVisible();
     }
-
+    @Override
     /**
      * Method that manages animation when the player dies, or when the player's hp reaches 0.
      */
-
-    public void deathAnimation()
+    public void deathAnimation(int timeInBetween, int length)
     {
         if(!death)
         {
@@ -473,9 +478,12 @@ public class Player extends Entity
             speed = 0;
             death = true;
         }
-        frame = (frame+1)%(dying.getAnimationLength());
+        if(acts % timeInBetween == 0)
+        {
+            frame = (frame+1)%(length);
+        }
         setImage(dying.getFrame(frame));
-        if(frame == (dying.getAnimationLength()-1))
+        if(frame == (length-1))
         {
             die();
         }
@@ -837,27 +845,29 @@ public class Player extends Entity
         coin-= num;
         StatsUI.updateCoin(coin);
     }
+
     /**
      *  Represents player as a string using its stats.
      */
     public String toString(){
         return attackDmg +"~" + normalSpeed  + "~" + maxHp + "~" + hp + "~" + coin;
     }
-    
+
     public boolean getMoving()
     {
         return moving;
     }
-    
+
     public boolean state()
     {
         return inAttack;
     }
-    
+
     public boolean isSwordUlt()
     {
         return enhancedSwings;
     }
+
     public void resetCooldown()
     {
         cooldownTimer = 0;

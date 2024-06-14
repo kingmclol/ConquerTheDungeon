@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public abstract class Enemy extends Entity {
     //Animations for Moving as well as other object behaviour: 
-    protected Animation up,down,left,right, dying;
+    protected Animation up,down,left,right;
     
     protected int mvtSpd = 2, x, y, rotation;//X and Y are Location
     
@@ -39,8 +39,6 @@ public abstract class Enemy extends Entity {
         if(getWorld() != null){
             player = (Player)getClosestInRange(Player.class, 1000);
         }
-        
-
         manageCollision();
         super.act();
     }

@@ -40,6 +40,7 @@ public class Zombie extends Enemy
         if(this.getHp() <= 0)
         {
             inAttack = false;
+            zombieDeathSound.play();
         }
         if(this.getHp() > 0 && !inAttack)
         {
@@ -51,15 +52,7 @@ public class Zombie extends Enemy
         {
             attackAnimation();
         }
-        if(this.getHp() <= 0) // trigger death animation.
-        {
-            zombieDeathSound.play();
-            deathAnimation();
-        }
-        if(!death)
-        {
-            super.act();
-        }
+        super.act();
 
     }
 
@@ -117,32 +110,6 @@ public class Zombie extends Enemy
                 break;
         }
     }
-
-    /**
-     * Method that manages death animation.
-     */
-    public void deathAnimation()
-    {
-        if(!death)
-        {
-            frame = 0;
-            spd = 0;
-            death = true;
-        }
-        
-        if(acts % 10 == 0)
-        {
-            frame = (frame+1)%(dying.getAnimationLength());
-        }
-        setImage(dying.getFrame(frame));
-        if(frame == (dying.getAnimationLength()-1))
-        {
-            die();
-        }
-        
-
-    }
-
     /**
      * Method that manages attack animation.
      */
@@ -175,6 +142,27 @@ public class Zombie extends Enemy
         if(acts % 3 == 0)
         {
             frame = (frame+1)%(up.getAnimationLength());
+        }
+    }
+    /**
+     * Method that manages the death animation
+     */
+    public void deathAnimation(int timeInBetween, int length)
+    {
+        if(!death)
+        {
+            frame = 0;
+            spd = 0;
+            death = true;
+        }
+        if(acts % timeInBetween == 0)
+        {
+            frame = (frame+1)%(length);
+        }
+        setImage(dying.getFrame(frame));
+        if(frame == (length-1))
+        {
+            die();
         }
     }
 }

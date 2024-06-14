@@ -16,8 +16,10 @@ import java.util.HashMap;
 public abstract class Entity extends SuperActor implements Damageable
 {
     protected int hp;
+    protected int frame = 0, acts = 0;
     protected int maxHp;
     protected double speedBoost = 0 ;
+    protected Animation dying;
     protected CollisionBox collisionBox;
     protected SuperStatBar hpBar;
 
@@ -48,21 +50,33 @@ public abstract class Entity extends SuperActor implements Damageable
     }
     public void act() {
         if(getWorld() != null && !flung.equals("none")){
-
             fling();
         }
         if(speedBoost > 0){
             speedBoost--;
         }
         if (hp <= 0) {
-            deathAnimation();
+            deathAnimation(15, dying.getAnimationLength());
         }
-        
-
         manageCollision();
-        //animate();
     }
-    protected abstract void deathAnimation();
+    protected void deathAnimation(int timeInBetween, int length)
+    {
+        if(!death)
+        {
+            frame = 0;
+            death = true;
+        }
+        if(acts % timeInBetween == 0)
+        {
+            frame = (frame+1)%(length);
+        }
+        setImage(dying.getFrame(frame));
+        if(frame == (length-1))
+        {
+            die();
+        }
+    }
     /**
      * Makes this Entity take damage.
      * @param dmg The damage to take
@@ -84,8 +98,6 @@ public abstract class Entity extends SuperActor implements Damageable
             StatsUI.updateHP(((double) hp / maxHp )* 100.0);
         }
         hpBar.update(hp);
-        if(hp <= 0) deathAnimation();
-        
         iFrameTimer.mark(); // reset iframes
         return dmgTaken;
     }

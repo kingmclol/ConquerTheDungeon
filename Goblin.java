@@ -16,7 +16,7 @@ public class Goblin extends Enemy
     private GreenfootSound goblinDeathSound = new GreenfootSound("goblinSound.mp3");
     private int frame = 0, acts = -1;//-1 since before anything begins, the act is incremented by 1 before anything else happens
     private List<Player> target;
-    
+
     /**
      * Constructor for goblin that sets its initial stats and animation
      */
@@ -46,6 +46,7 @@ public class Goblin extends Enemy
         if(this.getHp() <= 0)
         {
             inAttack = false;
+            goblinDeathSound.play();
         }
         if(this.getHp() > 0 && !inAttack)
         {
@@ -58,15 +59,29 @@ public class Goblin extends Enemy
         {
             attackAnimation();
         }
-        if(this.getHp() <= 0) // trigger death animation.
-        {
-            goblinDeathSound.play();
-            deathAnimation();
-        }
         super.act(); 
-        
     }
-
+    /**
+     * Method that manages the goblin's death animation
+     */
+    public void deathAnimation(int timeInBetween, int length)
+    {
+        if(!death)
+        {
+            frame = 0;
+            spd = 0;
+            death = true;
+        }
+        if(acts % timeInBetween == 0)
+        {
+            frame = (frame+1)%(length);
+        }
+        setImage(dying.getFrame(frame));
+        if(frame == (length-1))
+        {
+            die();
+        }
+    }
     /**
      * Method that allows goblins to find a player to target
      */
@@ -118,29 +133,6 @@ public class Goblin extends Enemy
                 break;
         }
     }
-
-    /**
-     * Method that manages the goblin's death animation
-     */
-    public void deathAnimation()
-    {
-        if(!death)
-        {
-            frame = 0;
-            spd = 0;
-            death = true;
-        }
-        if(acts % 10 == 0)
-        {
-            frame = (frame+1)%(dying.getAnimationLength());
-        }
-        setImage(dying.getFrame(frame));
-        if(frame == (dying.getAnimationLength()-1))
-        {
-            die();
-        }
-    }
-
     /**
      * Method that manages the goblin's attack animation
      */
