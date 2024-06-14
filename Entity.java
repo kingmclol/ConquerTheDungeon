@@ -54,7 +54,9 @@ public abstract class Entity extends SuperActor implements Damageable
         if(speedBoost > 0){
             speedBoost--;
         }
-    
+        if (hp <= 0) {
+            deathAnimation();
+        }
         
 
         manageCollision();
