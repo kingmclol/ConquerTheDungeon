@@ -70,6 +70,8 @@ This game was created using some existing assets sourced from others.
 
 ### Art & Animation
 - See the `Credits` directory for attribution for LPC spritesheets.
+- [Bullet Image](Made by Dawson Li in PETHS)
+- [Arrow Image](https://minecraft-archive.fandom.com/wiki/Arrow?file=Arrow.png)
 - [Knight Title Background](https://www.wallpaperflare.com/dungeons-and-dragons-knight-dungeon-and-fighter-minimalism-wallpaper-yvcvv)
 - [Dungeon Title Background](https://dmsworkshop.com/2019/05/)
 - [Dungeon Door Title Background](https://www.artstation.com/artwork/VdErn4)
